@@ -1,8 +1,14 @@
-import { NgModule } from '@angular/core';
+import { SecondComponentComponent } from './second-component/second-component.component';
+import { FirstComponentComponent } from './first-component/first-component.component';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { from } from 'rxjs';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', component: FirstComponentComponent},
+  { path: 'my-team', component: SecondComponentComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
