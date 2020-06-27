@@ -26,7 +26,7 @@
     background-color: #ddd;
     color: black;
   }
-.navbar-menu a:active {
+.active-link {
     background-color: #4CAF50;
     color: white;
   }
@@ -51,3 +51,9 @@
       text-align: left;
     }
   }
+.navbar-item h4{
+  float: left;
+  display: block;
+  margin: none;
+  padding: 0%;
+}

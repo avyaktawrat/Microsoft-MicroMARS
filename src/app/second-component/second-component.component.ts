@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';// import Jquery here
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
 
 export interface Tile {
     color: string;
@@ -7,6 +15,9 @@ export interface Tile {
     rows: number;
     text: string;
     content: string;
+    photoId: string;
+    email: string;
+    git: string;
   }
 
 @Component({
@@ -26,9 +37,18 @@ export class SecondComponentComponent implements OnInit {
 export class SecondComponentComponent {
   title = 'Meet our Team!';
   tiles: Tile[] = [
-      {text: 'Anjali', cols: 2, rows: 2, color: 'lightblue', content: 'SCAM'},
-      {text: 'Avyakta', cols: 2, rows: 2, color: 'lightgreen', content: 'SCAM'},
-      {text: 'Ipsit', cols: 2, rows: 2, color: 'lightpink', content: 'SCAM'},
-      {text: 'Nayan', cols: 2, rows: 2, color: '#DDBDF1', content: 'SCAM'},
+      {text: 'Anjali', cols: 2, rows: 2, color: 'lightblue', 
+      content: 'Fill in your Description!', photoId: '',email:'',git:''},
+
+      {text: 'Avyakta', cols: 2, rows: 2, color: 'lightgreen', 
+      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.`, 
+      photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
+      email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},
+
+      {text: 'Ipsit', cols: 2, rows: 2, color: 'lightpink', 
+      content: 'Fill in your Description!',photoId:'m',email:'',git:''},
+
+      {text: 'Nayan', cols: 2, rows: 2, color: '#DDBDF1', 
+      content: 'Fill in your Description!',photoId:'',email:'',git:''},
   ];
 }

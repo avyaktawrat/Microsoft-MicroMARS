@@ -1,1 +1,4 @@
-<p>first-component works!</p>
+<svg  [attr.height]="height" [attr.width]="width" style="overflow: hidden; position: center;">
+    <rect *ngFor="let i of gridCord" stroke-opacity="1" stroke="black" fill="white" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
+            rx="0" ry="0"></rect>
+  </svg>
