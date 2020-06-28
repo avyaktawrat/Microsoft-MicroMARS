@@ -7,18 +7,20 @@ h3{
 	font-family: Arial, Helvetica, sans-serif;
 }
 h4{
-	margin-left: 300px;
+	margin-left: 230px;
 	position: absolute;
-	margin-top: 100px;
-	margin-right: 0px;
-	
+	margin-top: 70px;
+	margin-right: 5px;
 	padding: none;
+	font-family: Arial, Helvetica, sans-serif;
 }
 body {
 	font-family: Arial, Helvetica, sans-serif;
   }
 .inside-tile{
 	position: absolute;
+	margin-top: 15px;
+	margin-bottom: 15px;
 	left: 5px;
 	width: 100%;
 }
@@ -26,7 +28,7 @@ body {
 	position: relative;
 	background-color: transparent;
 	width: 200px;
-	height: 300px;
+	height: 280px;
 	perspective: 1000px;
 	
 }
@@ -75,4 +77,7 @@ body {
 }
 .social-media li{
 	padding-bottom: 10px;
+}
+.social-media i:hover{
+	color: white;
 }

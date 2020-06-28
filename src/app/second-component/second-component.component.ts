@@ -38,7 +38,11 @@ export class SecondComponentComponent {
   title = 'Meet our Team!';
   tiles: Tile[] = [
       {text: 'Anjali', cols: 2, rows: 2, color: 'lightblue', 
-      content: 'Fill in your Description!', photoId: '',email:'',git:''},
+      content: `I'm Anjali Yadav, second-year undergrad, Electrical Engineering, IIT Bombay. 
+      I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms. 
+      Reading (especially psychological stuff) is something I have started liking recently.`, 
+      photoId: 'https://drive.google.com/thumbnail?id=1mcHXapKVgjpvWn_zfq7I6Da-bgATSh5r',
+      email:'',git:''},
 
       {text: 'Avyakta', cols: 2, rows: 2, color: 'lightgreen', 
       content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.`, 
