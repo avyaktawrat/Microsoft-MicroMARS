@@ -9,8 +9,8 @@ import { GridCoords } from './GridCoords';
 export class FirstComponentComponent implements OnInit {
 
   constructor() { }
-  height = 653;
-  width = 1535;
+  height = 900;
+  width = 1280;
   gridCord: GridCoords[] = new Array(4200);
   ngOnInit() {
     for (let i = 0; i < 70; i++) {
