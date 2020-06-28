@@ -6,7 +6,7 @@ import { from } from 'rxjs';
 
 
 const routes: Routes = [
-  { path: '', component: FirstComponentComponent},
+  { path: 'home', component: FirstComponentComponent},
   { path: 'my-team', component: SecondComponentComponent}
 ];
 
