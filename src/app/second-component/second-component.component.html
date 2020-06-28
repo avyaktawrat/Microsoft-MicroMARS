@@ -4,14 +4,14 @@
 
 <a href="linkedin.com/in/avyakta-wrat-916287177"><i class="icon-linkedin"></i></a>
 <h1>{{ title }}</h1>
-<mat-grid-list cols="4" rowHeight="120px">
+<mat-grid-list cols="4" rowHeight="200px">
   <mat-grid-tile
       *ngFor="let tile of tiles"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
       [style.background]="tile.color">
       <div class = "inside-tile">
-        <h3>{{tile.text}}</h3> 
+      	<div class = "name">{{tile.text}}</div>
         <h4>{{tile.content}}</h4>
         <div class="flip-card" >
           <div class="flip-card-inner"style="background-image: url({{tile.photoId}}); width:100%;">
