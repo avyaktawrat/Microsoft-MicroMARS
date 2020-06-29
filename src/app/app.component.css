@@ -27,8 +27,8 @@
     color: black;
   }
 .active-link {
-    background-color: #4CAF50;
-    color: white;
+    background-color:  #ddd;
+    color: black;
   }
   @media screen and (max-width: 600px) {
     .navbar-menu a:not(:first-child) {display: none;}
