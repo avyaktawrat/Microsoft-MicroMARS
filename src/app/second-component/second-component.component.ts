@@ -38,9 +38,13 @@ export class SecondComponentComponent implements OnInit {
 export class SecondComponentComponent {
   title = 'Meet our Team!';
   tiles: Tile[] = [
-      {text: 'Anjali', cols: 2, rows: 2, color: ' linear-gradient( #ffd48f,#fa9600)', 
-      content: 'Fill in your Description!', photoId: '',email:'',git:''},
-
+      
+     {text: 'Anjali', cols: 2, rows: 2, color: 'linear-gradient( #ffd48f,#fa9600)', 
+      content: `I'm Anjali Yadav, second-year undergrad, Electrical Engineering, IIT Bombay. 
+      I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms. 
+      Reading (especially psychological stuff) is something I have started liking recently.`, 
+      photoId: 'https://drive.google.com/thumbnail?id=1mcHXapKVgjpvWn_zfq7I6Da-bgATSh5r',
+      email:'',git:''},
       {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)', 
       content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.`, 
       photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
@@ -49,7 +53,7 @@ export class SecondComponentComponent {
       {text: 'Ipsit', cols: 2, rows: 2, color: 'linear-gradient( #84bcf1,#5299eb)', 
       content: 'Fill in your Description!',photoId:'m',email:'',git:''},
 
-      {text: 'Nayan', cols: 2, rows: 2, color: 'linear-gradient( #8fadff,#0047fa)', 
+      {text: 'Nayan', cols: 2, rows: 2, color: 'linear-gradient( #84c9f1,#52abeb)', 
       content: 'Hey There! I am Nayan from Electrical Engineering Department of IIT-Bombay.',
       photoId:'https://drive.google.com/thumbnail?id=1-D26ZbQlj8eYTEHLCEEU_Ng5dTy4yLeV',
       email:"mailto:nbarhate151@gmail.com",git:"https://www.github.com/nayan0037"},
