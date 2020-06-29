@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { GridCoords } from './GridCoords';
 
 @Component({
@@ -8,7 +8,8 @@ import { GridCoords } from './GridCoords';
 })
 export class FirstComponentComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
   height = 653;
   width = 1535;
   gridCord: GridCoords[] = new Array(4200);
@@ -18,6 +19,12 @@ export class FirstComponentComponent implements OnInit {
         this.gridCord[30 * i + j] = {x: i * 30, y: j * 30};
       }
     }
+  }
+
+  changeColor(a: number, b: number): void {
+    console.log(a,b);
+    let element = document.getElementsByTagName('rect')[a+Math.floor(b/30)];
+    element.style.fill = 'red';
   }
 
 }

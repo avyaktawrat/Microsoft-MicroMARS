@@ -7,12 +7,14 @@ import { FirstComponentComponent } from './first-component/first-component.compo
 import { SecondComponentComponent } from './second-component/second-component.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ClickableDirective } from './clickable.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     FirstComponentComponent,
-    SecondComponentComponent
+    SecondComponentComponent,
+    ClickableDirective
   ],
   imports: [
     BrowserModule,
