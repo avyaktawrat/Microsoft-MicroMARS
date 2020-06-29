@@ -41,7 +41,7 @@ export class SecondComponentComponent {
       {text: 'Anjali', cols: 2, rows: 2, color: ' linear-gradient( #ffd48f,#fa9600)', 
       content: 'Fill in your Description!', photoId: '',email:'',git:''},
 
-      {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #e8ab8c,#fa4f00)', 
+      {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)', 
       content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.`, 
       photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
       email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},
