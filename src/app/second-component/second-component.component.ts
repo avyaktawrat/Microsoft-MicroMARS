@@ -53,6 +53,8 @@ export class SecondComponentComponent {
       content: 'Fill in your Description!',photoId:'m',email:'',git:''},
 
       {text: 'Nayan', cols: 2, rows: 2, color: '#DDBDF1', 
-      content: 'Fill in your Description!',photoId:'',email:'',git:''},
+      content: 'Hey There! I am Nayan from Electrical Engineering Department of IIT-Bombay.',
+      photoId:'https://drive.google.com/thumbnail?id=1-D26ZbQlj8eYTEHLCEEU_Ng5dTy4yLeV',
+      email:"mailto:nbarhate151@gmail.com",git:"https://www.github.com/nayan0037"},
   ];
 }
