@@ -13,20 +13,21 @@ h3{
 	width : 100%;
 }
 .name{
+	position: relative;
+	float: right;
 	text-shadow: 2px 2px rgba(16,16,16,0.2);
 	width : 250px;
 	height :50px;
 	text-align: center;
 	font-size: 25px;
-	padding-top: 20px;
+	padding: 50px 12px;
 }
 h4{
-	margin-left: 300px;
+	margin-left: 400px;
 	margin-right: 100px;
 	position: absolute;
 	margin-top: 100px;
 	text-align: justify;
-	
 	padding: none;
 }
 body {
@@ -40,8 +41,8 @@ body {
 .flip-card {
 	position: relative;
 	background-color: transparent;
-	width: 250px;
-	height: 300px;
+	width: 300px;
+	height: 400px;
 	perspective: 1000px;
 	
 }
