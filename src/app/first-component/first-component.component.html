@@ -1,4 +1,4 @@
 <svg class="svg"  [attr.height]="height" [attr.width]="width">
       <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
-            rx="0" ry="0" (click)="changeColor(i.x, i.y)" (dblclick)="chooseColor(i.x,i.y)"></rect>
+            rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y)" (mouseup)="mouseUp(i.x,i.y)"               (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"></rect>
   </svg>
