@@ -23,18 +23,12 @@ h3{
 	padding: 50px 12px;
 }
 h4{
-<<<<<<< HEAD
 	margin-left: 400px;
 	margin-right: 100px;
 	position: absolute;
 	margin-top: 100px;
 	text-align: justify;
-=======
-	margin-left: 230px;
-	position: absolute;
-	margin-top: 70px;
-	margin-right: 5px;
->>>>>>> master
+
 	padding: none;
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -51,13 +45,9 @@ body {
 .flip-card {
 	position: relative;
 	background-color: transparent;
-<<<<<<< HEAD
 	width: 300px;
 	height: 400px;
-=======
-	width: 200px;
-	height: 280px;
->>>>>>> master
+
 	perspective: 1000px;
 	
 }
