@@ -1,0 +1,15 @@
+.svg{
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: center;
+}
+.svg rect{
+    stroke-opacity:1;
+    stroke:black;
+    fill:white;
+}
+.svg rect:hover{
+    fill: aquamarine;
+}
