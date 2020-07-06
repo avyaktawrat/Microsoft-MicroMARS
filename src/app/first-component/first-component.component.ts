@@ -1,6 +1,18 @@
 import { Component, OnInit} from '@angular/core';
 import { GridCoords } from './GridCoords';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import * as $ from "jQuery";
+import {FormControl, Validators} from '@angular/forms';
+
+interface DropDownSelect {
+  value: string;
+  viewValue: string;
+}
+
+interface Car {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-first-component',
@@ -11,17 +23,20 @@ export class FirstComponentComponent implements OnInit {
 
   constructor() {
   } 
-  height = window.innerHeight;
-  width = screen.height;
-  gridCord: GridCoords[] = new Array(4200);
+  height = screen.availHeight;
+  width =screen.availWidth;
+  //heightsize:number = Math.floor(this.height/30);
+  heightsize = 30;
+  widthsize:number = Math.floor(this.width/30);
+  gridCord: GridCoords[] = new Array(this.heightsize*this.widthsize);
   mouseDown : boolean = false;
   toFill:boolean = true;
   color :number = 2; //0 red 1 green 2 other
   i :number = 0;
   ngOnInit() {
-    for (let i = 0; i < 70; i++) {
-      for (let j = 0; j < 60; j++) {
-        this.gridCord[30 * i + j] = {x: i * 30, y: j * 30};
+    for (let i = 0; i < this.widthsize; i++) {
+      for (let j = 0; j < this.heightsize; j++) {
+        this.gridCord[(this.heightsize) * i + j] = {x: i * 30, y: j * 30};
       }
     }
   }
@@ -93,6 +108,24 @@ export class FirstComponentComponent implements OnInit {
     //let value:number = window.prompt("Please enter obstacle %");
     //console.log(value);
     //element.style.fill = "rgb(256, 0, 0,value/100)";
+  }
+  selectedValue: string;
+  selectedCar: string;
+
+  Algorithms: DropDownSelect[] = [
+    {value: 'bfs', viewValue: 'Breadth First Search'},
+    {value: 'palanadhinka', viewValue: 'xyz'},
+    {value: 'def', viewValue: 'A*'}
+  ];
+
+  cars: Car[] = [
+    {value: 'volvo', viewValue: 'Volvo'},
+    {value: 'saab', viewValue: 'Saab'},
+    {value: 'mercedes', viewValue: 'Mercedes'}
+  ];
+
+  submit(a: string){
+    console.log(a);
   }
 
 }

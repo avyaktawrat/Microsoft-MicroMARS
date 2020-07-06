@@ -13,3 +13,24 @@
 .svg rect:hover{
     fill: aquamarine;
 }
+.example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+#menu-bar{
+    background-color: rgb(256,256,256);
+    text-decoration-color: blanchedalmond;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+form{
+    text-emphasis: black;
+    display: block;
+}
+form h4{
+    text-align: center;
+    color:black;
+}

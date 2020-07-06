@@ -1,4 +1,32 @@
-<svg class="svg"  [attr.height]="height" [attr.width]="width">
-      <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
-            rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y)" (mouseup)="mouseUp(i.x,i.y)"               (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"></rect>
-  </svg>
+<div id="main-page">
+      <svg class="svg"  [attr.height]="height" [attr.width]="width">
+            <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
+                  rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y)" (mouseup)="mouseUp(i.x,i.y)"               (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"></rect>
+      </svg>
+<div id = "menu-bar">
+<form>
+      <h4>Choose Algorithm</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Algo</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="food">
+          <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
+            {{algo.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p> Selected food: {{selectedValue}} </p>
+      <h4>Scam fill</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Favorite car</mat-label>
+        <select matNativeControl [(ngModel)]="selectedCar" name="car">
+          <option value="" selected></option>
+          <option *ngFor="let car of cars" [value]="car.value">
+            {{car.viewValue}}
+          </option>
+        </select>
+      </mat-form-field>
+      <p> Selected car: {{selectedCar}} </p>
+      <button (click)="submit( selectedValue )">Click here</button>
+    </form>
+</div>
+</div>
