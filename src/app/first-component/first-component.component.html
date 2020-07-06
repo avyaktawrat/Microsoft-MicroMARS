@@ -3,6 +3,8 @@
 <svg class="svg"  [attr.height]="height" [attr.width]="width">
       <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
             rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)"               
-            (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"></rect>
+            (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect> 
+      
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y+30> {{distance[0]}} </text>
            <!-- <text x="0" y="30" font-family="Verdana" font-size="20" fill="blue">Hello</text>-->
   </svg>

@@ -13,6 +13,7 @@ export class FirstComponentComponent implements OnInit {
   } 
   height = window.innerHeight;
   width = screen.width;
+  distance: number[] = new Array();   
   gridCord: GridCoords[] = new Array(25);
   mouseDown : boolean = false;
   toFill:boolean = true;
@@ -131,7 +132,6 @@ export class FirstComponentComponent implements OnInit {
     //console.log(next);
     //console.log(arr);
     let visited: boolean[] = new Array();
-    let distance: number[] = new Array();
     let parent: object;
     parent = {};
     for(let j=0;j<25;j++){
@@ -139,7 +139,7 @@ export class FirstComponentComponent implements OnInit {
     }
     var qu = new Array();
     visited[this.start]= true;
-    distance[this.start] = 0;
+    this.distance[this.start] = 0;
     qu.push(this.start);
     while(qu.length != 0){
       var s =   qu[0];
@@ -148,7 +148,7 @@ export class FirstComponentComponent implements OnInit {
       for(let u of arr){
         if (!visited[u]){
           visited[u]= true;
-          distance[u]=distance[s]+1;
+          this.distance[u]=this.distance[s]+1;
           if (u == this.end){
             let node:number;
             node = s;//parent[u]
@@ -161,6 +161,7 @@ export class FirstComponentComponent implements OnInit {
           }
         
           let element = document.getElementsByTagName('rect')[u];
+          // element.innerHTML. : ;
           element.style.fill = "yellow";
           parent[u] = s;
           qu.push(u);
@@ -170,6 +171,7 @@ export class FirstComponentComponent implements OnInit {
     }
 
   }
+
   shortest_path(a: number): number{
     if(a==this.end){
       console.log('reached');
