@@ -211,6 +211,7 @@ export class FirstComponentComponent implements OnInit {
   }
 
   search_A():void {
+    this.reset_color();
     var openList = new Array();
     var closedList = new Array();
     var f = new Array();
@@ -261,14 +262,14 @@ export class FirstComponentComponent implements OnInit {
 
       for (let u of neighbors){
 
-        console.log(closedList);
-        // this.update_FGH(f,g,h);
+        console.log(this.distance(5,10));
+        this.update_FGH(f,g,h);
         if(closedList.includes(u)){
           continue;
         }
 
-        g[u] = g[currentNode] + 10;
-        h[u] = this.distance(u,currentNode);
+        g[u] = g[currentNode] + 1;
+        h[u] = this.distance(u,this.end);
         f[u] = g[u] + h[u];
 
         if(openList.includes(u)){
@@ -298,8 +299,8 @@ export class FirstComponentComponent implements OnInit {
     var y1 = a%this.vGrid;
     var x2 = Math.floor(b/this.hGrid);
     var y2 = b%this.vGrid;
-
-    let dist = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
+    console.log(dist)
     return dist;
   }
 
@@ -329,6 +330,15 @@ export class FirstComponentComponent implements OnInit {
         this.gridCord[i*5+j].h = h[i*5+j]; 
       }
     } 
+  }
+
+  reset_color() :void{
+   for (var u = this.totalGrid - 1; u >= 0; u--) {
+      if(u != this.start && u!= this.end && this.gridCord[u].obstacle != 1){
+        let element = document.getElementsByTagName('rect')[u];
+        element.style.fill = "white";
+      }
+    }
   }
 
 }
