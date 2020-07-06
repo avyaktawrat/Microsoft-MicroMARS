@@ -1,4 +1,5 @@
 <button (click)="rl_search()" style="margin: 10px;">START</button>
+<button (click)="rl_reset()" style="margin: 10px;">Reset</button>
 <svg class="svg"  [attr.height]="height" [attr.width]="width">
       <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
             rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)"               

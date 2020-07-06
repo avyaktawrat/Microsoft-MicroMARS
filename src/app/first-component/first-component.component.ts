@@ -111,7 +111,16 @@ export class FirstComponentComponent implements OnInit {
     //element.style.fill = "rgb(256, 0, 0,value/100)";
   }
   //start q-learning search
+  rl_reset(): void{
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        this.gridCord[5 * i + j] = {x: i * 30, y: j * 30, obstacle: 0};
 
+      }
+    }
+    this.i=0;
+    this.color=2;
+  }
   rl_search(): void{
     //console.log(this.start);
     //console.log(this.end);
