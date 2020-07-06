@@ -1,10 +1,16 @@
-<button (click)="rl_search()" style="margin: 10px;">START</button>
+<button (click)="rl_search()" style="margin: 10px;">BFS</button>
+
+<button (click)="search_A()" style="margin: 10px;">A*</button>
 <button (click)="rl_reset()" style="margin: 10px;">Reset</button>
+
 <svg class="svg"  [attr.height]="height" [attr.width]="width">
       <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
             rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)"               
             (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect> 
       
-   		<text  *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y+30> {{distance[0]}} </text>
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+3 [attr.y]=i.y+27 font-size= "12"> {{i.g}} </text>
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+20 [attr.y]=i.y+27 font-size= "12"> {{i.h}} </text>
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+13 [attr.y]=i.y+15 font-size= "12"> {{i.f}} </text>
+   		
            <!-- <text x="0" y="30" font-family="Verdana" font-size="20" fill="blue">Hello</text>-->
   </svg>
