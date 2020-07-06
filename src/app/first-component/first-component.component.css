@@ -18,19 +18,44 @@
     font-size: 0.75em;
   }
 #menu-bar{
-    background-color: rgb(256,256,256);
+    background-color: rgb(200,200,200);
     text-decoration-color: blanchedalmond;
     position: absolute;
     top: 80px;
     right: 20px;
     border-radius: 8px;
-    width: 400px;
+    width: 240px;
+    height: 180px;
+    border-width:  50px;
 }
 form{
     text-emphasis: black;
     display: block;
+
 }
 form h4{
+	text-shadow: 1px 1px rgba(16,16,16,0.2);
+	padding-top: 10px;
     text-align: center;
     color:black;
+}
+form mat-form-field {
+	padding: 0px 20px 0px 20px;
+}
+
+.buttonSearch{
+	background-color: grey;
+	color: white;
+	padding:  3px 5px;
+	position: absolute;
+	left: 20px;
+	bottom: 20px;
+}
+.buttonWall{
+	background-color: grey;
+	color: white;
+	padding:  3px 5px;
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
 }
