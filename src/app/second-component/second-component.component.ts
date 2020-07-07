@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import * as $ from 'jquery';// import Jquery here
+import * as $ from 'jquery';// import Jquery here
+
+
 import {
   trigger,
   state,
@@ -37,6 +39,7 @@ export class SecondComponentComponent implements OnInit {
 export class SecondComponentComponent {
   title = 'Meet our Team!';
   tiles: Tile[] = [
+
       {text: 'Anjali', cols: 2, rows: 2, color: 'linear-gradient( #ffd48f,#fa9600)', 
      content: `I'm Anjali Yadav, second-year undergrad, Electrical Engineering, IIT Bombay.
       I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms.
