@@ -189,14 +189,14 @@ export class FirstComponentComponent implements OnInit {
   direction_vector(a: number): number[]{
     var arr = new Array();
     
+    if((a+1)%this.hGrid !=0 && a+1 < this.totalGrid && this.gridCord[a+1].obstacle!=1){
+      arr.push(a+1);
+    }
     if(a+this.hGrid < this.totalGrid && this.gridCord[a+this.hGrid].obstacle!=1){
       arr.push(a+this.hGrid);
     }
     if(a-this.hGrid >= 0 && this.gridCord[a-this.hGrid].obstacle!=1){
       arr.push(a-this.hGrid);
-    }
-    if((a+1)%this.hGrid !=0 && a+1 < this.totalGrid && this.gridCord[a+1].obstacle!=1){
-      arr.push(a+1);
     }
     if((a)%this.hGrid !=0 && a-1>=0 && this.gridCord[a-1].obstacle!=1){
       arr.push(a-1);
@@ -205,6 +205,8 @@ export class FirstComponentComponent implements OnInit {
   }
 
   search_A():void {
+    console.log(this.distance(this.end,this.end-1));
+    console.log("start = "+this.start,this.end);
     this.reset_color();
     var openList = new Array();
     var closedList = new Array();
@@ -215,21 +217,32 @@ export class FirstComponentComponent implements OnInit {
     parent = {};
 
     openList.push(this.start);
+    h[this.start] = this.distance(this.start , this.end);
     g[this.start] = 0;
+    f[this.start] = g[this.start] + h[this.start];
     let currentNode :number;
-    
+    let steps :number = 0;
     while(openList.length != 0) {
+      steps ++;
 
       //select least f
       var lowInd : number = 0;
       for(var i=0; i<openList.length; i++) {
-        if(openList[i].f < openList[lowInd].f) { lowInd = i; }
+        if(f[openList[i]] <= f[openList[lowInd]]) {
+           lowInd = i;
+        }
       }
-      currentNode = openList[lowInd];
+      var lowIndH : number = lowInd;
+      for(var i=0; i<openList.length; i++) {
+        if(f[openList[i]] == f[openList[lowInd]]){
+          if(h[openList[i]] < h[openList[lowIndH]]){
+            lowIndH = i;
+          }
+        }
+      }   
+      currentNode = openList[lowIndH];
 
       //remove currentNode from openList
-      // var index = openList.indexOf(currentNode);
-      // if (index !== -1) openList.splice(index, 1);
       function removeElement(array, elem) {
           var index = array.indexOf(elem);
           if (index > -1) {
@@ -255,6 +268,7 @@ export class FirstComponentComponent implements OnInit {
       var neighbors = this.direction_vector(currentNode);
 
       for (let u of neighbors){
+
         if(closedList.includes(u)){
           continue;
         }
@@ -264,34 +278,51 @@ export class FirstComponentComponent implements OnInit {
         f[u] = g[u] + h[u];
 
         if(openList.includes(u)){
-          let maxG = 0;
-          for (var i = openList.length - 1; i >= 0; i--) {
-            if(g[openList[i]] > maxG){ maxG = g[openList[i]] }
-          }
-          if(g[u] > maxG){
+          // let maxG = 0;
+          // for (var i = openList.length - 1; i >= 0; i--) {
+          //   if(g[openList[i]] > maxG){ maxG = g[openList[i]] }
+          // }
+          let a = openList.indexOf(u);
+          if(g[u] > g[openList[a]]){
+          // if(g[u] > maxG){
             continue;
           }
+          
         }
-        if(u != this.end){
-          let element = document.getElementsByTagName('rect')[u];
-          element.style.fill = "yellow";
+        else{
+          if(u != this.end){
+            let element = document.getElementsByTagName('rect')[u];
+            element.style.fill = "yellow";
+
+          }
+          parent[u] = currentNode;
+          openList.push(u);
         }
-        parent[u] = currentNode;
-        openList.push(u);
+
+
 
       }
     } 
 
 
   }  
-
+ update_FGH( f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
+     for (let i = 0; i < this.vGrid; i++) {
+      for (let j = 0; j < this.hGrid; j++) {
+        this.gridCord[i*this.hGrid+j].f = f[i*this.hGrid+j];
+        this.gridCord[i*this.hGrid+j].g = g[i*this.hGrid+j];
+        this.gridCord[i*this.hGrid+j].h = h[i*this.hGrid+j]; 
+      }
+    } 
+  }
   distance(a: number, b:number ): number {
-    a = Math.floor(a/30);
-    b = Math.floor(b/30);
+    console.log(a,b);
     var x1 = Math.floor(a/this.hGrid);
-    var y1 = a%this.vGrid;
+    var y1 = a%this.hGrid;
     var x2 = Math.floor(b/this.hGrid);
-    var y2 = b%this.vGrid;
+    var y2 = b%this.hGrid;
+    console.log("h v "+ this.hGrid + " "+ this.vGrid);
+    console.log("x1 x2 =" + x1 + " "+x2 + " y1 y2 " + y1 +" " + y2);
     let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
     return dist;
   }
