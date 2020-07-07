@@ -3,6 +3,7 @@ import { GridCoords } from './GridCoords';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import * as $ from "jQuery";
 import {FormControl, Validators} from '@angular/forms';
+import { MatSliderChange } from '@angular/material/slider';
 
 interface DropDownSelect {
   value: string;
@@ -42,28 +43,30 @@ export class FirstComponentComponent implements OnInit {
   }
 
   fillGrey(a: number, b: number): void {
-    console.log(a,b);  
+    //console.log(a,b);  
     let element = document.getElementsByTagName('rect')[a+Math.floor(b/30)];
     if(this.mouseDown == true && !(element.style.fill == "green" || element.style.fill == "red" )){
       element.style.fill = "grey";
+      var shade = (this.choose/100).toString();
+      element.style.fillOpacity = shade;
     }
   }
 
   fillColor (a :number , b:number): void{
-    console.log('toggle');    
+    //console.log('toggle');    
     let element = document.getElementsByTagName('rect')[a+Math.floor(b/30)];
     if(element.style.fill == "green"){  //clicked color is green
-      console.log('green');
+      //console.log('green');
       element.style.fill = "white";
       this.toFill = true;
       this.color = 1;
     }else if (element.style.fill == "red") {//clicked color is red
-      console.log('red');
+      //console.log('red');
       element.style.fill = "white";
       this.toFill = true;
       this.color = 0;
     }else{      //clicked color is white or grey
-      console.log ('white or grey');
+      //console.log ('white or grey');
 
         if(this.i == 0){      // prev click color red
           element.style.fill = "red";
@@ -83,6 +86,9 @@ export class FirstComponentComponent implements OnInit {
               element.style.fill = "white";
             }else{
             element.style.fill = "grey";
+            var shade = (this.choose/100).toString();
+            element.style.fillOpacity = shade;
+            //console.log(element.style.fillOpacity);
           }
         }
       }
@@ -109,6 +115,25 @@ export class FirstComponentComponent implements OnInit {
     //console.log(value);
     //element.style.fill = "rgb(256, 0, 0,value/100)";
   }
+  // Slider for Obstacle
+  max = 100;
+  min = 0;
+  step = 1;
+  showTicks = false;
+  thumbLabel = false;
+  choose = 100;
+  vertical = false;
+  tickInterval = 1;
+  onChange(event: MatSliderChange){
+      console.log("This is emitted as the thumb slides");
+      console.log(event.value);
+      this.choose = event.value;
+    }
+  onSearchChange(searchValue: number): void {  
+    console.log(searchValue);
+    this.choose = searchValue;
+  }
+
   selectedValue: string;
   selectedCar: string;
 
@@ -127,5 +152,10 @@ export class FirstComponentComponent implements OnInit {
   submit(a: string){
     console.log(a);
   }
-
+  clearWall(){
+    console.log('ok');
+  }
+  Search(){
+    console.log('ok2');
+  }
 }

@@ -25,7 +25,7 @@
     right: 20px;
     border-radius: 8px;
     width: 240px;
-    height: 180px;
+    height: 100%;
     border-width:  50px;
 }
 form{
@@ -59,3 +59,26 @@ form mat-form-field {
 	right: 20px;
 	bottom: 20px;
 }
+/* slider */
+.example-h2 {
+    margin: 0 8px 16px;
+  }
+  
+  .example-margin {
+    margin: 8px;
+    display: block;
+  }
+  
+  .mat-slider-horizontal {
+    width: 80%;
+  }
+  
+  .example-result-card h2 {
+    margin: 0 8px;
+  }
+  .example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }

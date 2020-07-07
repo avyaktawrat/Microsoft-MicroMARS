@@ -23,10 +23,39 @@
 		            {{car.viewValue}}
 		          </option>
 		        </select>
-		      </mat-form-field> -->
+			  </mat-form-field> -->
+			<section class="example-section">
+			  <!-- Slider Config-->
+			  <mat-form-field class="example-margin">
+				<mat-label>Value</mat-label>
+				<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)"
+				[ngModelOptions]="{standalone: true}" max="100" min="0">
+			  </mat-form-field>
+			</section>
+			  <mat-slider
+				class="example-margin"
+				[max]=max
+				[min]=min
+				[step]="step"
+				[thumbLabel]=true
+				[value]="choose"
+				[(ngModel)]="choose"
+				(input)="onChange($event)"
+				[ngModelOptions]="{standalone: true}">
+			</mat-slider>
+			{{choose}}
+			<!-- Slider Config ends-->
 		      <button class = "buttonSearch" (click)="Search()">Start Search</button>
 		      <button class = "buttonWall" (click)="clearWall()">Clear Walls</button>
-
+			  <!--	<div class="example-button-row">
+					<div class="example-flex-container">
+				  		<div class="example-button-container">
+						<button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+					  	<mat-icon>menu</mat-icon>
+						</button>
+				  		</div>				  
+					</div>
+			  	</div>-->
 		</form>
 	</div>
 </div>
