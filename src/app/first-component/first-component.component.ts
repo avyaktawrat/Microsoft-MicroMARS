@@ -25,14 +25,14 @@ interface Car {
 export class FirstComponentComponent implements OnInit {
   constructor() {
   } 
-  // height = screen.availHeight;
-  // width =screen.availWidth;
+  height = screen.availHeight;
+  width =screen.availWidth;
   
-  height = window.innerHeight;
-  width = screen.width;
+  // height = window.innerHeight;
+  // width = screen.width;
 
-  hGrid :number = Math.floor((this.height-100)/30);
-  vGrid :number = Math.floor((this.width-120)/30);
+  hGrid :number = Math.floor((this.height-200)/30);
+  vGrid :number = Math.floor((this.width-300)/30);
   totalGrid : number =this.hGrid * this.vGrid;
   gridCord: GridCoords[] = new Array(this.totalGrid);
   mouseDown : boolean = false;
@@ -41,10 +41,11 @@ export class FirstComponentComponent implements OnInit {
   i :number = 0;
   start :number = 0;
   end :number = 0;
-
+  steps :number = 0;
+  time :string = "0";
+  length : number = 0;
 
   ngOnInit() {
-
     for (let i = 0; i < this.vGrid; i++) {
       for (let j = 0; j < this.hGrid; j++) {
         this.gridCord[this.hGrid * i + j] = {x: i * 30, y: j * 30, obstacle: 0};
@@ -142,6 +143,9 @@ export class FirstComponentComponent implements OnInit {
   }
 
   rl_search(): void{
+    this.step = 0;
+    this.length = 0;
+    let milli = performance.now();
 
     //console.log(this.start);
     //console.log(this.end);
@@ -164,6 +168,7 @@ export class FirstComponentComponent implements OnInit {
     distance[this.start] = 0;
     qu.push(this.start);  
     while(qu.length != 0){
+      this.steps ++;
       var s =   qu[0];
       qu.shift();
       var arr = this.direction_vector(s);
@@ -178,7 +183,11 @@ export class FirstComponentComponent implements OnInit {
               let element = document.getElementsByTagName('rect')[node];
               element.style.fill = "orange";
               node = parent[node];
+              this.length ++;
             }
+            let milli2 = performance.now();
+            this.time = (milli2-milli).toFixed(3);
+            this.length ++;
             break;
           }
           if(visited[u]){
@@ -267,9 +276,10 @@ export class FirstComponentComponent implements OnInit {
   }
 
   search_A():void {
-    console.log(this.distance(this.end,this.end-1));
-    console.log("start = "+this.start,this.end);
+    this.steps = 0;
     this.reset_color();
+    this.length = 0;
+    let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
     var f = new Array();
@@ -283,9 +293,9 @@ export class FirstComponentComponent implements OnInit {
     g[this.start] = 0;
     f[this.start] = g[this.start] + h[this.start];
     let currentNode :number;
-    let steps :number = 0;
+
     while(openList.length != 0) {
-      steps ++;
+      this.steps ++;
 
       //select least f if same f then find least h
       var lowInd : number = 0;
@@ -323,8 +333,11 @@ export class FirstComponentComponent implements OnInit {
             let element = document.getElementsByTagName('rect')[node];
             element.style.fill = "orange";
             node = parent[node];
+            this.length ++;
           }
-          console.log("steps = " + steps);
+          this.length++;
+          let milli2 = performance.now();
+          this.time =  (milli2-milli).toFixed(3);
           break;
       }
 
@@ -398,6 +411,7 @@ export class FirstComponentComponent implements OnInit {
     }
 
   }
+
   // Slider for Obstacle
   max = 100;
   min = 0;
@@ -423,7 +437,7 @@ export class FirstComponentComponent implements OnInit {
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'palanadhinka', viewValue: 'xyz'},
-    {value: 'def', viewValue: 'A*'}
+    {value: 'Astar', viewValue: 'A*'}
   ];
 
   cars: Car[] = [
@@ -435,10 +449,26 @@ export class FirstComponentComponent implements OnInit {
   submit(a: string){
     console.log(a);
   }
-  clearWall(){
-    console.log('ok');
+  clearWall() : void{
+   for (var u = this.totalGrid - 1; u >= 0; u--) {
+      this.gridCord[u].obstacle =0
+      let element = document.getElementsByTagName('rect')[u];
+      if (element.style.fill != "red" && element.style.fill != "green"){
+        element.style.fill = "white";
+      } 
+    }
   }
   Search(){
-    console.log('ok2');
+    switch (this.selectedValue) {
+      case "bfs":
+        this.rl_search();
+        break;
+      case "Astar":
+        this.search_A();
+        break;
+      default:
+        alert("Select Algorithms");
+        break;
+    }
   }
 }

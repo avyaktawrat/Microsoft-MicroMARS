@@ -1,31 +1,20 @@
 
 <div id="main-page">
-	<button (click)="rl_search()" style="margin: 10px;">BFS</button>
-	<button (click)="search_A()" style="margin: 10px;">A*</button>
-	<button (click)="rl_reset()" style="margin: 10px;">Reset</button>
 
 	<svg class="svg"  [attr.height]="height" [attr.width]="width">
-	      <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"
-	            rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)"               
-	            (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect> 
-	      
-	   		<!-- <text  *ngFor="let i of gridCord" [attr.x]=i.x+3 [attr.y]=i.y+27 font-size= "12"> {{i.g}} </text>
-	   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+20 [attr.y]=i.y+27 font-size= "12"> {{i.h}} </text>
-	   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+13 [attr.y]=i.y+15 font-size= "12"> {{i.f}} </text>
-	   		 -->
-	           <!-- <text x="0" y="30" font-family="Verdana" font-size="20" fill="blue">Hello</text>-->
+        <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)" (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect> 
 	</svg>
 	<div id = "menu-bar">
 		<form>
-		      <h4>Choose Algorithm</h4>
-		      <mat-form-field appearance="fill">
-		        <mat-label>Algo</mat-label>
-		        <mat-select [(ngModel)]="selectedValue" name="food">
-		          <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
-		            {{algo.viewValue}}
-		          </mat-option>
-		        </mat-select>
-		      </mat-form-field>
+			<h4>Choose Algorithm</h4>
+	    	<mat-form-field appearance="fill">
+	        	<mat-label>Algorithms</mat-label>
+	        	<mat-select [(ngModel)]="selectedValue" name="food">
+			        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
+		        	    {{algo.viewValue}}
+			        </mat-option>
+	        	</mat-select>
+	        </mat-form-field>
 		    <!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>
@@ -38,13 +27,12 @@
 			  </mat-form-field> -->
 			<section class="example-section">
 			  <!-- Slider Config-->
-			  <mat-form-field class="example-margin">
-				<mat-label>Value</mat-label>
-				<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)"
-				[ngModelOptions]="{standalone: true}" max="100" min="0">
-			  </mat-form-field>
+			  	<mat-form-field class="example-margin">
+					<mat-label>Terrain Height</mat-label>
+					<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="100" min="0">
+			    </mat-form-field>
 			</section>
-			  <mat-slider
+		    <mat-slider
 				class="example-margin"
 				[max]=max
 				[min]=min
@@ -55,10 +43,13 @@
 				(input)="onChange($event)"
 				[ngModelOptions]="{standalone: true}">
 			</mat-slider>
-			{{choose}}
+			<!-- {{choose}} -->
 			<!-- Slider Config ends-->
-		      <button class = "buttonSearch" (click)="Search()">Start Search</button>
-		      <button class = "buttonWall" (click)="clearWall()">Clear Walls</button>
+<!-- 			<button (click)="rl_search()" style="margin: 10px;">BFS</button>
+			<button (click)="search_A()" style="margin: 10px;">A*</button> -->
+			<button class = "buttonReset" (click)="rl_reset()">Reset All</button>
+	        <button class = "buttonSearch" (click)="Search()">Start Search</button>
+	        <button class = "buttonWall" (click)="clearWall()">Clear Walls</button>
 			  <!--	<div class="example-button-row">
 					<div class="example-flex-container">
 				  		<div class="example-button-container">
@@ -69,6 +60,14 @@
 					</div>
 			  	</div>-->
 		</form>
+
+
+	</div>
+	<div class= "info"> 
+		<h2>Info </h2>
+		<h4> Steps : {{steps}}</h4>
+		<h4> Time : {{time}}ms</h4>
+		<h4> Length : {{length}}</h4>
 	</div>
 </div>
 
