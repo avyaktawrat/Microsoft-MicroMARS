@@ -98,7 +98,7 @@ export class FirstComponentComponent implements OnInit {
 
 
   mouseUp (a :number , b:number, r: number): void{
-    this.mouseDown = false;
+   this.mouseDown = false;
   }
   mouseDownE (a :number , b:number, r: number): void{
     this.mouseDown = true;
@@ -118,6 +118,7 @@ export class FirstComponentComponent implements OnInit {
   }
 
   rl_search(): void{
+
     //console.log(this.start);
     //console.log(this.end);
     // defining direction vectors
@@ -158,7 +159,6 @@ export class FirstComponentComponent implements OnInit {
           }
           if(visited[u]){
           let element = document.getElementsByTagName('rect')[u];
-          // element.innerHTML. : ;
           element.style.fill = "yellow";
           }
           parent[u] = s;
@@ -204,6 +204,44 @@ export class FirstComponentComponent implements OnInit {
     return arr;
   }
 
+  direction8_vector(a: number): number[]{
+    var arr = new Array();
+    if((a)%this.hGrid !=0 && a-1>=0 && this.gridCord[a-1].obstacle!=1){ //up
+      arr.push(a-1);
+    }
+
+    if((a)%this.hGrid !=0 && a-1>=0 && a+this.hGrid < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1 )&& this.gridCord[a-1+this.hGrid].obstacle!=1){ //right up
+      arr.push(a-1+this.hGrid);
+    }
+    
+    if ( a+this.hGrid < this.totalGrid && this.gridCord[a+this.hGrid].obstacle!=1){  //right
+      arr.push(a+this.hGrid);
+    }
+
+    if ( a+this.hGrid < this.totalGrid && (a+1)%this.hGrid !=0 && a+1 < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+this.hGrid+1].obstacle!=1){  //right down
+      arr.push(a+this.hGrid+1);
+    }
+
+    if((a+1)%this.hGrid !=0 && a+1 < this.totalGrid && this.gridCord[a+1].obstacle!=1){ //down
+      arr.push(a+1);
+    }
+    
+    if((a+1)%this.hGrid !=0 && a-this.hGrid >= 0 && a+1 < this.totalGrid && (this.gridCord[a-this.hGrid].obstacle!=1  || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+1-this.hGrid].obstacle!=1){ //down left
+      arr.push(a+1-this.hGrid);
+    }
+
+    if(a-this.hGrid >= 0 && this.gridCord[a-this.hGrid].obstacle!=1){ //left
+      arr.push(a-this.hGrid);
+    }
+
+    if(a-this.hGrid >= 0 && (a)%this.hGrid !=0 && a-1>=0 && (this.gridCord[a-this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1) && this.gridCord[a-this.hGrid-1].obstacle!=1){ //left up
+      arr.push(a-this.hGrid-1);
+    }
+
+
+    return arr;
+  }
+
   search_A():void {
     console.log(this.distance(this.end,this.end-1));
     console.log("start = "+this.start,this.end);
@@ -225,7 +263,7 @@ export class FirstComponentComponent implements OnInit {
     while(openList.length != 0) {
       steps ++;
 
-      //select least f
+      //select least f if same f then find least h
       var lowInd : number = 0;
       for(var i=0; i<openList.length; i++) {
         if(f[openList[i]] <= f[openList[lowInd]]) {
@@ -262,29 +300,26 @@ export class FirstComponentComponent implements OnInit {
             element.style.fill = "orange";
             node = parent[node];
           }
+          console.log("steps = " + steps);
           break;
       }
 
-      var neighbors = this.direction_vector(currentNode);
+      //find neighbors
+      var neighbors = this.direction8_vector(currentNode);
 
       for (let u of neighbors){
 
-        if(closedList.includes(u)){
+        if(closedList.includes(u)){//already visited
           continue;
         }
 
-        g[u] = g[currentNode] + 1;
+        g[u] = g[currentNode] + this.distance(currentNode,u);
         h[u] = this.distance(u,this.end);
         f[u] = g[u] + h[u];
 
         if(openList.includes(u)){
-          // let maxG = 0;
-          // for (var i = openList.length - 1; i >= 0; i--) {
-          //   if(g[openList[i]] > maxG){ maxG = g[openList[i]] }
-          // }
           let a = openList.indexOf(u);
           if(g[u] > g[openList[a]]){
-          // if(g[u] > maxG){
             continue;
           }
           
@@ -306,23 +341,23 @@ export class FirstComponentComponent implements OnInit {
 
 
   }  
- update_FGH( f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
-     for (let i = 0; i < this.vGrid; i++) {
-      for (let j = 0; j < this.hGrid; j++) {
-        this.gridCord[i*this.hGrid+j].f = f[i*this.hGrid+j];
-        this.gridCord[i*this.hGrid+j].g = g[i*this.hGrid+j];
-        this.gridCord[i*this.hGrid+j].h = h[i*this.hGrid+j]; 
-      }
-    } 
-  }
+ // update_FGH( f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
+ //     for (let i = 0; i < this.vGrid; i++) {
+ //      for (let j = 0; j < this.hGrid; j++) {
+ //        this.gridCord[i*this.hGrid+j].f = f[i*this.hGrid+j];
+ //        this.gridCord[i*this.hGrid+j].g = g[i*this.hGrid+j];
+ //        this.gridCord[i*this.hGrid+j].h = h[i*this.hGrid+j]; 
+ //      }
+ //    } 
+ //  }
   distance(a: number, b:number ): number {
-    console.log(a,b);
-    var x1 = Math.floor(a/this.hGrid);
+    // console.log(a,b);
+    var x1 = (a/this.hGrid);
     var y1 = a%this.hGrid;
-    var x2 = Math.floor(b/this.hGrid);
+    var x2 = (b/this.hGrid);
     var y2 = b%this.hGrid;
-    console.log("h v "+ this.hGrid + " "+ this.vGrid);
-    console.log("x1 x2 =" + x1 + " "+x2 + " y1 y2 " + y1 +" " + y2);
+    // console.log("h v "+ this.hGrid + " "+ this.vGrid);
+    // console.log("x1 x2 =" + x1 + " "+x2 + " y1 y2 " + y1 +" " + y2);
     let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
     return dist;
   }
