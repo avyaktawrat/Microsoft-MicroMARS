@@ -51,6 +51,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSliderModule,
     MatIconModule,
     MatCardModule,
     MatCheckboxModule

@@ -14,7 +14,8 @@
 		        	    {{algo.viewValue}}
 			        </mat-option>
 	        	</mat-select>
-	        </mat-form-field>
+			</mat-form-field>
+			<mat-checkbox class="example-margin" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
 		    <!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>

@@ -243,7 +243,7 @@ export class FirstComponentComponent implements OnInit {
       arr.push(a-1);
     }
 
-    if((a)%this.hGrid !=0 && a-1>=0 && a+this.hGrid < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1 )&& this.gridCord[a-1+this.hGrid].obstacle!=1){ //right up
+    if((a)%this.hGrid !=0 && a-1>=0 && a+this.hGrid < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1 )&& this.gridCord[a-1+this.hGrid].obstacle!=1 && this.allowDiag){ //right up
       arr.push(a-1+this.hGrid);
     }
     
@@ -251,7 +251,7 @@ export class FirstComponentComponent implements OnInit {
       arr.push(a+this.hGrid);
     }
 
-    if ( a+this.hGrid < this.totalGrid && (a+1)%this.hGrid !=0 && a+1 < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+this.hGrid+1].obstacle!=1){  //right down
+    if ( a+this.hGrid < this.totalGrid && (a+1)%this.hGrid !=0 && a+1 < this.totalGrid && (this.gridCord[a+this.hGrid].obstacle!=1 || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+this.hGrid+1].obstacle!=1 && this.allowDiag){  //right down
       arr.push(a+this.hGrid+1);
     }
 
@@ -259,7 +259,7 @@ export class FirstComponentComponent implements OnInit {
       arr.push(a+1);
     }
     
-    if((a+1)%this.hGrid !=0 && a-this.hGrid >= 0 && a+1 < this.totalGrid && (this.gridCord[a-this.hGrid].obstacle!=1  || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+1-this.hGrid].obstacle!=1){ //down left
+    if((a+1)%this.hGrid !=0 && a-this.hGrid >= 0 && a+1 < this.totalGrid && (this.gridCord[a-this.hGrid].obstacle!=1  || this.gridCord[a+1].obstacle!=1) && this.gridCord[a+1-this.hGrid].obstacle!=1 && this.allowDiag){ //down left
       arr.push(a+1-this.hGrid);
     }
 
@@ -267,7 +267,7 @@ export class FirstComponentComponent implements OnInit {
       arr.push(a-this.hGrid);
     }
 
-    if(a-this.hGrid >= 0 && (a)%this.hGrid !=0 && a-1>=0 && (this.gridCord[a-this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1) && this.gridCord[a-this.hGrid-1].obstacle!=1){ //left up
+    if(a-this.hGrid >= 0 && (a)%this.hGrid !=0 && a-1>=0 && (this.gridCord[a-this.hGrid].obstacle!=1 || this.gridCord[a-1].obstacle!=1) && this.gridCord[a-this.hGrid-1].obstacle!=1 && this.allowDiag){ //left up
       arr.push(a-this.hGrid-1);
     }
 
@@ -416,11 +416,11 @@ export class FirstComponentComponent implements OnInit {
   max = 100;
   min = 0;
   step = 1;
-  showTicks = false;
   thumbLabel = false;
   choose = 100;
   vertical = false;
   tickInterval = 1;
+  allowDiag:boolean = false;
   onChange(event: MatSliderChange){
       console.log("This is emitted as the thumb slides");
       console.log(event.value);
