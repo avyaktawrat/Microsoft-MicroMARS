@@ -30,9 +30,6 @@ export class FirstComponentComponent implements OnInit {
   } 
   height = screen.availHeight;
   width =screen.availWidth;
-  
-  // height = window.innerHeight;
-  // width = screen.width;
   gridCord: GridCoords[] = new Array(totalGrid);
   mouseDown : boolean = false;
   toFill:boolean = true;
@@ -131,6 +128,10 @@ export class FirstComponentComponent implements OnInit {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
         this.gridCord[hGrid * i + j].obstacle = 0;
+        // this.gridCord[hGrid * i + j].h = null;
+        // this.gridCord[hGrid * i + j].f = null;
+        // this.gridCord[hGrid * i + j].g = null;
+        
         let element = document.getElementsByTagName('rect')[hGrid * i + j];
         element.style.fill = "white";
       }
@@ -139,6 +140,7 @@ export class FirstComponentComponent implements OnInit {
     this.color=2;
      this.start = null;
      this.end = null;
+     // this.req_step = 0;
   }
 
 
@@ -184,8 +186,14 @@ export class FirstComponentComponent implements OnInit {
         element.style.fill = "white";
       } 
     }
+    // this.req_step = 0;
   }
-
+  // req_step :number = 0;
+  // inc_step(){
+  //   this.req_step ++;
+  //   this.Search();
+  //   // let element = document.getElementsByTagName('rect')[u];
+  // }
   Search(){
     let astar:Astar = new Astar();
     let bfs :BFS = new BFS();
@@ -193,12 +201,14 @@ export class FirstComponentComponent implements OnInit {
     switch (this.selectedValue) {
       case "bfs":
         bfs.search(this.gridCord,this.start,this.end,this.allowDiag);
-        this.steps = astar.steps;
-        this.length = astar.length1;
-        this.time = astar.time;
+        this.steps = bfs.steps;
+        this.length = bfs.length1;
+        this.time = bfs.time;
         break;
       case "Astar":
+        // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
         astar.search(this.gridCord, this.start,this.end,this.allowDiag);
+
         this.steps = astar.steps;
         this.length = astar.length1;
         this.time = astar.time;

@@ -17,6 +17,7 @@ export class BFS{
     let visited: boolean[] = new Array();
     let distance: number[] = new Array();
     let parent: object;
+    let stop :boolean = false;
     parent = {};
     for(let j=0;j<totalGrid;j++){
       visited[j]=false;
@@ -28,10 +29,14 @@ export class BFS{
     while(qu.length != 0){
       this.steps ++;
       var s =   qu[0];
+      let element = document.getElementsByTagName('rect')[s];
+      if(!(s==start ||s==end)){
+        element.style.fill = "lightblue";
+      }
       qu.shift();
       var arr = Utils.direction8_vector(s,gridCord,allowDiag);
       for(let u of arr){
-        if (!visited[u]){
+        if (!visited[u] && !stop){
           visited[u]= true;
           distance[u]=distance[s]+1;
           if (u == end){
@@ -46,16 +51,20 @@ export class BFS{
             let milli2 = performance.now();
             this.time = (milli2-milli).toFixed(3);
             this.length1 ++;
+            stop = true;
             break;
           }
-          if(visited[u]){
+          
           let element = document.getElementsByTagName('rect')[u];
-          element.style.fill = "yellow";
-          }
+          element.style.fill = "lightgreen";
+          
           parent[u] = s;
           qu.push(u);
         
         }  
+      }
+      if(stop){
+        break;
       }
     }
 
