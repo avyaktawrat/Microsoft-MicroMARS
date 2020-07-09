@@ -32,7 +32,7 @@
     right: 20px;
     border-radius: 8px;
     width: 240px;
-    height: 620px;
+    height: 400px;
     border-width:  50px;
 }
 form{
@@ -65,7 +65,7 @@ form mat-form-field {
 	padding:  3px 5px;
 	position: absolute;
 	left: 85px;
-	bottom: 20px;	
+	bottom: 20px;
 }
 
 .buttonWall{
@@ -80,18 +80,18 @@ form mat-form-field {
 .example-h2 {
     margin: 0 8px 16px;
   }
-  
+
   .example-margin {
     margin: 8px;
     display: block;
     text-align: center;
   }
-  
+
   .mat-slider-horizontal {
   	left: 12px;
     width: 80%;
   }
-  
+
   .example-result-card h2 {
     margin: 0 8px;
   }

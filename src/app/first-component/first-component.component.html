@@ -2,7 +2,7 @@
 <div id="main-page">
 
 	<svg class="svg"  [attr.height]="height" [attr.width]="width">
-        <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)" (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect> 
+        <rect *ngFor="let i of gridCord" [attr.id]="i.x+','+i.y+','+i.obstacle" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30"    rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)" (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect>
 	</svg>
 	<div id = "menu-bar">
 		<form>
@@ -57,14 +57,14 @@
 						<button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
 					  	<mat-icon>menu</mat-icon>
 						</button>
-				  		</div>				  
+				  		</div>
 					</div>
 			  	</div>-->
 		</form>
 
 
 	</div>
-	<div class= "info"> 
+	<div class= "info">
 		<h2>Info </h2>
 		<h4> Steps : {{steps}}</h4>
 		<h4> Time : {{time}}ms</h4>
