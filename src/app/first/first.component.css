@@ -1,6 +1,6 @@
 .main-page{
 	width: 100%;
-  height: 100%;
+  height: fit-content;
   overflow-x: hidden;
 }
 .svg{
@@ -32,10 +32,10 @@
     text-decoration-color: blanchedalmond;
     position: absolute;
     top: 70px;
-    right: 20px;
+    right: 1%;
     border-radius: 8px;
-    width: 240px;
-    height: 400px;
+    width: fit-content;
+    height: fit-content;
     border-width:  50px;
 }
 form{
@@ -54,30 +54,13 @@ form mat-form-field {
 }
 
 
-.buttonSearch{
+.button{
+  display: inline-flex;
 	background-color: grey;
 	color: white;
-	padding:  3px 5px;
-	position: absolute;
-	left: 20px;
-	bottom: 60px;
-}
-.buttonReset{
-	background-color: grey;
-	color: white;
-	padding:  3px 5px;
-	position: absolute;
-	left: 85px;
-	bottom: 20px;
-}
-
-.buttonWall{
-	background-color: grey;
-	color: white;
-	padding:  3px 5px;
-	position: absolute;
-	right: 20px;
-	bottom: 60px;
+  padding:  3px 5px;
+  position: relative;
+  margin: 3%;
 }
 /* slider */
 .example-h2 {
@@ -85,14 +68,19 @@ form mat-form-field {
   }
 
   .example-margin {
-    margin: 8px;
+    margin: 5%;
     display: block;
     text-align: center;
   }
+  .example-margin matlabel{
+    
+  }
 
   .mat-slider-horizontal {
-  	left: 12px;
+  	align-content: center;
     width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
 
   .example-result-card h2 {
@@ -102,22 +90,11 @@ form mat-form-field {
     display: flex;
     align-content: center;
     align-items: center;
-    height: 60px;
+    height: fit-content;
   }
 
-  .info {
-	background-color: rgb(200,200,200);
-    text-decoration-color: blanchedalmond;
-    position: absolute;
-    bottom: 24px;
-    right: 20px;
-    border-radius: 8px;
-    width: 240px;
-    height: 200px;
-    border-width:  50px;
-  }
   .info h2{
-  	margin-left: 20px;
+  margin-left: 20px;
  	margin-top: 15px;
 
   }

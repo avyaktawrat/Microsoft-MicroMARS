@@ -64,8 +64,8 @@ export class FirstComponent implements OnInit {
   tickInterval = 1;
   allowDiag = false;
 
-  selectedValue: string;
-  selectedCar: string;
+  selectedValue: string = 'Breadth First Search';
+  selectedPS: string = 'One way trip';
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
@@ -74,12 +74,15 @@ export class FirstComponent implements OnInit {
     {value: 'Dijkstra', viewValue: 'Dijkstra'}
   ];
 
-  cars: Car[] = [
-    {value: 'volvo', viewValue: 'Volvo'},
-    {value: 'saab', viewValue: 'Saab'},
-    {value: 'mercedes', viewValue: 'Mercedes'}
+  Problem_statement: DropDownSelect[] = [
+    {value: '1', viewValue: 'One way trip'},
+    {value: '2', viewValue: 'Intermediate Stops'},
+    {value: '3', viewValue: 'Multiple Destinations'}
   ];
-
+  // Gaussian Distribution in terrain
+  isTerrain: boolean = false;
+  cov_x: number = 10;
+  cov_y: number = 10;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
