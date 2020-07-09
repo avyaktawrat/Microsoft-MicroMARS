@@ -1,6 +1,6 @@
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import { SecondComponentComponent } from './second-component/second-component.component';
-import { FirstComponentComponent } from './first-component/first-component.component';
+import { SecondComponent } from './second/second.component';
+import { FirstComponent } from './first/first.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { from } from 'rxjs';
@@ -8,8 +8,8 @@ import { from } from 'rxjs';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent},
-  { path: 'home', component: FirstComponentComponent},
-  { path: 'my-team', component: SecondComponentComponent}
+  { path: 'home', component: FirstComponent},
+  { path: 'my-team', component: SecondComponent}
 ];
 
 @NgModule({

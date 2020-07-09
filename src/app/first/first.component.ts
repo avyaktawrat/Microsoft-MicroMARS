@@ -27,11 +27,11 @@ interface Car {
 
 @Component({
   selector: 'app-first-component',
-  templateUrl: './first-component.component.html',
-  styleUrls: ['./first-component.component.css']
+  templateUrl: './first.component.html',
+  styleUrls: ['./first.component.css']
 })
 
-export class FirstComponentComponent implements OnInit {
+export class FirstComponent implements OnInit {
   constructor() {
   }
   height = screen.availHeight;
@@ -89,7 +89,7 @@ export class FirstComponentComponent implements OnInit {
   }
 
   fillGrey(a: number, b: number,r: number): void {
-    //console.log(a,b,r);  
+    //console.log(a,b,r);
     let element = document.getElementsByTagName('rect')[Math.floor(a/30)*hGrid+Math.floor(b/30)];
     if(this.mouseDown == true && !(element.style.fill == "green" || element.style.fill == "red" )){
       element.style.fill = "grey";
@@ -101,7 +101,7 @@ export class FirstComponentComponent implements OnInit {
   }
 
   fillColor (a :number , b:number, r: number): void{
-    //console.log('toggle');    
+    //console.log('toggle');
     let element = document.getElementsByTagName('rect')[Math.floor(a/30)*hGrid+Math.floor(b/30)];
 
     if (element.style.fill == 'green'){  // clicked color is green
@@ -124,9 +124,9 @@ export class FirstComponentComponent implements OnInit {
         }else if (this.i == 1) {// prev click color green
           element.style.fill = "red";
           this.end = Math.floor(a/30)*hGrid+Math.floor(b/30);
-          this.i++;          
+          this.i++;
         }else{    // fill red green or grey
-          if(this.color == 0){  
+          if(this.color == 0){
             element.style.fill = "green";
             this.start = Math.floor(a/30)*hGrid+Math.floor(b/30);
             this.gridCord[Math.floor(a/30)*hGrid+Math.floor(b/30)].obstacle = 0;
@@ -134,7 +134,7 @@ export class FirstComponentComponent implements OnInit {
           }else if(this.color == 1){
             element.style.fill = "red";
             this.end = Math.floor(a/30)*hGrid+Math.floor(b/30);
-            this.color  = 2;            
+            this.color  = 2;
           }else{    // toggle grey
             if(element.style.fill == "grey"){
               this.gridCord[Math.floor(a/30)*hGrid+Math.floor(b/30)].obstacle = 0;
@@ -167,6 +167,7 @@ export class FirstComponentComponent implements OnInit {
   dijk() {
     let p1 = performance.now();
     let adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
+    console.log(adj);
     [this.steps, this.length] = dijkstra(this.start, this.end, adj);
     let p2 = performance.now();
     this.time = (p2 - p1).toString();
@@ -191,7 +192,7 @@ export class FirstComponentComponent implements OnInit {
         // this.gridCord[hGrid * i + j].h = null;
         // this.gridCord[hGrid * i + j].f = null;
         // this.gridCord[hGrid * i + j].g = null;
-        
+
         let element = document.getElementsByTagName('rect')[hGrid * i + j];
         element.style.fill = "white";
       }
@@ -204,7 +205,7 @@ export class FirstComponentComponent implements OnInit {
   }
 
 
- 
+
   onChange(event: MatSliderChange){
       console.log('This is emitted as the thumb slides');
       console.log(event.value);

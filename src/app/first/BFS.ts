@@ -1,8 +1,8 @@
- import {utils } from './utils';
+import {utils } from './utils';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
-let Utils :utils = new utils();  
+let Utils: utils = new utils();
 
 export class BFS{
 
@@ -27,7 +27,7 @@ export class BFS{
     var qu = new Array();
     visited[start]= true;
     distance[start] = 0;
-    qu.push(start);  
+    qu.push(start);
     while(qu.length != 0){
       this.steps ++;
       var s =   qu[0];
@@ -59,15 +59,15 @@ export class BFS{
             stop = true;
             break;
           }
-          
+
           let element = document.getElementsByTagName('rect')[u];
           element.style.fill = "lightgreen";
-          
+
 
           parent[u] = s;
           qu.push(u);
-        
-        }  
+
+        }
       }
 
       if(stop){

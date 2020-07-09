@@ -1,4 +1,4 @@
-import { FirstComponentComponent } from './first-component.component';
+import { FirstComponent } from './first.component';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
@@ -6,11 +6,11 @@ import {hGrid, vGrid, totalGrid} from './constants'
 export class utils{
 
   public  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean): number[]{
-    var arr = new Array();   
+    var arr = new Array();
 
     if((a)%hGrid !=0 && a-1>=0 && gridCord[a-1].obstacle!=1){ //up
       arr.push(a-1);
-    } 
+    }
 
     if ( a+hGrid < totalGrid && gridCord[a+hGrid].obstacle!=1){  //right
       arr.push(a+hGrid);
@@ -45,7 +45,7 @@ export class utils{
   }
 
 
-  reset_color(gridCord: GridCoords[] ,start:number, end:number) :void{ 
+  reset_color(gridCord: GridCoords[] ,start:number, end:number) :void{
    for (var u = totalGrid - 1; u >= 0; u--) {
       if(u != start && u!= end && gridCord[u].obstacle !=1){
         let element = document.getElementsByTagName('rect')[u];
