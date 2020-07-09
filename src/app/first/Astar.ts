@@ -2,7 +2,7 @@ import {utils } from './utils';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
-let Utils :utils = new utils();  
+let Utils :utils = new utils();
 
 export class Astar{
 
@@ -46,7 +46,7 @@ export class Astar{
             lowIndH = i;
           }
         }
-      }   
+      }
       currentNode = openList[lowIndH];
 
 
@@ -97,7 +97,7 @@ export class Astar{
         if(closedList.includes(u) ){//already visited
           continue;
         }
-        
+
 
           // g[u] = g[currentNode] + ng;
           // h[u] = this.distance(u,end);
@@ -109,8 +109,8 @@ export class Astar{
               g[u] = g[currentNode] + ng;
               h[u] = this.distance(u,end);
               f[u] = g[u] + h[u];
-              parent[u] = currentNode;  
-              // console.log("g of "+ u+ " = " + g + "contained");            
+              parent[u] = currentNode;
+              // console.log("g of "+ u+ " = " + g + "contained");
             }
           }
 
@@ -125,12 +125,12 @@ export class Astar{
               element.style.fill = "lightgreen";
 
             }
-            
-            openList.push(u);            
-            
+
+            openList.push(u);
+
           }
       }
-       
+
     // if(this.steps == reqstep){
     //   // this.update_FGH(gridCord,f,g,h);
     //   // console.log(parent);
@@ -138,12 +138,12 @@ export class Astar{
     // }
 
     }
-  }  
+  }
 
   distance(a: number, b:number ): number {
     // console.log(a,b);
-    // let init : FirstComponentComponent = new FirstComponentComponent();
-   
+    // let init : FirstComponent = new FirstComponent();
+
 
     var x1 = Math.round(a/hGrid);
     var y1 = a%hGrid;
@@ -162,9 +162,9 @@ export class Astar{
  //      for (let j = 0; j < hGrid; j++) {
  //        gridCord[i*hGrid+j].f = f[i*hGrid+j];
  //        gridCord[i*hGrid+j].g = g[i*hGrid+j];
- //        gridCord[i*hGrid+j].h = h[i*hGrid+j]; 
+ //        gridCord[i*hGrid+j].h = h[i*hGrid+j];
  //      }
- //    } 
+ //    }
  //  }
 
 

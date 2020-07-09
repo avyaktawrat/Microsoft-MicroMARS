@@ -4,7 +4,7 @@ import { Pair, get_adjacency_list } from './adj';
 // var adj = new Array<Array<Pair>>(10);
 
 export function dijkstra(s: number, t: number, adj: Array<Array<Pair>>) {
-  const INF = 1000000;
+  const INF = 1000000000;
   let steps = 0;
   let rects = document.getElementsByTagName('rect');
   let n: number = adj.length;
@@ -39,9 +39,11 @@ export function dijkstra(s: number, t: number, adj: Array<Array<Pair>>) {
       let to: number = edge.first;
       let len: number;
       if (isNaN(edge.second)){
-        len = 10;
+        len = 100;
+      } else if (edge.second === 0) {
+        len = 500;
       } else {
-        len = edge.second * 100;
+        len = edge.second * 1000;
       }
       if (d[v] + len < d[to]) {
         d[to] = d[v] + len;
@@ -50,7 +52,6 @@ export function dijkstra(s: number, t: number, adj: Array<Array<Pair>>) {
     }
   }
   let path: number[] = new Array();
-  console.log(d);
   for (let v = t; v !== s; v = p[v]) {
     if (v != t){
       rects[v].style.fill = 'orange';
