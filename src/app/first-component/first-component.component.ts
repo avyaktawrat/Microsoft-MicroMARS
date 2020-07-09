@@ -15,6 +15,7 @@ import {BFS} from './BFS';
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants'
 
+let Utils :utils = new utils();  
 interface DropDownSelect {
   value: string;
   viewValue: string;
@@ -165,11 +166,12 @@ export class FirstComponentComponent implements OnInit {
 
 
   dijk() {
+    Utils.reset_color(this.gridCord,this.start,this.end);
     let p1 = performance.now();
     let adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
     [this.steps, this.length] = dijkstra(this.start, this.end, adj);
     let p2 = performance.now();
-    this.time = (p2 - p1).toString();
+    this.time = (p2 - p1).toFixed(3);
   }
 
 
@@ -179,7 +181,7 @@ export class FirstComponentComponent implements OnInit {
       if (u != this.start && u != this.end && this.gridCord[u].obstacle != 1){
         const element = document.getElementsByTagName('rect')[u];
         element.style.fill = 'white';
-
+        element.style.fillOpacity = "1";
       }
     }
 
@@ -222,6 +224,7 @@ export class FirstComponentComponent implements OnInit {
       const element = document.getElementsByTagName('rect')[u];
       if (element.style.fill != 'red' && element.style.fill != 'green'){
         element.style.fill = 'white';
+        element.style.fillOpacity = "1"
       }
     }
   }
