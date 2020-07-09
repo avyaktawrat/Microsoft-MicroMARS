@@ -11,7 +11,9 @@ export class Astar{
   public time :string = "0";
 
   public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
-    
+
+    // console.log (hGrid,vGrid);
+
     Utils.reset_color(gridCord,start,end);
     let milli = performance.now();
     var openList = new Array();
@@ -19,8 +21,13 @@ export class Astar{
     var f = new Array();
     var g = new Array();
     var h = new Array();
-    let parent: object;
-    parent = {};
+
+    var visited : boolean[] = new Array();
+    var parent = new Array();
+    for(let j=0;j<totalGrid;j++){
+      f[j] = NaN;
+      visited[j] = false;
+    }
 
     openList.push(start);
     h[start] = this.distance(start , end);
@@ -46,6 +53,16 @@ export class Astar{
         }
       }   
       currentNode = openList[lowIndH];
+
+
+      if(closedList.includes(currentNode)){
+        continue;
+      }
+
+      let element = document.getElementsByTagName('rect')[currentNode];
+      if (!(currentNode == start || currentNode == end)){
+        element.style.fill = "lightblue";
+      }
 
       //remove currentNode from openList
       function removeElement(array, elem) {
@@ -76,34 +93,55 @@ export class Astar{
 
       //find neighbors
       var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
-
+      // console.log("n of "+currentNode+" = " + neighbors);
       for (let u of neighbors){
-
-        if(closedList.includes(u)){//already visited
+        let ng = (((Math.round(currentNode/hGrid)-Math.round(u/hGrid) === 0 )|| ((currentNode%hGrid)-(u%hGrid) )===0 )? 10 : 14);
+        // if(this.distance(start,u) + this.distance(u,end) >= f[u] ){
+        //   continue;
+        // }
+        if(closedList.includes(u) ){//already visited
           continue;
         }
+        
 
-        g[u] = g[currentNode] + this.distance(currentNode,u);
-        h[u] = this.distance(u,end);
-        f[u] = g[u] + h[u];
-
-        if(openList.includes(u)){
-          let a = openList.indexOf(u);
-          if(g[u] > g[openList[a]]){
-            continue;
+          // g[u] = g[currentNode] + ng;
+          // h[u] = this.distance(u,end);
+          // f[u] = g[u] + h[u];
+          // parent[u] = currentNode;
+          if(openList.includes(u)){
+            let a = openList.indexOf(u);
+            if(g[currentNode] + ng < g[openList[a]]){
+              g[u] = g[currentNode] + ng;
+              h[u] = this.distance(u,end);
+              f[u] = g[u] + h[u];
+              parent[u] = currentNode;  
+              // console.log("g of "+ u+ " = " + g + "contained");            
+            }
           }
-          
-        }
-        else{
-          if(u != end){
-            let element = document.getElementsByTagName('rect')[u];
-            element.style.fill = "yellow";
 
+          else{ //seeing the node for first time
+            g[u] = g[currentNode] + ng;
+            h[u] = this.distance(u,end);
+            f[u] = g[u] + h[u];
+            parent[u] = currentNode;
+            // console.log("g of "+ u+ " = " + g);
+            if(u != end){
+              let element = document.getElementsByTagName('rect')[u];
+              element.style.fill = "lightgreen";
+
+            }
+            
+            openList.push(u);            
+            
           }
-          parent[u] = currentNode;
-          openList.push(u);
-        }
       }
+       
+    // if(this.steps == reqstep){
+    //   // this.update_FGH(gridCord,f,g,h);
+    //   // console.log(parent);
+    //   break;
+    // }
+
     }
   }  
 
@@ -111,23 +149,25 @@ export class Astar{
     // console.log(a,b);
     // let init : FirstComponentComponent = new FirstComponentComponent();
    
-    var x1 = (a/hGrid);
+
+    var x1 = Math.round(a/hGrid);
     var y1 = a%hGrid;
-    var x2 = (b/hGrid);
+    var x2 = Math.round(b/hGrid);
+
     var y2 = b%hGrid;
     // console.log("h v "+ this.hGrid + " "+ this.vGrid);
     // console.log("x1 x2 =" + x1 + " "+x2 + " y1 y2 " + y1 +" " + y2);
     let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
-    return dist;
+    return dist*10;
   }
 
 
- // update_FGH( f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
- //     for (let i = 0; i < this.vGrid; i++) {
- //      for (let j = 0; j < this.hGrid; j++) {
- //        this.gridCord[i*this.hGrid+j].f = f[i*this.hGrid+j];
- //        this.gridCord[i*this.hGrid+j].g = g[i*this.hGrid+j];
- //        this.gridCord[i*this.hGrid+j].h = h[i*this.hGrid+j]; 
+ // update_FGH(gridCord: GridCoords[], f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
+ //     for (let i = 0; i < vGrid; i++) {
+ //      for (let j = 0; j < hGrid; j++) {
+ //        gridCord[i*hGrid+j].f = f[i*hGrid+j];
+ //        gridCord[i*hGrid+j].g = g[i*hGrid+j];
+ //        gridCord[i*hGrid+j].h = h[i*hGrid+j]; 
  //      }
  //    } 
  //  }
