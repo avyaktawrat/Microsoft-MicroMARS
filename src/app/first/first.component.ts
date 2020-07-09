@@ -140,6 +140,8 @@ export class FirstComponent implements OnInit {
             if(element.style.fill == "grey"){
               this.gridCord[Math.floor(a/30)*hGrid+Math.floor(b/30)].obstacle = 0;
               element.style.fill = "white";
+              element.style.fillOpacity = "1";
+
             }else{
             element.style.fill = 'grey';
             const shade = (this.choose / 100).toString();
@@ -197,16 +199,27 @@ export class FirstComponent implements OnInit {
 
         let element = document.getElementsByTagName('rect')[hGrid * i + j];
         element.style.fill = "white";
+        element.style.fillOpacity = "1";
       }
     }
-    this.i=0;
-    this.color=2;
+     this.i=0;
+     this.color=2;
      this.start = null;
      this.end = null;
      // this.req_step = 0;
   }
 
-
+  clearPath(): void{
+    for (let i = 0; i < vGrid; i++) {
+      for (let j = 0; j < hGrid; j++) {
+        let element = document.getElementsByTagName('rect')[hGrid * i + j];
+        if(element.style.fill != "grey" && element.style.fill != "red" && element.style.fill != "green"){
+          element.style.fill = "white";
+        }
+        
+      }
+    }
+  }
 
   onChange(event: MatSliderChange){
       console.log('This is emitted as the thumb slides');

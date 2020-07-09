@@ -55,29 +55,42 @@ form mat-form-field {
 
 
 .buttonSearch{
+  width: 100px;
 	background-color: grey;
 	color: white;
 	padding:  3px 5px;
 	position: absolute;
-	left: 20px;
+	left: 15px;
 	bottom: 60px;
 }
+.buttonPath{
+  width: 100px;
+  background-color: grey;
+  color: white;
+  padding:  3px 5px;
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+}
 .buttonReset{
+  width: 100px;
 	background-color: grey;
 	color: white;
 	padding:  3px 5px;
 	position: absolute;
-	left: 85px;
-	bottom: 20px;
+  right: 15px;
+  bottom: 60px;
+
 }
 
 .buttonWall{
+   width: 100px;
 	background-color: grey;
 	color: white;
 	padding:  3px 5px;
 	position: absolute;
-	right: 20px;
-	bottom: 60px;
+  left: 15px;
+  bottom: 20px;
 }
 /* slider */
 .example-h2 {

@@ -98,11 +98,6 @@ export class Astar{
           continue;
         }
 
-
-          // g[u] = g[currentNode] + ng;
-          // h[u] = this.distance(u,end);
-          // f[u] = g[u] + h[u];
-          // parent[u] = currentNode;
           if(openList.includes(u)){
             let a = openList.indexOf(u);
             if(g[currentNode] + ng < g[openList[a]]){
