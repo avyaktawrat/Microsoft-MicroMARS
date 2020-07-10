@@ -46,14 +46,15 @@ export class FirstComponent implements OnInit {
   totalGrid: number = this.hGrid * this.vGrid;
   gridCord: GridCoords[] = new Array(this.totalGrid);
   mouseDown = false;
-  toFill = true;
-  color = 2; // 0 red 1 green 2 other
-  i = 0;
   start = null;
   end = null;
   steps = 0;
   time = '0';
   length = 0;
+
+  terrain : boolean = true;
+  cov_x :number = 2;
+  cov_y : number = 2;
 
   // Slider for Obstacle
   max = 100;
@@ -67,7 +68,8 @@ export class FirstComponent implements OnInit {
 
   selectedValue: string;
   selectedCar: string;
-  terrain : boolean = false;
+
+
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'palanadhinka', viewValue: 'xyz'},
@@ -104,12 +106,27 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     if(coord != this.start && coord != this.end && this.mouseDown == true){
       let height = this.choose;
-      this.gridCord[coord].isTerrain = true;
-      this.gridCord[coord].value = height;
-      this.updateUI();
+      if(!this.terrain){  
+        this.gridCord[coord].isTerrain = true;
+        this.gridCord[coord].value = height;
+        this.updateUI();
+      }else{
+        this.gaussianFill(a,b)
+      }
     }
   }
 
+  gaussianFill (a: number, b: number):void{
+    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
+    let height = this.choose;
+    for (let i = -this.cov_x; i <= this.cov_x; i++) {
+      for (let j = -this.cov_x; j <= this.cov_y; j++) {
+        this.gridCord[coord+i*hGrid+j].value = height * Math.exp(-1 * ((i*i)/(this.cov_x*this.cov_x) + (j*j)/(this.cov_y*this.cov_y) ) );
+        this.gridCord[coord+i*hGrid+j].isTerrain = true;
+      }
+    }
+    this.updateUI();
+  }
   fillColor (a :number , b:number): void{
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let rect :GridCoords = this.gridCord[coord];
@@ -132,9 +149,17 @@ export class FirstComponent implements OnInit {
         rect.isEndPoint = true;
       }else if(!rect.isTerrain ){
         rect.isTerrain = true;
+        if(!this.terrain){  
+          this.gridCord[coord].isTerrain = true;
+          this.gridCord[coord].value = this.choose;
+          this.updateUI();
+        }else{
+          this.gaussianFill(a,b)
+        }
         rect.value = this.choose;
       }
     }
+    console.log(rect);
     this.updateUI();
   }
 
@@ -146,21 +171,15 @@ export class FirstComponent implements OnInit {
   }
 
   reset(): void{
-    for (let i = 0; i < vGrid; i++) {
-      for (let j = 0; j < hGrid; j++) {
-        this.gridCord[hGrid * i + j] = {x: i * 30,  
-                                        y: j * 30,
-                                        isPath: false,
-                                        isTerrain:false,
-                                        f:null, g:null, h:null,
-                                        parent:null,
-                                        value : 0,
-                                        isEndPoint :false,
-                                        visited :false,
-                                        open : false
-                                        /*debug : false*/};
-
-      }
+    for (let u = this.totalGrid - 1; u >= 0; u--) {
+      this.gridCord[u].f = null;
+      this.gridCord[u].g = null;
+      this.gridCord[u].h = null;
+      this.gridCord[u].parent = null;
+      this.gridCord[u].visited = false;
+      this.gridCord[u].open = false;
+      this.gridCord[u].isPath = false;
+      this.gridCord[u].isTerrain = false;           
     }
 
   this.start = null;
@@ -171,7 +190,13 @@ export class FirstComponent implements OnInit {
 
   clearPath(): void{
     for (let u = this.totalGrid - 1; u >= 0; u--) {
-      this.gridCord[u].isPath = false;    
+      this.gridCord[u].isPath = false;  
+      this.gridCord[u].visited = false;  
+      this.gridCord[u].open = false;  
+      this.gridCord[u].f = null;
+      this.gridCord[u].g = null;
+      this.gridCord[u].h = null;
+         
     }
     this.updateUI();
   }
@@ -216,12 +241,12 @@ export class FirstComponent implements OnInit {
         element.style.fillOpacity = "1";
       }
       else if (rect.isPath && rect.isTerrain){
-        element.style.fill = "red";
-        element.style.fillOpacity = (rect.value/125 + 0.2).toString();
+        element.style.fill = "brown";
+        element.style.fillOpacity = (rect.value/100).toString();
       }
       else if (rect.isTerrain){
         element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/125 + 0.2).toString();
+        element.style.fillOpacity = (rect.value/100).toString();
       }
       else if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
@@ -234,11 +259,11 @@ export class FirstComponent implements OnInit {
       // else if (rect.debug){
       //   element.style.fill = "pink";
       // }
-      else if (rect.visited){
+      else if (rect.visited && !this.terrain){
         element.style.fill = "lightblue";
         element.style.fillOpacity = "1";
       }
-      else if (rect.open){
+      else if (rect.open && !this.terrain){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
  
