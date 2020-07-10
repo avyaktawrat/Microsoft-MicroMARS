@@ -85,7 +85,8 @@ export class FirstComponent implements OnInit {
     {value: '3', viewValue: 'Multiple Destinations'}
   ];
   // Gaussian Distribution in terrain
-  isTerrain: boolean = false;
+
+  isGaussian: boolean = false;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
@@ -109,7 +110,7 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     if(coord != this.start && coord != this.end && this.mouseDown == true){
       let height = this.choose;
-      if(!this.isTerrain){  
+      if(!this.isGaussian){  
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
@@ -152,7 +153,7 @@ export class FirstComponent implements OnInit {
         rect.isEndPoint = true;
       }else if(!rect.isTerrain ){
         rect.isTerrain = true;
-        if(!this.isTerrain){  
+        if(!this.isGaussian){  
           this.gridCord[coord].isTerrain = true;
           this.gridCord[coord].value = this.choose;
           this.updateUI();

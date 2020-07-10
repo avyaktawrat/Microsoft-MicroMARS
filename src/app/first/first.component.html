@@ -64,13 +64,13 @@
 				class="example-margin"
 				[checked]="false"
 				[disabled]="false"
-				[(ngModel)]="isTerrain"
+				[(ngModel)]="isGaussian"
 				[ngModelOptions]="{standalone: true}">
 				Gaussian Distribution
 			</mat-slide-toggle>
 			</section>
-			<div class = "slider-labels-start" *ngIf = "isTerrain">Covariance x-axis</div>
-			<mat-slider *ngIf = "isTerrain" class="example-margin"
+			<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance x-axis</div>
+			<mat-slider *ngIf = "isGaussian" class="example-margin"
 				[max]=100
 				[min]=0
 				[step]="step"
@@ -79,9 +79,9 @@
 				[(ngModel)]="cov_x"
 				[ngModelOptions]="{standalone: true}">
 			</mat-slider>
-			<div class = "slider-labels" *ngIf = "isTerrain">{{cov_x}}</div>
-			<div class = "slider-labels-start" *ngIf = "isTerrain">Covariance y-axis</div>
-			<mat-slider	*ngIf = "isTerrain" class="example-margin"
+			<div class = "slider-labels" *ngIf = "isGaussian">{{cov_x}}</div>
+			<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance y-axis</div>
+			<mat-slider	*ngIf = "isGaussian" class="example-margin"
 				[max]=100
 				[min]=0
 				[step]="step"
@@ -90,7 +90,7 @@
 				[(ngModel)]="cov_y"
 				[ngModelOptions]="{standalone: true}">
 			</mat-slider>
-			<div class = "slider-labels" *ngIf = "isTerrain">{{cov_y}}</div>
+			<div class = "slider-labels" *ngIf = "isGaussian">{{cov_y}}</div>
 			<mat-divider></mat-divider>
 			<!-- {{choose}} -->
 			<!-- Slider Config ends-->
