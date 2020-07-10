@@ -1,6 +1,6 @@
 .main-page{
 	width: 100%;
-  height: 100%;
+  height: fit-content;
   overflow-x: hidden;
 }
 .svg{
@@ -32,10 +32,10 @@
     text-decoration-color: blanchedalmond;
     position: absolute;
     top: 70px;
-    right: 20px;
+    right: 1%;
     border-radius: 8px;
-    width: 240px;
-    height: 400px;
+    width: fit-content;
+    height: fit-content;
     border-width:  50px;
 }
 form{
@@ -50,64 +50,64 @@ form h4{
     color:black;
 }
 form mat-form-field {
-	padding: 0px 22px 0px 20px;
+  padding: 0px 0px 0px 22px;
+  margin: 0px;
+}
+/*Styling for Terrain height */
+.example-section mat-form-field{
+  padding: 0px;
+  margin: 0px;
+  width: 15%;
+}
+.example-section mat-form-field input{
+  padding: 0px;
+  margin: 0px;
+  width: fit-content;
 }
 
-
-.buttonSearch{
-  width: 100px;
+.button{
+  display: inline-flex;
 	background-color: grey;
 	color: white;
-	padding:  3px 5px;
-	position: absolute;
-	left: 15px;
-	bottom: 60px;
-}
-.buttonPath{
-  width: 100px;
-  background-color: grey;
-  color: white;
   padding:  3px 5px;
-  position: absolute;
-  right: 15px;
-  bottom: 20px;
-}
-.buttonReset{
-  width: 100px;
-	background-color: grey;
-	color: white;
-	padding:  3px 5px;
-	position: absolute;
-  right: 15px;
-  bottom: 60px;
-
-}
-
-.buttonWall{
-   width: 100px;
-	background-color: grey;
-	color: white;
-	padding:  3px 5px;
-	position: absolute;
-  left: 15px;
-  bottom: 20px;
+  position: relative;
+  margin: 3%;
 }
 /* slider */
 .example-h2 {
-    margin: 0 8px 16px;
+    margin: 0;
   }
 
   .example-margin {
-    margin: 8px;
+    margin: 3%;
     display: block;
+    width: 100%;
     text-align: center;
   }
 
   .mat-slider-horizontal {
-  	left: 12px;
-    width: 80%;
+    display: inline-flex;
+  	align-content: center;
+    width: 60%;
+    color: black;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
-
+  .slider-labels-start{
+    display: flex;
+    float: inline-start;
+    margin-right: 0px;
+    padding-left: 10px;
+  }
+  .slider-labels{
+    display: inline-flex;
+    float: inline-end;
+    color: blue;
+    margin: 0px;
+    padding: 0px;
+  }  
+/* */
   .example-result-card h2 {
     margin: 0 8px;
   }
@@ -115,25 +115,14 @@ form mat-form-field {
     display: flex;
     align-content: center;
     align-items: center;
-    height: 60px;
+    height: fit-content;
   }
 
-  .info {
-	background-color: rgb(200,200,200);
-    text-decoration-color: blanchedalmond;
-    position: absolute;
-    bottom: 24px;
-    right: 20px;
-    border-radius: 8px;
-    width: 240px;
-    height: 200px;
-    border-width:  50px;
-  }
   .info h2{
-  	margin-left: 20px;
+  margin-left: 20px;
  	margin-top: 15px;
 
   }
  .info h4{
- 	margin-left: 30px;
+ 	margin-left: 5%;
  }
