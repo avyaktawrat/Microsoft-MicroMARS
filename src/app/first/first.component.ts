@@ -67,8 +67,10 @@ export class FirstComponent implements OnInit {
   allowDiag = false;
 
   selectedValue: string;
-  selectedCar: string;
+  selectedPS: string = 'One way trip';
 
+  selectedCar: string;
+  terrain : boolean = false;
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'palanadhinka', viewValue: 'xyz'},
@@ -76,12 +78,15 @@ export class FirstComponent implements OnInit {
     {value: 'Dijkstra', viewValue: 'Dijkstra'}
   ];
 
-  cars: Car[] = [
-    {value: 'volvo', viewValue: 'Volvo'},
-    {value: 'saab', viewValue: 'Saab'},
-    {value: 'mercedes', viewValue: 'Mercedes'}
+  Problem_statement: DropDownSelect[] = [
+    {value: '1', viewValue: 'One way trip'},
+    {value: '2', viewValue: 'Intermediate Stops'},
+    {value: '3', viewValue: 'Multiple Destinations'}
   ];
-
+  // Gaussian Distribution in terrain
+  isTerrain: boolean = false;
+  cov_x: number = 10;
+  cov_y: number = 10;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
@@ -92,7 +97,10 @@ export class FirstComponent implements OnInit {
                                         f: null, g: null, h: null,
                                         parent: null,
                                         value : 0,
-                                        isEndPoint : false};
+                                        isEndPoint : false,
+                                        visited: false,
+                                        open : false
+                                        /*debug : false*/};
 
       }
     }
@@ -153,7 +161,10 @@ export class FirstComponent implements OnInit {
                                         f: null, g: null, h: null,
                                         parent: null,
                                         value : 0,
-                                        isEndPoint : false};
+                                        isEndPoint :false,
+                                        visited :false,
+                                        open : false
+                                        /*debug : false*/};
 
       }
     }
@@ -176,6 +187,19 @@ export class FirstComponent implements OnInit {
      this.gridCord[u].isTerrain = false;
     }
    this.updateUI();
+  }
+
+  resetGridParams():void{
+     for (let u = this.totalGrid - 1; u >= 0; u--) {
+      this.gridCord[u].f = null;
+      this.gridCord[u].g = null;
+      this.gridCord[u].h = null;
+      this.gridCord[u].parent = null;
+      this.gridCord[u].visited = false;
+      this.gridCord[u].open = false;
+
+      // this.gridCord[u].debug = false;
+     }
   }
 
   onChange(event: MatSliderChange){
@@ -212,6 +236,17 @@ export class FirstComponent implements OnInit {
       else if (u === this.end && rect.isEndPoint){
         element.style.fill = 'red';
         element.style.fillOpacity = '1';
+      // else if (rect.debug){
+      //   element.style.fill = "pink";
+      // }
+      else if (rect.visited){
+        element.style.fill = "lightblue";
+        element.style.fillOpacity = "1";
+      }
+      else if (rect.open){
+        element.style.fill = "lightgreen";
+        element.style.fillOpacity = "1";
+
       }
       else{
         element.style.fill = 'white';
@@ -238,13 +273,18 @@ export class FirstComponent implements OnInit {
   //   this.time = (p2 - p1).toFixed(3);
   // }
 
+
+
   Search(){
     const astar: Astar = new Astar();
     const bfs: BFS = new BFS();
     const dij: Dijkstra = new Dijkstra();
-
+      this.clearPath();
+      this.resetGridParams();
     if ( this.start == null || this.end == null){
       alert('Insert start and end');
+    if( this.start == null || this.end == null){
+      alert("Insert start and end");
     }
     switch (this.selectedValue) {
       case 'bfs':
@@ -252,6 +292,7 @@ export class FirstComponent implements OnInit {
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;
+        this.updateUI();
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
@@ -260,6 +301,7 @@ export class FirstComponent implements OnInit {
         this.steps = astar.steps;
         this.length = astar.length1;
         this.time = astar.time;
+        this.updateUI();
         break;
       case 'Dijkstra':
         this.adjList = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);

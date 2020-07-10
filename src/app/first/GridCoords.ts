@@ -9,4 +9,7 @@ export interface GridCoords {
     isPath: boolean;
     value: number;
     parent: number;
+    visited: boolean;
+    open : boolean;
+    // debug : boolean;
   }
