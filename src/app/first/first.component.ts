@@ -83,7 +83,7 @@ export class FirstComponent implements OnInit {
     {value: '3', viewValue: 'Multiple Destinations'}
   ];
   // Gaussian Distribution in terrain
-  isTerrain: boolean = false;
+  isGaussian: boolean = false;
   cov_x: number = 10;
   cov_y: number = 10;
   ngOnInit() {
