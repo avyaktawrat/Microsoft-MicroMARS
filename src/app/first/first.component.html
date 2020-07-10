@@ -3,7 +3,7 @@
 
 	<svg class="svg"  [attr.height]="height" [attr.width]="width">
 
-        <rect *ngFor="let i of gridCord"  [id]="i.x + ',' + i.y"  [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.obstacle)" (mouseup)="mouseUp(i.x,i.y,i.obstacle)" (mouseleave)="fillGrey(i.x, i.y,i.obstacle)"  (click)="fillColor(i.x,i.y,i.obstacle)"> </rect>
+        <rect *ngFor="let i of gridCord" [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y)" (mouseup)="mouseUp(i.x,i.y)" (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"> </rect> 
 
    <!-- 		<text  *ngFor="let i of gridCord" [attr.x]=i.x+3 [attr.y]=i.y+27 font-size= "11"> {{i.g}} </text>
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+16 [attr.y]=i.y+27 font-size= "11"> {{i.h}} </text>
@@ -53,7 +53,7 @@
 			<!-- Slider Config ends-->
 			<!-- <button (click)="inc_step()" style="margin: 10px;">step inc</button> -->
 			<button class = "buttonPath" (click)="clearPath()">Clear Path</button>
-			<button class = "buttonReset" (click)="rl_reset()">Reset All</button>
+			<button class = "buttonReset" (click)="reset()">Reset All</button>
 	        <button class = "buttonSearch" (click)="Search()">Start Search</button>
 	        <button class = "buttonWall" (click)="clearWall()">Clear Walls</button>
 			  <!--	<div class="example-button-row">
