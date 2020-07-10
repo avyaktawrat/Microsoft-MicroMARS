@@ -86,7 +86,8 @@ export class FirstComponent implements OnInit {
   ];
   // Gaussian Distribution in terrain
 
-  isGaussian: boolean = false;
+  isGaussian: boolean = true;
+  isTerrain : boolean = true;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
@@ -142,8 +143,26 @@ export class FirstComponent implements OnInit {
       this.end = null;
       rect.isEndPoint = false;
     }else if (rect.isTerrain){
-      rect.isTerrain = false;
-      rect.value = 0;
+      if(!this.isTerrain){
+        rect.isTerrain = false;
+        rect.value = 0;
+      }else{
+        if(this.start == null){
+          this.start = coord;
+          rect.isEndPoint = true;
+        }else if(this.end == null){
+          this.end = coord;
+          rect.isEndPoint = true;
+        }
+        else if(!this.isGaussian){  
+          rect.isTerrain = true;
+          rect.value = this.choose;
+          this.updateUI();
+        }else{
+          this.gaussianFill(a,b)
+        }
+      }
+
     }else{
       if(this.start == null){
         this.start = coord;
@@ -154,13 +173,13 @@ export class FirstComponent implements OnInit {
       }else if(!rect.isTerrain ){
         rect.isTerrain = true;
         if(!this.isGaussian){  
-          this.gridCord[coord].isTerrain = true;
-          this.gridCord[coord].value = this.choose;
+          rect.isTerrain = true;
+          rect.value = this.choose;
           this.updateUI();
         }else{
           this.gaussianFill(a,b)
         }
-        rect.value = this.choose;
+    
       }
     }
     console.log(rect);
@@ -183,7 +202,8 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
       this.gridCord[u].isPath = false;
-      this.gridCord[u].isTerrain = false;           
+      this.gridCord[u].isTerrain = false; 
+      this.gridCord[u].value = 0;          
     }
 
   this.start = null;
@@ -208,6 +228,7 @@ export class FirstComponent implements OnInit {
   clearWall(): void{
    for (let u = this.totalGrid - 1; u >= 0; u--) {
      this.gridCord[u].isTerrain = false; 
+     this.gridCord[u].value = 0;
     }
   this.updateUI();
   }
@@ -240,14 +261,11 @@ export class FirstComponent implements OnInit {
     for (let u = this.totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-      if(rect.isPath && !rect.isTerrain){
+      if(rect.isPath ){
         element.style.fill = "orange";
         element.style.fillOpacity = "1";
       }
-      else if (rect.isPath && rect.isTerrain){
-        element.style.fill = "brown";
-        element.style.fillOpacity = (rect.value/100).toString();
-      }
+     
       else if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
