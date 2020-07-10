@@ -2,7 +2,7 @@ import {utils } from './utils';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
-let Utils :utils = new utils();
+let Utils: utils = new utils();
 
 export interface Pair {
   Coord: number;
@@ -81,7 +81,7 @@ export class Astar{
           node = parent[currentNode];
           while(node!=start){
             let element = document.getElementsByTagName('rect')[node];
-            if(element.style.fill != "grey"){  
+            if(element.style.fill != "grey"){
               element.style.fill = "orange";
             }else{
               element.style.fill = "red";
@@ -152,7 +152,7 @@ export class Astar{
   }
   getWeights(a: number, gridCord: GridCoords[], allowDiag: boolean): Array<Pair>{
     var arr = new Array<Pair>();
-  
+
     let i : number = 0;
     if((a)%hGrid !=0 && a-1>=0){ //up
       let Weight =  this.calWeight(a-1,a);

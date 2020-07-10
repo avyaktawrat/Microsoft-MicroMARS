@@ -6,9 +6,9 @@ let Utils: utils = new utils();
 
 export class BFS{
 
-  public steps :number = 0;
-  public length1 :number= 0;
-  public time :string = "0";
+  public steps: number = 0;
+  public length1: number = 0;
+  public time: string = '0';
 
   public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
 
