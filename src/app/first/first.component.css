@@ -45,9 +45,9 @@ form{
 }
 form h4{
 	text-shadow: 1px 1px rgba(16,16,16,0.2);
-	padding-top: 10px;
-    text-align: center;
-    color:black;
+  text-align: center;
+  color:black;
+  padding: 10px 0px 0px 0px;
 }
 form mat-form-field {
   padding: 0px 0px 0px 22px;
@@ -93,6 +93,7 @@ form mat-form-field {
     margin-right: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
+    padding: 0px;
   }
   .slider-labels-start{
     display: flex;
@@ -112,9 +113,10 @@ form mat-form-field {
     margin: 0 8px;
   }
   .example-section {
-    display: flex;
+    display: inline-flex;
     align-content: center;
     align-items: center;
+    width: 100%;
     height: fit-content;
   }
 
