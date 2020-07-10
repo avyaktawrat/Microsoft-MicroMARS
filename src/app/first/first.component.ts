@@ -41,10 +41,7 @@ export class FirstComponent implements OnInit {
   // height = window.innerHeight;
   // width = screen.width;
 
-  hGrid: number = Math.floor((this.height - 200) / 30);
-  vGrid: number = Math.floor((this.width - 300) / 30);
-  totalGrid: number = this.hGrid * this.vGrid;
-  gridCord: GridCoords[] = new Array(this.totalGrid);
+  gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<Pair>>;
   mouseDown = false;
   toFill = true;
@@ -120,26 +117,32 @@ export class FirstComponent implements OnInit {
         this.gridCord[coord].value = height;
         this.updateUI();
       }else{
-        this.gaussianFill(a,b)
+        this.gaussianFill(coord);
+        this.updateUI();
       }
     }
   }
 
-  gaussianFill (a: number, b: number):void{
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
+  gaussianFill (coord : number):void{
     let height = this.choose;
-    for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
-      for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
-        this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i)/(this.cov_x*this.cov_x) + (j*j)/(this.cov_y*this.cov_y) ) );
-        this.gridCord[coord+i*hGrid+j].isTerrain = true;
+    // console.log(this.gridCord);
+      for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
+        for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
+          if(coord+i*hGrid+j >= 0 && coord+i*hGrid+j<totalGrid  &&i <= hGrid && j <= vGrid){
+            this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i*25)/(2*this.cov_x*this.cov_x) + (j*j*25)/(2*this.cov_y*this.cov_y) ) );
+            this.gridCord[coord+i*hGrid+j].isTerrain = true;
+            if(this.gridCord[coord+i*hGrid+j].value > 100){
+              this.gridCord[coord+i*hGrid+j].value = 100;
+            }
+          }
+        }
       }
-    }
-    this.updateUI();
   }
+
   fillColor (a :number , b:number): void{
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let rect :GridCoords = this.gridCord[coord];
-
+    // console.log("hello");
     if (coord === this.start){
       this.start = null;
       rect.isEndPoint = false;
@@ -150,7 +153,7 @@ export class FirstComponent implements OnInit {
       if(!this.isTerrain){
         rect.isTerrain = false;
         rect.value = 0;
-      }else{
+      }else{ //clicking on white square
         if(this.start == null){
           this.start = coord;
           rect.isEndPoint = true;
@@ -161,9 +164,8 @@ export class FirstComponent implements OnInit {
         else if(!this.isGaussian){  
           rect.isTerrain = true;
           rect.value = this.choose;
-          this.updateUI();
         }else{
-          this.gaussianFill(a,b)
+          this.gaussianFill(coord);
         }
       }
 
@@ -179,15 +181,14 @@ export class FirstComponent implements OnInit {
         if(!this.isGaussian){  
           rect.isTerrain = true;
           rect.value = this.choose;
-          this.updateUI();
         }else{
-          this.gaussianFill(a,b)
+          this.gaussianFill(coord)
         }
     
       }
     }
-    console.log(rect);
-    this.updateUI();
+    this.updateUI();    // console.log(rect);
+
   }
 
   mouseUp(a: number , b: number): void{
@@ -198,7 +199,7 @@ export class FirstComponent implements OnInit {
   }
 
   reset(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
@@ -217,7 +218,7 @@ export class FirstComponent implements OnInit {
   }
 
   clearPath(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].isPath = false;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
@@ -230,7 +231,7 @@ export class FirstComponent implements OnInit {
   }
 
   clearWall(): void{
-   for (let u = this.totalGrid - 1; u >= 0; u--) {
+   for (let u = totalGrid - 1; u >= 0; u--) {
     this.gridCord[u].isTerrain = false; 
      this.gridCord[u].value = 0;
     }
@@ -238,7 +239,7 @@ export class FirstComponent implements OnInit {
   }
 
   resetGridParams():void{
-     for (let u = this.totalGrid - 1; u >= 0; u--) {
+     for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
@@ -248,6 +249,10 @@ export class FirstComponent implements OnInit {
 
       // this.gridCord[u].debug = false;
      }
+  }
+
+  checkValue(event: any){
+     this.updateUI();
   }
 
   onChange(event: MatSliderChange){
@@ -262,10 +267,10 @@ export class FirstComponent implements OnInit {
   }
 
   updateUI(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-      if(rect.isPath ){
+      if(rect.isPath && this.showPath){
         element.style.fill = "orange";
         element.style.fillOpacity = "1";
       }
@@ -283,18 +288,19 @@ export class FirstComponent implements OnInit {
         element.style.fillOpacity = (rect.value/100).toString();
       }
 
-      // else if (rect.debug){
-      //   element.style.fill = "pink";
-      // }
-      else if (rect.visited && !this.terrain){
+      else if (rect.visited && !this.isTerrain){
         element.style.fill = "lightblue";
         element.style.fillOpacity = "1";
       }
-      else if (rect.open && !this.terrain){
+      else if (rect.open && !this.isTerrain){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
-
       }
+
+      // else if (rect.debug){
+      //   element.style.fill = "pink";
+      // }
+      
       else{
         element.style.fill = 'white';
         element.style.fillOpacity = '1';
@@ -349,12 +355,12 @@ export class FirstComponent implements OnInit {
         this.updateUI();
         break;
       case 'Dijkstra':
-        this.adjList = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
+        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
         dij.search(this.start, this.end, this.adjList, this.gridCord);
         this.time = dij.time;
         this.steps = dij.steps;
         this.length = dij.length;
-        // this.updateUI(); //uncomment this later
+        this.updateUI(); //uncomment this later
         break;
       default:
         alert('Select Algorithms');

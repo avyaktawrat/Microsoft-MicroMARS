@@ -15,6 +15,8 @@ export class Astar{
   public length1 :number= 0;
   public time :string = "0";
 
+  
+
   public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
     let milli = performance.now();
     var openList = new Array();
@@ -70,9 +72,10 @@ export class Astar{
           node = gridCord[currentNode].parent;
           while(node!=start){
             gridCord[node].isPath = true;
+
             node = gridCord[node].parent;
             this.length1 ++;
-          }
+           }
           this.length1++;
           let milli2 = performance.now();
           this.time =  (milli2-milli).toFixed(3);
@@ -83,7 +86,7 @@ export class Astar{
 
       let neighbors = new Array<Pair>() ;
       neighbors = this.direction8_vector(currentNode,gridCord,allowDiag);
-      console.log(neighbors);
+      // console.log(neighbors);
       for (var i = 0; i < neighbors.length; ++i) {
         let Coord  = neighbors[i].coord;
 
