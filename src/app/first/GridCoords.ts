@@ -4,10 +4,10 @@ export interface GridCoords {
     f: number;
     g: number;
     h: number;
-    isEndPoint :boolean;
-    isTerrain : boolean;
-    isPath : boolean;
-    value : number;
+    isEndPoint: boolean;
+    isTerrain: boolean;
+    isPath: boolean;
+    value: number;
     parent: number;
     visited: boolean;
     open : boolean;

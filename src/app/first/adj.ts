@@ -8,72 +8,73 @@ export function get_adjacency_list(width: number, height: number, diag: boolean)
   let adj = new Array<Array<Pair>>();
   adj.length = rects.length;
   for (let i = 0; i < rects.length; i++) {
-    let self_opacity = parseFloat(rects[i].style.fillOpacity);
     adj[i] = new Array<Pair>();
-    if (diag) {
-      let possibilities: number[] = [i - height - 1, i - height,
-        i - height + 1, i - 1, i + 1, i + height - 1, i + height, i + height + 1];
-      let sq = [i - 1, i + 1, i + height, i - height];
-      for (let pos of possibilities) {
-        if (rects[pos] !== undefined) {
-          if (sq.includes(pos)) {
-            let pair: Pair = {first: pos, second: parseFloat(rects[pos].style['fill-opacity']) - self_opacity};
-            adj[i].push(pair);
-          } else {
-            let pair: Pair = {first: pos, second: 1.4 * (parseFloat(rects[pos].style['fill-opacity']) - self_opacity)};
-            adj[i].push(pair);
-          }
-        }
+    const possibilities = [i - height, i - 1, i + 1, i + height];
+    for (let pos of possibilities) {
+      let pair: Pair = {first: pos, second: -1};
+      if (i % height === 0 && i !== 0 && i !== (width - 1) * height && pos !== i - 1) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
       }
-      if (i === 0) {
-        adj[i] = [{first: 1, second: parseFloat(rects[1].style['fill-opacity']) - self_opacity},
-          {first: height, second: parseFloat(rects[height].style['fill-opacity']) - self_opacity},
-          {first: height + 1, second: 1.4 * (parseFloat(rects[height + 1].style['fill-opacity']) - self_opacity)}];
+      else if ((i + 1) % (height) === 0 && i !== height - 1 && i !== width * height - 1 && pos !== i + 1 && i !== 0) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
       }
-      else if (i === height - 1) {
-        adj[i] = [{first: height - 2, second: parseFloat(rects[height - 2].style['fill-opacity']) - self_opacity},
-          {first: 2 * i, second: 1.4 * (parseFloat(rects[2 * i].style['fill-opacity']) - self_opacity)},
-          {first: i + height, second: parseFloat(rects[i + height].style['fill-opacity']) - self_opacity}];
+      else if (i < height - 1 && i > 0 && pos !== i - height ) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
       }
-      else if (i === (width - 1) * height) {
-        adj[i] = [{first: i + 1, second: parseFloat(rects[i + 1].style['fill-opacity']) - self_opacity},
-          {first: i - height, second: parseFloat(rects[i - height].style['fill-opacity']) - self_opacity},
-          {first: i - height + 1, second: 1.4 * (parseFloat(rects[i - height + 1].style['fill-opacity']) - self_opacity)}];
+      else if (i < width * height - 1 && i > (width - 1) * height && pos !== i + height) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
       }
-      else if (i === (width * height) - 1) {
-        adj[i] = [{first: i - 1, second: parseFloat(rects[i - 1].style['fill-opacity']) - self_opacity},
-          {first: i - height - 1, second: 1.4 * (parseFloat(rects[i - height - 1].style['fill-opacity']) - self_opacity)},
-          {first: i - height, second: parseFloat(rects[i - height + 1].style['fill-opacity']) - self_opacity}];
+      else if (i === 0 && pos !== i - height && pos !== i - 1) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
       }
-      else {}
+      else if (i === height - 1 && pos !== i - height && pos !== i + 1) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
+      }
+      else if (i === (width - 1) * height && pos !== i + height && pos !== i - 1) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
+      }
+      else if (i === width * height - 1 && pos !== i + 1 && pos !== i + height) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
+      }
+      else if (pos >= 0 && pos < width * height) {
+        pair.second = parseFloat(rects[pos].id.split(',')[0]) + 0.1;
+      }
+      adj[i].push(pair);
     }
-    else {
-      let possibilities: number[] = [i - height, i - 1, i + 1, i + height];
-      for (let pos of possibilities) {
-        if (rects[pos] !== undefined) {
-          let pair: Pair = {first: pos, second: parseFloat(rects[pos].style.fillOpacity) - self_opacity};
-          adj[i].push(pair);
+    if (diag) {
+      const morePossibilities = [i - height - 1, i - height + 1, i + height - 1, i + height + 1];
+      for (let pos of morePossibilities) {
+        let pair: Pair = {first: pos, second: -1};
+        if (i % height === 0 && i !== 0 && i !== (width - 1) * height && pos !== i - height - 1 && pos !== i + height - 1) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
         }
+        else if ((i + 1) % (height) === 0 && i !== height - 1 && i !== width * height - 1 && pos !== i - height + 1 && pos !== i + height + 1 && i !== 0) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i < height - 1 && i > 0 && pos !== i + 1 - height && pos !== i - 1 - height) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i < width * height - 1 && i > (width - 1) * height && pos !== i + height + 1 && pos !== i + height - 1) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i === 0 && pos === i + height + 1) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i === height - 1 && pos === i + height - 1) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i === (width - 1) * height && pos === i - height + 1) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (i === width * height - 1 && pos === i - height - 1 ) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        else if (pos >= 0 && pos < width * height) {
+          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 1.414 + 0.1414;
+        }
+        adj[i].push(pair);
       }
-      if (i == 0) {
-        adj[i] = [{first: 1, second: parseFloat(rects[1].style.fillOpacity) - self_opacity},
-          {first: height, second: parseFloat(rects[height].style.fillOpacity) - self_opacity}];
-      }
-      else if (i == height - 1) {
-        adj[i] = [{first: height - 2, second: parseFloat(rects[height - 2].style.fillOpacity) - self_opacity},
-          {first: i + height, second: parseFloat(rects[i + height].style.fillOpacity) - self_opacity}];
-      }
-      else if (i == (width - 1) * height) {
-        adj[i] = [{first: i + 1, second: parseFloat(rects[i + 1].style.fillOpacity) - self_opacity},
-          {first: i - height, second: parseFloat(rects[i - height].style.fillOpacity) - self_opacity}];
-      }
-      else if (i == (width * height) - 1) {
-        adj[i] = [{first: i - 1, second: parseFloat(rects[i - 1].style.fillOpacity) - self_opacity},
-          {first: i - height, second: parseFloat(rects[i - height + 1].style.fillOpacity) - self_opacity}];
-      }
-      else {}
     }
   }
-
   return adj;
 }

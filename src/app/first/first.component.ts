@@ -7,15 +7,15 @@ import { MatSliderChange } from '@angular/material/slider';
 import { newArray } from '@angular/compiler/src/util';
 
 import { Pair, get_adjacency_list } from './adj';
-import { dijkstra } from './dijkstra';
+import { Dijkstra } from './dijkstra';
 
 
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
 import {utils } from './utils';
-import {hGrid, vGrid, totalGrid} from './constants'
+import {hGrid, vGrid, totalGrid} from './constants';
 
-let Utils :utils = new utils();  
+const Utils: utils = new utils();
 interface DropDownSelect {
   value: string;
   viewValue: string;
@@ -45,7 +45,11 @@ export class FirstComponent implements OnInit {
   vGrid: number = Math.floor((this.width - 300) / 30);
   totalGrid: number = this.hGrid * this.vGrid;
   gridCord: GridCoords[] = new Array(this.totalGrid);
+  adjList: Array<Array<Pair>>;
   mouseDown = false;
+  toFill = true;
+  color = 2; // 0 red 1 green 2 other
+  i = 0;
   start = null;
   end = null;
   steps = 0;
@@ -86,19 +90,20 @@ export class FirstComponent implements OnInit {
   ];
   // Gaussian Distribution in terrain
 
-  isGaussian: boolean = false;
+  isGaussian: boolean = true;
+  isTerrain : boolean = true;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
-        this.gridCord[hGrid * i + j] = {x: i * 30,  
+        this.gridCord[hGrid * i + j] = {x: i * 30,
                                         y: j * 30,
                                         isPath: false,
-                                        isTerrain:false,
-                                        f:null, g:null, h:null,
-                                        parent:null,
+                                        isTerrain: false,
+                                        f: null, g: null, h: null,
+                                        parent: null,
                                         value : 0,
                                         isEndPoint : false,
-                                        visited :false,
+                                        visited: false,
                                         open : false
                                         /*debug : false*/};
 
@@ -110,7 +115,7 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     if(coord != this.start && coord != this.end && this.mouseDown == true){
       let height = this.choose;
-      if(!this.isGaussian){  
+      if(!this.isGaussian){
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
@@ -135,32 +140,50 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let rect :GridCoords = this.gridCord[coord];
 
-    if(coord == this.start){
+    if (coord === this.start){
       this.start = null;
       rect.isEndPoint = false;
-    }else if (coord == this.end){
+    }else if (coord === this.end){
       this.end = null;
       rect.isEndPoint = false;
     }else if (rect.isTerrain){
-      rect.isTerrain = false;
-      rect.value = 0;
-    }else{
-      if(this.start == null){
-        this.start = coord;
-        rect.isEndPoint = true;
-      }else if(this.end == null){
-        this.end = coord;
-        rect.isEndPoint = true;
-      }else if(!rect.isTerrain ){
-        rect.isTerrain = true;
-        if(!this.isGaussian){  
-          this.gridCord[coord].isTerrain = true;
-          this.gridCord[coord].value = this.choose;
+      if(!this.isTerrain){
+        rect.isTerrain = false;
+        rect.value = 0;
+      }else{
+        if(this.start == null){
+          this.start = coord;
+          rect.isEndPoint = true;
+        }else if(this.end == null){
+          this.end = coord;
+          rect.isEndPoint = true;
+        }
+        else if(!this.isGaussian){  
+          rect.isTerrain = true;
+          rect.value = this.choose;
           this.updateUI();
         }else{
           this.gaussianFill(a,b)
         }
-        rect.value = this.choose;
+      }
+
+    }else{
+      if (this.start == null){
+        this.start = coord;
+        rect.isEndPoint = true;
+      }else if (this.end == null){
+        this.end = coord;
+        rect.isEndPoint = true;
+      }else if (!rect.isTerrain ){
+        rect.isTerrain = true;
+        if(!this.isGaussian){  
+          rect.isTerrain = true;
+          rect.value = this.choose;
+          this.updateUI();
+        }else{
+          this.gaussianFill(a,b)
+        }
+    
       }
     }
     console.log(rect);
@@ -183,44 +206,46 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
       this.gridCord[u].isPath = false;
-      this.gridCord[u].isTerrain = false;           
+      this.gridCord[u].isTerrain = false; 
+      this.gridCord[u].value = 0;          
     }
 
-  this.start = null;
-  this.end = null;
-  this.updateUI();
+    this.start = null;
+    this.end = null;
+    this.updateUI();
      // this.req_step = 0;
   }
 
   clearPath(): void{
     for (let u = this.totalGrid - 1; u >= 0; u--) {
-      this.gridCord[u].isPath = false;  
-      this.gridCord[u].visited = false;  
-      this.gridCord[u].open = false;  
+      this.gridCord[u].isPath = false;
+      this.gridCord[u].visited = false;
+      this.gridCord[u].open = false;
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
-         
+
     }
     this.updateUI();
   }
 
   clearWall(): void{
    for (let u = this.totalGrid - 1; u >= 0; u--) {
-     this.gridCord[u].isTerrain = false; 
+    this.gridCord[u].isTerrain = false; 
+     this.gridCord[u].value = 0;
     }
-  this.updateUI();
+   this.updateUI();
   }
 
   resetGridParams():void{
-     for (let u = this.totalGrid - 1; u >= 0; u--) {  
+     for (let u = this.totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
       this.gridCord[u].parent = null;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
-      
+
       // this.gridCord[u].debug = false;
      }
   }
@@ -236,18 +261,15 @@ export class FirstComponent implements OnInit {
     this.choose = searchValue;
   }
 
-  updateUI():void{
+  updateUI(): void{
     for (let u = this.totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-      if(rect.isPath && !rect.isTerrain){
+      if(rect.isPath ){
         element.style.fill = "orange";
         element.style.fillOpacity = "1";
       }
-      else if (rect.isPath && rect.isTerrain){
-        element.style.fill = "brown";
-        element.style.fillOpacity = (rect.value/100).toString();
-      }
+     
       else if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
@@ -260,7 +282,7 @@ export class FirstComponent implements OnInit {
         element.style.fill = "grey";
         element.style.fillOpacity = (rect.value/100).toString();
       }
-      
+
       // else if (rect.debug){
       //   element.style.fill = "pink";
       // }
@@ -271,11 +293,11 @@ export class FirstComponent implements OnInit {
       else if (rect.open && !this.terrain){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
- 
+
       }
       else{
-        element.style.fill = "white";
-        element.style.fillOpacity = "1";
+        element.style.fill = 'white';
+        element.style.fillOpacity = '1';
 
       }
     }
@@ -288,35 +310,38 @@ export class FirstComponent implements OnInit {
   //   // let element = document.getElementsByTagName('rect')[u];
   // }
 
-  dijk() {
-    // Utils.reset_color(this.gridCord,this.start,this.end);
-    let p1 = performance.now();
-    let adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
-    console.log(adj);
-    [this.steps, this.length] = dijkstra(this.start, this.end, adj);
-    let p2 = performance.now();
-    this.time = (p2 - p1).toFixed(3);
-  }
+  // dijk() {
+  //   Utils.reset_color(this.gridCord, this.start, this.end);
+  //   const p1 = performance.now();
+  //   const adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
+  //   console.log(adj);
+  //   [this.steps, this.length] = dijkstra(this.start, this.end, adj);
+  //   const p2 = performance.now();
+  //   this.time = (p2 - p1).toFixed(3);
+  // }
+
+
 
   Search(){
-    let astar:Astar = new Astar();
-    let bfs :BFS = new BFS();
-    this.clearPath();
-    this.resetGridParams();
-    if( this.start == null || this.end == null){
-      alert("Insert start and end");
-    }
+    const astar: Astar = new Astar();
+    const bfs: BFS = new BFS();
+    const dij: Dijkstra = new Dijkstra();
+      this.clearPath();
+      this.resetGridParams();
+      if ( this.start == null || this.end == null){
+        alert('Insert start and end');
+      }
     switch (this.selectedValue) {
-      case "bfs":
-        bfs.search(this.gridCord,this.start,this.end,this.allowDiag);
+      case 'bfs':
+        bfs.search(this.gridCord, this.start, this.end, this.allowDiag);
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;
         this.updateUI();
         break;
-      case "Astar":
+      case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        astar.search(this.gridCord, this.start,this.end,this.allowDiag);
+        astar.search(this.gridCord, this.start, this.end, this.allowDiag);
 
         this.steps = astar.steps;
         this.length = astar.length1;
@@ -324,8 +349,12 @@ export class FirstComponent implements OnInit {
         this.updateUI();
         break;
       case 'Dijkstra':
-        this.dijk();
-        console.log('Dijs');
+        this.adjList = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
+        dij.search(this.start, this.end, this.adjList, this.gridCord);
+        this.time = dij.time;
+        this.steps = dij.steps;
+        this.length = dij.length;
+        // this.updateUI(); //uncomment this later
         break;
       default:
         alert('Select Algorithms');
@@ -333,3 +362,4 @@ export class FirstComponent implements OnInit {
     }
   }
 }
+
