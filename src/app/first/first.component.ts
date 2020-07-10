@@ -86,8 +86,6 @@ export class FirstComponent implements OnInit {
   ];
   // Gaussian Distribution in terrain
   isTerrain: boolean = false;
-  cov_x: number = 10;
-  cov_y: number = 10;
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
@@ -111,7 +109,7 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     if(coord != this.start && coord != this.end && this.mouseDown == true){
       let height = this.choose;
-      if(!this.terrain){  
+      if(!this.isTerrain){  
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
@@ -124,9 +122,9 @@ export class FirstComponent implements OnInit {
   gaussianFill (a: number, b: number):void{
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let height = this.choose;
-    for (let i = -this.cov_x; i <= this.cov_x; i++) {
-      for (let j = -this.cov_x; j <= this.cov_y; j++) {
-        this.gridCord[coord+i*hGrid+j].value = height * Math.exp(-1 * ((i*i)/(this.cov_x*this.cov_x) + (j*j)/(this.cov_y*this.cov_y) ) );
+    for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
+      for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
+        this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i)/(this.cov_x*this.cov_x) + (j*j)/(this.cov_y*this.cov_y) ) );
         this.gridCord[coord+i*hGrid+j].isTerrain = true;
       }
     }
@@ -154,7 +152,7 @@ export class FirstComponent implements OnInit {
         rect.isEndPoint = true;
       }else if(!rect.isTerrain ){
         rect.isTerrain = true;
-        if(!this.terrain){  
+        if(!this.isTerrain){  
           this.gridCord[coord].isTerrain = true;
           this.gridCord[coord].value = this.choose;
           this.updateUI();
@@ -249,10 +247,6 @@ export class FirstComponent implements OnInit {
         element.style.fill = "brown";
         element.style.fillOpacity = (rect.value/100).toString();
       }
-      else if (rect.isTerrain){
-        element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/100).toString();
-      }
       else if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
@@ -261,6 +255,11 @@ export class FirstComponent implements OnInit {
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }
+      else if (rect.isTerrain){
+        element.style.fill = "grey";
+        element.style.fillOpacity = (rect.value/100).toString();
+      }
+      
       // else if (rect.debug){
       //   element.style.fill = "pink";
       // }
