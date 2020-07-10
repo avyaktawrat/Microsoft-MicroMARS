@@ -13,67 +13,48 @@ export class BFS{
   public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
 
     let milli = performance.now();
-    Utils.reset_color(gridCord,start,end);
-    let visited: boolean[] = new Array();
     let distance: number[] = new Array();
-    let parent: object;
-
     let stop :boolean = false;
-
-    parent = {};
-    for(let j=0;j<totalGrid;j++){
-      visited[j]=false;
-    }
     var qu = new Array();
-    visited[start]= true;
+    gridCord[start].visited = true;
     distance[start] = 0;
     qu.push(start);
     while(qu.length != 0){
       this.steps ++;
       var s =   qu[0];
-
-      let element = document.getElementsByTagName('rect')[s];
-      if(!(s==start ||s==end)){
-        element.style.fill = "lightblue";
-      }
       qu.shift();
+      gridCord[s].visited= true;
       var arr = Utils.direction8_vector(s,gridCord,allowDiag);
       for(let u of arr){
-        if (!visited[u] && !stop){
+        
 
-          visited[u]= true;
+        if (!gridCord[u].open  && ! stop){
+
+          gridCord[u].open= true;
           distance[u]=distance[s]+1;
           if (u == end){
             let node:number;
             node = s;//parent[u]
             while(node!=start){
-              let element = document.getElementsByTagName('rect')[node];
-              element.style.fill = "orange";
-              node = parent[node];
+              gridCord[node].isPath = true;
+              node = gridCord[node].parent;
               this.length1 ++;
             }
             let milli2 = performance.now();
             this.time = (milli2-milli).toFixed(3);
             this.length1 ++;
-
             stop = true;
             break;
           }
 
-          let element = document.getElementsByTagName('rect')[u];
-          element.style.fill = "lightgreen";
-
-
-          parent[u] = s;
+          gridCord[u].parent = s;
           qu.push(u);
 
         }
       }
-
       if(stop){
         break;
       }
-
     }
 
 	}
