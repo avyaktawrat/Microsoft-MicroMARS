@@ -72,7 +72,6 @@ export class FirstComponent implements OnInit {
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
-    {value: 'palanadhinka', viewValue: 'xyz'},
     {value: 'Astar', viewValue: 'A*'},
     {value: 'Dijkstra', viewValue: 'Dijkstra'}
   ];
@@ -154,7 +153,7 @@ export class FirstComponent implements OnInit {
       if(!this.isTerrain){
         rect.isTerrain = false;
         rect.value = 0;
-      }else{ //clicking on white square
+      }else{ 
         if(this.start == null){
           this.start = coord;
           rect.isEndPoint = true;
@@ -170,7 +169,7 @@ export class FirstComponent implements OnInit {
         }
       }
 
-    }else{
+    }else{//clicking on non (red green grey ) square
       if (this.start == null){
         this.start = coord;
         rect.isEndPoint = true;
@@ -183,7 +182,7 @@ export class FirstComponent implements OnInit {
           rect.isTerrain = true;
           rect.value = this.choose;
         }else{
-          this.gaussianFill(coord)
+          this.gaussianFill(coord);
         }
     
       }

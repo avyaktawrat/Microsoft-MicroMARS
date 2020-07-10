@@ -90,8 +90,8 @@ export class Astar{
       for (var i = 0; i < neighbors.length; ++i) {
         let Coord  = neighbors[i].coord;
 
-        // let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-        let ng :number= 0;
+        let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+        // let ng :number= 0;
         if(closedList.includes(Coord) ){//already visited
           continue;
         }
@@ -209,7 +209,7 @@ direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean): Array<
   }
   calWeight(gridCord: GridCoords[],a:number , b:number) : number{
     // console.log(a);
-    let weight = 0.1*Math.abs(gridCord[a].value - gridCord[b].value) + 1;
+    let weight = 0.1*Math.abs(gridCord[a].value - gridCord[b].value) ;
     return  weight;
   }
 

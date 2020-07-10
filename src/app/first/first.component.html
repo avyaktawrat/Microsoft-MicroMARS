@@ -30,8 +30,6 @@
 			</mat-form-field>
 			<mat-checkbox class="example-margin" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
 
-			<mat-divider></mat-divider>
-			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
 			<!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>
@@ -77,7 +75,11 @@
 				</div>
 			</section>
 			<mat-divider></mat-divider>
-			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" >Show Path</mat-checkbox>
+
+			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
+
+
+
 			<section id = "Terrain" *ngIf = "selectedValue!='bfs'">
 				<mat-divider></mat-divider>
 				<mat-divider></mat-divider>
