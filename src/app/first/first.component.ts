@@ -15,6 +15,7 @@ import {BFS} from './BFS';
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants'
 
+let Utils :utils = new utils();  
 interface DropDownSelect {
   value: string;
   viewValue: string;
@@ -142,6 +143,8 @@ export class FirstComponent implements OnInit {
             if(element.style.fill == "grey"){
               this.gridCord[Math.floor(a/30)*hGrid+Math.floor(b/30)].obstacle = 0;
               element.style.fill = "white";
+              element.style.fillOpacity = "1";
+
             }else{
             element.style.fill = 'grey';
             const shade = (this.choose / 100).toString();
@@ -168,12 +171,13 @@ export class FirstComponent implements OnInit {
 
 
   dijk() {
+    Utils.reset_color(this.gridCord,this.start,this.end);
     let p1 = performance.now();
     let adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
     console.log(adj);
     [this.steps, this.length] = dijkstra(this.start, this.end, adj);
     let p2 = performance.now();
-    this.time = (p2 - p1).toString();
+    this.time = (p2 - p1).toFixed(3);
   }
 
 
@@ -183,7 +187,7 @@ export class FirstComponent implements OnInit {
       if (u != this.start && u != this.end && this.gridCord[u].obstacle != 1){
         const element = document.getElementsByTagName('rect')[u];
         element.style.fill = 'white';
-
+        element.style.fillOpacity = "1";
       }
     }
 
@@ -198,16 +202,27 @@ export class FirstComponent implements OnInit {
 
         let element = document.getElementsByTagName('rect')[hGrid * i + j];
         element.style.fill = "white";
+        element.style.fillOpacity = "1";
       }
     }
-    this.i=0;
-    this.color=2;
+     this.i=0;
+     this.color=2;
      this.start = null;
      this.end = null;
      // this.req_step = 0;
   }
 
-
+  clearPath(): void{
+    for (let i = 0; i < vGrid; i++) {
+      for (let j = 0; j < hGrid; j++) {
+        let element = document.getElementsByTagName('rect')[hGrid * i + j];
+        if(element.style.fill != "grey" && element.style.fill != "red" && element.style.fill != "green"){
+          element.style.fill = "white";
+        }
+        
+      }
+    }
+  }
 
   onChange(event: MatSliderChange){
       console.log('This is emitted as the thumb slides');
@@ -226,6 +241,7 @@ export class FirstComponent implements OnInit {
       const element = document.getElementsByTagName('rect')[u];
       if (element.style.fill != 'red' && element.style.fill != 'green'){
         element.style.fill = 'white';
+        element.style.fillOpacity = "1"
       }
     }
   }

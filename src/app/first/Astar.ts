@@ -22,12 +22,7 @@ export class Astar{
     var g = new Array();
     var h = new Array();
 
-    var visited : boolean[] = new Array();
     var parent = new Array();
-    for(let j=0;j<totalGrid;j++){
-      f[j] = NaN;
-      visited[j] = false;
-    }
 
     openList.push(start);
     h[start] = this.distance(start , end);
@@ -103,11 +98,6 @@ export class Astar{
           continue;
         }
 
-
-          // g[u] = g[currentNode] + ng;
-          // h[u] = this.distance(u,end);
-          // f[u] = g[u] + h[u];
-          // parent[u] = currentNode;
           if(openList.includes(u)){
             let a = openList.indexOf(u);
             if(g[currentNode] + ng < g[openList[a]]){
