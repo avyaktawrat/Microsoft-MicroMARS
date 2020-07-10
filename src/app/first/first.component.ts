@@ -67,11 +67,8 @@ export class FirstComponent implements OnInit {
   tickInterval = 1;
   allowDiag = false;
 
-  selectedValue: string;
-  selectedPS: string = 'One way trip';
-
-  selectedCar: string;
-
+  selectedValue: string = 'bfs';
+  selectedPS: string = 'PS_1';
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
@@ -81,14 +78,18 @@ export class FirstComponent implements OnInit {
   ];
 
   Problem_statement: DropDownSelect[] = [
-    {value: '1', viewValue: 'One way trip'},
-    {value: '2', viewValue: 'Intermediate Stops'},
-    {value: '3', viewValue: 'Multiple Destinations'}
+    {value: 'PS_1', viewValue: 'One way trip'},
+    {value: 'PS_2', viewValue: 'Intermediate Stops'},
+    {value: 'PS_3', viewValue: 'Multiple Destinations'}
   ];
+
   // Gaussian Distribution in terrain
 
-  isGaussian: boolean = true;
-  isTerrain : boolean = true;
+  isGaussian: boolean = false;
+  isTerrain = this.selectedValue==='bfs'; //doesn't work, expression directly used in html
+  isPref: boolean = false;
+  selectedDest: number = 2;
+
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
