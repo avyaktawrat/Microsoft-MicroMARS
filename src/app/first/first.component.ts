@@ -354,6 +354,7 @@ export class FirstComponent implements OnInit {
         this.time = dij.time;
         this.steps = dij.steps;
         this.length = dij.length;
+        // this.updateUI(); //uncomment this later
         break;
       default:
         alert('Select Algorithms');
