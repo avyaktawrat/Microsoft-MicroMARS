@@ -55,7 +55,7 @@ export class FirstComponent implements OnInit {
   terrain : boolean = true;
   cov_x :number = 2;
   cov_y : number = 2;
-
+  showPath: boolean = false;
   // Slider for Obstacle
   max = 100;
   min = 0;
