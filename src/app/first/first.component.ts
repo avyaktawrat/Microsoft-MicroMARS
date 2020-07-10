@@ -65,7 +65,7 @@ export class FirstComponent implements OnInit {
   tickInterval = 1;
   allowDiag = false;
 
-  selectedValue: string = 'Breadth First Search';
+  selectedValue: string;
   selectedPS: string = 'One way trip';
 
   Algorithms: DropDownSelect[] = [

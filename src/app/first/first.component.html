@@ -14,7 +14,7 @@
 			<h4>Problem Statement</h4>
 	    	<mat-form-field appearance="fill">
 	        	<mat-label>Problem Statement</mat-label>
-	        	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS">
+	        	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS" [ngModelOptions]="{standalone: true}">
 			        <mat-option *ngFor="let ps of Problem_statement" [value]="ps.value">
 		        	    {{ps.viewValue}}
 			        </mat-option>
@@ -23,7 +23,7 @@
 			<h4>Choose Algorithm</h4>
 	    	<mat-form-field appearance="fill">
 	        	<mat-label>Algorithms</mat-label>
-	        	<mat-select [(ngModel)]="selectedValue" name="">
+	        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
 			        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
 		        	    {{algo.viewValue}}
 			        </mat-option>
@@ -43,22 +43,22 @@
 			  </mat-form-field> -->
 			<section class="example-section">
 			  <!-- Slider Config-->
-			  	<mat-form-field class="example-margin">
-					<mat-label><h2>Terrain Height</h2></mat-label>
+			  
+				<mat-slider class="example-margin"
+					[max]=max
+					[min]=min
+					[step]="step"
+					[thumbLabel]=true
+					[value]="choose"
+					[(ngModel)]="choose"
+					(input)="onChange($event)"
+					[ngModelOptions]="{standalone: true}">
+				</mat-slider>
+				<mat-form-field class="example-margin">
 					<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="100" min="0">
 			    </mat-form-field>
 			</section>
-		    <mat-slider class="example-margin"
-				[max]=max
-				[min]=min
-				[step]="step"
-				[thumbLabel]=true
-				[value]="choose"
-				[(ngModel)]="choose"
-				(input)="onChange($event)"
-				[ngModelOptions]="{standalone: true}">
-			</mat-slider>
-		
+			<mat-divider></mat-divider>
 			<section class="example-section">
 			<mat-slide-toggle
 				class="example-margin"
@@ -69,6 +69,7 @@
 				Gaussian Distribution
 			</mat-slide-toggle>
 			</section>
+			<div class = "slider-labels-start" *ngIf = "isTerrain">Covariance x-axis</div>
 			<mat-slider *ngIf = "isTerrain" class="example-margin"
 				[max]=100
 				[min]=0
@@ -78,6 +79,8 @@
 				[(ngModel)]="cov_x"
 				[ngModelOptions]="{standalone: true}">
 			</mat-slider>
+			<div class = "slider-labels" *ngIf = "isTerrain">{{cov_x}}</div>
+			<div class = "slider-labels-start" *ngIf = "isTerrain">Covariance y-axis</div>
 			<mat-slider	*ngIf = "isTerrain" class="example-margin"
 				[max]=100
 				[min]=0
@@ -87,6 +90,8 @@
 				[(ngModel)]="cov_y"
 				[ngModelOptions]="{standalone: true}">
 			</mat-slider>
+			<div class = "slider-labels" *ngIf = "isTerrain">{{cov_y}}</div>
+			<mat-divider></mat-divider>
 			<!-- {{choose}} -->
 			<!-- Slider Config ends-->
 			<!-- <button (click)="inc_step()" style="margin: 10px;">step inc</button> -->

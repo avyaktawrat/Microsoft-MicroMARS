@@ -50,9 +50,20 @@ form h4{
     color:black;
 }
 form mat-form-field {
-	padding: 0px 22px 0px 20px;
+  padding: 0px 0px 0px 22px;
+  margin: 0px;
 }
-
+/*Styling for Terrain height */
+.example-section mat-form-field{
+  padding: 0px;
+  margin: 0px;
+  width: 15%;
+}
+.example-section mat-form-field input{
+  padding: 0px;
+  margin: 0px;
+  width: fit-content;
+}
 
 .button{
   display: inline-flex;
@@ -64,25 +75,39 @@ form mat-form-field {
 }
 /* slider */
 .example-h2 {
-    margin: 0 8px 16px;
+    margin: 0;
   }
 
   .example-margin {
-    margin: 5%;
+    margin: 3%;
     display: block;
+    width: 100%;
     text-align: center;
-  }
-  .example-margin matlabel{
-    
   }
 
   .mat-slider-horizontal {
+    display: inline-flex;
   	align-content: center;
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
+    width: 60%;
+    color: black;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
-
+  .slider-labels-start{
+    display: flex;
+    float: inline-start;
+    margin-right: 0px;
+    padding-left: 10px;
+  }
+  .slider-labels{
+    display: inline-flex;
+    float: inline-end;
+    color: blue;
+    margin: 0px;
+    padding: 0px;
+  }  
+/* */
   .example-result-card h2 {
     margin: 0 8px;
   }
@@ -99,5 +124,5 @@ form mat-form-field {
 
   }
  .info h4{
- 	margin-left: 30px;
+ 	margin-left: 5%;
  }
