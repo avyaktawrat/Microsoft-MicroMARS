@@ -19,20 +19,16 @@ export class Astar{
 
     // console.log (hGrid,vGrid);
     console.log(this.calWeight(start,start+1));
-    Utils.reset_color(gridCord,start,end);
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
-    var f = new Array();
-    var g = new Array();
-    var h = new Array();
-
-    var parent = new Array();
 
     openList.push(start);
-    h[start] = this.distance(start , end);
-    g[start] = 0;
-    f[start] = g[start] + h[start];
+
+    gridCord[start].h = this.distance(start , end); 
+    gridCord[start].g = 0;
+    gridCord[start].f = gridCord[start].h;
+    
     let currentNode :number;
 
     while(openList.length != 0) {
@@ -40,20 +36,20 @@ export class Astar{
       //select least f if same f then find least h
       var lowInd : number = 0;
       for(var i=0; i<openList.length; i++) {
-        if(f[openList[i]] <= f[openList[lowInd]]) {
+        if(gridCord[openList[i]].f <= gridCord[openList[lowInd]].f) {
            lowInd = i;
         }
       }
       var lowIndH : number = lowInd;
       for(var i=0; i<openList.length; i++) {
-        if(f[openList[i]] == f[openList[lowInd]]){
-          if(h[openList[i]] < h[openList[lowIndH]]){
+        if(gridCord[openList[i]].f <= gridCord[openList[lowInd]].f){
+          if(gridCord[openList[i]].h <= gridCord[openList[lowIndH]].h){
             lowIndH = i;
           }
         }
       }
       currentNode = openList[lowIndH];
-
+      gridCord[currentNode].visited = true;
 
       if(closedList.includes(currentNode)){
         continue;
@@ -78,15 +74,10 @@ export class Astar{
 
       if(currentNode == end){   //end found
           let node:number;
-          node = parent[currentNode];
+          node = gridCord[currentNode].parent;
           while(node!=start){
-            let element = document.getElementsByTagName('rect')[node];
-            if(element.style.fill != "grey"){  
-              element.style.fill = "orange";
-            }else{
-              element.style.fill = "red";
-            }
-            node = parent[node];
+            gridCord[node].isPath = true;
+            node = gridCord[node].parent;
             this.length1 ++;
           }
           this.length1++;
@@ -96,16 +87,17 @@ export class Astar{
       }
 
       //find neighbors
-      var neighbors = this.getWeights(currentNode,gridCord,allowDiag);
-      console.log("n of "+currentNode+" = ");
-      console.log(neighbors);
+      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
+      // console.log("n of "+currentNode+" = ");
+      // console.log(neighbors);
       // for (let Coord of neighbors){
-      for (let  i =0 ; i<neighbors.length ; i++){
-        let Coord = neighbors[i].Coord;
-        if(neighbors[i].Weight == NaN){
-          neighbors[i].Weight = 10;
-        }
-        console.log(neighbors);
+      for (let Coord of neighbors){
+
+        // let Coord = neighbors[i].Coord;
+        // if(neighbors[i].Weight == NaN){
+        //   neighbors[i].Weight = 10;
+        // }
+        // console.log(neighbors);
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
         // if(this.distance(start,Coord) + this.distance(Coord,end) >= f[Coord] ){
         //   continue;
@@ -116,25 +108,25 @@ export class Astar{
 
           if(openList.includes(Coord)){
             let a = openList.indexOf(Coord);
-            if(g[currentNode] + ng + neighbors[i].Weight < g[openList[a]]){
-              g[Coord] = g[currentNode] + ng + neighbors[i].Weight;
-              h[Coord] = this.distance(Coord,end);
-              f[Coord] = g[Coord] + h[Coord];
-              parent[Coord] = currentNode;
+            if(gridCord[currentNode].g + ng  < gridCord[openList[a]].g){
+              gridCord[Coord].g = gridCord[currentNode].g + ng ;
+              gridCord[Coord].h = this.distance(Coord,end);
+              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+              gridCord[Coord].parent = currentNode;
               // console.log("g of "+ Coord+ " = " + g + "contained");
             }
           }
 
           else{ //seeing the node for first time
-            g[Coord] = g[currentNode] + ng + neighbors[i].Weight;
-            h[Coord] = this.distance(Coord,end);
-            f[Coord] = g[Coord] + h[Coord];
-            parent[Coord] = currentNode;
-            // console.log("g of "+ Coord+ " = " + g);
+            gridCord[Coord].g = gridCord[currentNode].g + ng ;
+            gridCord[Coord].h = this.distance(Coord,end);
+            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+            gridCord[Coord].parent = currentNode;
+          // console.log("g of "+ Coord+ " = " + g);
             if(Coord != end){
               let element = document.getElementsByTagName('rect')[Coord];
               // element.style.fill = "lightgreen";
-
+              gridCord[Coord].open = true;
             }
 
             openList.push(Coord);
@@ -150,7 +142,7 @@ export class Astar{
 
     }
   }
-  getWeights(a: number, gridCord: GridCoords[], allowDiag: boolean): Array<Pair>{
+ /* getWeights(a: number, gridCord: GridCoords[], allowDiag: boolean): Array<Pair>{
     var arr = new Array<Pair>();
   
     let i : number = 0;
@@ -204,7 +196,7 @@ export class Astar{
     }
 
     return arr;
-  }
+  }*/
 
   calWeight (a:number , b:number) : number{
     const rect =  document.getElementsByTagName('rect');

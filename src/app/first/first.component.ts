@@ -67,7 +67,7 @@ export class FirstComponent implements OnInit {
 
   selectedValue: string;
   selectedCar: string;
-
+  terrain : boolean = false;
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'palanadhinka', viewValue: 'xyz'},
@@ -91,7 +91,10 @@ export class FirstComponent implements OnInit {
                                         f:null, g:null, h:null,
                                         parent:null,
                                         value : 0,
-                                        isEndPoint : false}
+                                        isEndPoint : false,
+                                        visited :false,
+                                        open : false
+                                        /*debug : false*/};
 
       }
     }
@@ -152,7 +155,10 @@ export class FirstComponent implements OnInit {
                                         f:null, g:null, h:null,
                                         parent:null,
                                         value : 0,
-                                        isEndPoint :false};
+                                        isEndPoint :false,
+                                        visited :false,
+                                        open : false
+                                        /*debug : false*/};
 
       }
     }
@@ -175,6 +181,19 @@ export class FirstComponent implements OnInit {
      this.gridCord[u].isTerrain = false; 
     }
   this.updateUI();
+  }
+
+  resetGridParams():void{
+     for (let u = this.totalGrid - 1; u >= 0; u--) {  
+      this.gridCord[u].f = null;
+      this.gridCord[u].g = null;
+      this.gridCord[u].h = null;
+      this.gridCord[u].parent = null;
+      this.gridCord[u].visited = false;
+      this.gridCord[u].open = false;
+      
+      // this.gridCord[u].debug = false;
+     }
   }
 
   onChange(event: MatSliderChange){
@@ -212,6 +231,18 @@ export class FirstComponent implements OnInit {
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }
+      // else if (rect.debug){
+      //   element.style.fill = "pink";
+      // }
+      else if (rect.visited){
+        element.style.fill = "lightblue";
+        element.style.fillOpacity = "1";
+      }
+      else if (rect.open){
+        element.style.fill = "lightgreen";
+        element.style.fillOpacity = "1";
+ 
+      }
       else{
         element.style.fill = "white";
         element.style.fillOpacity = "1";
@@ -228,7 +259,7 @@ export class FirstComponent implements OnInit {
   // }
 
   dijk() {
-    Utils.reset_color(this.gridCord,this.start,this.end);
+    // Utils.reset_color(this.gridCord,this.start,this.end);
     let p1 = performance.now();
     let adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
     console.log(adj);
@@ -240,7 +271,8 @@ export class FirstComponent implements OnInit {
   Search(){
     let astar:Astar = new Astar();
     let bfs :BFS = new BFS();
-
+    this.clearPath();
+    this.resetGridParams();
     if( this.start == null || this.end == null){
       alert("Insert start and end");
     }
@@ -250,6 +282,7 @@ export class FirstComponent implements OnInit {
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;
+        this.updateUI();
         break;
       case "Astar":
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
@@ -258,6 +291,7 @@ export class FirstComponent implements OnInit {
         this.steps = astar.steps;
         this.length = astar.length1;
         this.time = astar.time;
+        this.updateUI();
         break;
       case 'Dijkstra':
         this.dijk();
