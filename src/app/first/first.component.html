@@ -11,18 +11,17 @@
 	</svg>
 	<div id = "menu-bar">
 		<form>
-			<h4>Problem Statement</h4>
 	    	<mat-form-field appearance="fill">
-	        	<mat-label>Problem Statement</mat-label>
+	        	<mat-label><h4>Problem Statement</h4></mat-label>
 	        	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS" [ngModelOptions]="{standalone: true}">
 			        <mat-option *ngFor="let ps of Problem_statement" [value]="ps.value">
 		        	    {{ps.viewValue}}
 			        </mat-option>
 	        	</mat-select>
 			</mat-form-field>
-			<h4>Choose Algorithm</h4>
+		
 	    	<mat-form-field appearance="fill">
-	        	<mat-label>Algorithms</mat-label>
+	        	<mat-label><h4>Algorithms</h4></mat-label>
 	        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
 			        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
 		        	    {{algo.viewValue}}
@@ -30,9 +29,6 @@
 	        	</mat-select>
 			</mat-form-field>
 			<mat-checkbox class="example-margin" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
-			<mat-divider></mat-divider>
-			
-			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" >Show Path</mat-checkbox>
 			<!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>
@@ -43,56 +39,102 @@
 		          </option>
 		        </select>
 			  </mat-form-field> -->
-			<section class="example-section">
-			  <!-- Slider Config-->
-				<mat-slider class="example-margin"
-					[max]=max
-					[min]=min
+			<section id = 'Problem_statement 2' *ngIf = "selectedPS === 'PS_2'">
+				<mat-divider></mat-divider>
+				<mat-label><h4 style="color: black;">Choose no of destinations</h4></mat-label>  
+				<div class="example-section">
+					<mat-divider></mat-divider>				
+					
+					<mat-slider class="example-margin"
+						color="primary"
+						[max]=max
+						[min]=min
+						[step]="step"
+						[thumbLabel]=true
+						[(ngModel)]="selectedDest"
+						(input)="onChange($event)"
+						[ngModelOptions]="{standalone: true}">
+					</mat-slider>
+					<mat-form-field class="example-margin">
+						<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="50" min="1">
+					</mat-form-field>
+				</div>
+				<mat-slide-toggle class="example-margin"
+						color="primary"
+						[checked]="false"
+						[disabled]="false"
+						[(ngModel)]="isPref"
+						[ngModelOptions]="{standalone: true}"
+						onmouseover="console.log('ok')">
+						User Preference
+				</mat-slide-toggle>
+				<div *ngIf = "isPref">
+					give ideas pljh:
+					choose option <>
+				</div>
+			</section>
+			<mat-divider></mat-divider>
+			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" >Show Path</mat-checkbox>
+			<section id = "Terrain" *ngIf = "selectedValue!='bfs'">
+				<mat-divider></mat-divider>
+				<mat-divider></mat-divider>
+				<mat-label ><h4 style="text-align: center;">Terrain</h4></mat-label>
+				<div class="example-section" > 
+			  <!-- Slider Config for terrain (not applicable incase of bfs, hence isTerrain)-->
+					<mat-slider class="example-margin" 
+						color="primary"
+						[max]=max
+						[min]=min
+						[step]="step"
+						[thumbLabel]=true
+						[value]="choose"
+						[(ngModel)]="choose"
+						(input)="onChange($event)"
+						[ngModelOptions]="{standalone: true}">
+					</mat-slider>
+					<mat-form-field class="example-margin">
+						<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="100" min="0">
+					</mat-form-field>
+				</div>
+				<mat-divider></mat-divider>
+				<div class="example-section">
+					<mat-slide-toggle class="example-margin"
+						color="primary"
+						[checked]="false"
+						[disabled]="false"
+						[(ngModel)]="isGaussian"
+						[ngModelOptions]="{standalone: true}">
+						Gaussian Distribution
+					</mat-slide-toggle>
+				</div>
+		
+			<!--Gaussian Tabs-->
+				<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance x-axis</div>
+					<mat-slider *ngIf = "isGaussian" class="example-margin"
+						color=warn
+						[max]=100
+						[min]=0
+						[step]="step"
+						[thumbLabel]=true
+						[value]="cov_x"
+						[(ngModel)]="cov_x"
+						[ngModelOptions]="{standalone: true}">
+					</mat-slider>
+				<div class = "slider-labels" *ngIf = "isGaussian">{{cov_x}}</div>
+				<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance y-axis</div>
+				<mat-slider	*ngIf = "isGaussian" class="example-margin"
+					color = warn
+					[max]=100
+					[min]=0
 					[step]="step"
 					[thumbLabel]=true
-					[value]="choose"
-					[(ngModel)]="choose"
-					(input)="onChange($event)"
+					[value]="cov_y"
+					[(ngModel)]="cov_y"
 					[ngModelOptions]="{standalone: true}">
 				</mat-slider>
-				<mat-form-field class="example-margin">
-					<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="100" min="0">
-			    </mat-form-field>
+				<div class = "slider-labels" *ngIf = "isGaussian">{{cov_y}}</div>
+				<mat-divider></mat-divider>
 			</section>
-			<mat-divider></mat-divider>
-			<section class="example-section">
-			<mat-slide-toggle
-				class="example-margin"
-				[checked]="false"
-				[disabled]="false"
-				[(ngModel)]="isGaussian"
-				[ngModelOptions]="{standalone: true}">
-				Gaussian Distribution
-			</mat-slide-toggle>
-			</section>
-			<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance x-axis</div>
-			<mat-slider *ngIf = "isGaussian" class="example-margin"
-				[max]=100
-				[min]=0
-				[step]="step"
-				[thumbLabel]=true
-				[value]="cov_x"
-				[(ngModel)]="cov_x"
-				[ngModelOptions]="{standalone: true}">
-			</mat-slider>
-			<div class = "slider-labels" *ngIf = "isGaussian">{{cov_x}}</div>
-			<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance y-axis</div>
-			<mat-slider	*ngIf = "isGaussian" class="example-margin"
-				[max]=100
-				[min]=0
-				[step]="step"
-				[thumbLabel]=true
-				[value]="cov_y"
-				[(ngModel)]="cov_y"
-				[ngModelOptions]="{standalone: true}">
-			</mat-slider>
-			<div class = "slider-labels" *ngIf = "isGaussian">{{cov_y}}</div>
-			<mat-divider></mat-divider>
 			<!-- {{choose}} -->
 			<!-- Slider Config ends-->
 			<!-- <button (click)="inc_step()" style="margin: 10px;">step inc</button> -->

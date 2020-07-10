@@ -31,33 +31,37 @@
     background-color: rgb(200,200,200);
     text-decoration-color: blanchedalmond;
     position: absolute;
-    top: 70px;
+    float: right;
+    top: 60px;
     right: 1%;
     border-radius: 8px;
-    width: fit-content;
+    width: 250px;
     height: fit-content;
     border-width:  50px;
 }
 form{
     text-emphasis: black;
     display: block;
-
+    margin:0px;
 }
-form h4{
+form mat-label h4{
 	text-shadow: 1px 1px rgba(16,16,16,0.2);
-  text-align: center;
-  color:black;
-  padding: 10px 0px 0px 0px;
+  text-align: left;
+  color:blue;
+  opacity: 0.9;
+  padding: 0px 0px 5px 0px;
+  margin: 0px 0px 5px 0px;
 }
 form mat-form-field {
-  padding: 0px 0px 0px 22px;
+  display: block;
+  padding: 10px 10px 0px 10px;
   margin: 0px;
 }
 /*Styling for Terrain height */
 .example-section mat-form-field{
   padding: 0px;
   margin: 0px;
-  width: 15%;
+  width: 20%;
 }
 .example-section mat-form-field input{
   padding: 0px;
@@ -104,7 +108,7 @@ form mat-form-field {
   .slider-labels{
     display: inline-flex;
     float: inline-end;
-    color: blue;
+    color: rgb(4, 0, 255);
     margin: 0px;
     padding: 0px;
   }  

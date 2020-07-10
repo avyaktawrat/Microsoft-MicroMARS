@@ -41,10 +41,7 @@ export class FirstComponent implements OnInit {
   // height = window.innerHeight;
   // width = screen.width;
 
-  hGrid: number = Math.floor((this.height - 200) / 30);
-  vGrid: number = Math.floor((this.width - 300) / 30);
-  totalGrid: number = this.hGrid * this.vGrid;
-  gridCord: GridCoords[] = new Array(this.totalGrid);
+  gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<Pair>>;
   mouseDown = false;
   toFill = true;
@@ -70,11 +67,8 @@ export class FirstComponent implements OnInit {
   tickInterval = 1;
   allowDiag = false;
 
-  selectedValue: string;
-  selectedPS: string = 'One way trip';
-
-  selectedCar: string;
-
+  selectedValue: string = 'bfs';
+  selectedPS: string = 'PS_1';
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
@@ -84,14 +78,18 @@ export class FirstComponent implements OnInit {
   ];
 
   Problem_statement: DropDownSelect[] = [
-    {value: '1', viewValue: 'One way trip'},
-    {value: '2', viewValue: 'Intermediate Stops'},
-    {value: '3', viewValue: 'Multiple Destinations'}
+    {value: 'PS_1', viewValue: 'One way trip'},
+    {value: 'PS_2', viewValue: 'Intermediate Stops'},
+    {value: 'PS_3', viewValue: 'Multiple Destinations'}
   ];
+
   // Gaussian Distribution in terrain
 
-  isGaussian: boolean = true;
-  isTerrain : boolean = true;
+  isGaussian: boolean = false;
+  isTerrain = this.selectedValue==='bfs'; //doesn't work, expression directly used in html
+  isPref: boolean = false;
+  selectedDest: number = 2;
+
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
@@ -198,7 +196,7 @@ export class FirstComponent implements OnInit {
   }
 
   reset(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
@@ -217,7 +215,7 @@ export class FirstComponent implements OnInit {
   }
 
   clearPath(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].isPath = false;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
@@ -230,7 +228,7 @@ export class FirstComponent implements OnInit {
   }
 
   clearWall(): void{
-   for (let u = this.totalGrid - 1; u >= 0; u--) {
+   for (let u = totalGrid - 1; u >= 0; u--) {
     this.gridCord[u].isTerrain = false; 
      this.gridCord[u].value = 0;
     }
@@ -238,7 +236,7 @@ export class FirstComponent implements OnInit {
   }
 
   resetGridParams():void{
-     for (let u = this.totalGrid - 1; u >= 0; u--) {
+     for (let u = totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
@@ -262,7 +260,7 @@ export class FirstComponent implements OnInit {
   }
 
   updateUI(): void{
-    for (let u = this.totalGrid - 1; u >= 0; u--) {
+    for (let u = totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
       if(rect.isPath ){
@@ -349,7 +347,7 @@ export class FirstComponent implements OnInit {
         this.updateUI();
         break;
       case 'Dijkstra':
-        this.adjList = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
+        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
         dij.search(this.start, this.end, this.adjList, this.gridCord);
         this.time = dij.time;
         this.steps = dij.steps;
