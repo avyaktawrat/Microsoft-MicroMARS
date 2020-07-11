@@ -28,7 +28,7 @@
 			        </mat-option>
 	        	</mat-select>
 			</mat-form-field>
-			<mat-checkbox class="example-margin" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
+			<mat-checkbox class="example-margin" color="primary" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
 
 			<!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
@@ -53,11 +53,11 @@
 						[step]="step"
 						[thumbLabel]=true
 						[(ngModel)]="selectedDest"
-						(input)="onChange($event)"
+						
 						[ngModelOptions]="{standalone: true}">
 					</mat-slider>
 					<mat-form-field class="example-margin">
-						<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="50" min="1">
+						<input matInput type="number" value="{{selectedDest}" [(ngModel)]="selectedDest" [ngModelOptions]="{standalone: true}" max="50" min="1">
 					</mat-form-field>
 				</div>
 				<mat-slide-toggle class="example-margin"
@@ -76,15 +76,25 @@
 			</section>
 			<mat-divider></mat-divider>
 
-			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
+			<mat-checkbox class="example-margin" color="primary" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
 
 
-
+			<mat-divider></mat-divider>
 			<section id = "Terrain" *ngIf = "selectedValue!='bfs'">
-				<mat-divider></mat-divider>
-				<mat-divider></mat-divider>
-				<mat-label ><h4 style="text-align: center;">Terrain</h4></mat-label>
-				<div class="example-section" > 
+				<div class="example-section">
+					<mat-divider></mat-divider>
+					<mat-slide-toggle class="example-margin"
+						color="primary"
+						[checked]="false"
+						[disabled]="false"
+						[(ngModel)]="isTerrain"
+						[ngModelOptions]="{standalone: true}">
+						Terrain Distribution
+					</mat-slide-toggle>
+				</div>
+
+				
+				<div class="example-section" *ngIf = "isTerrain"> 
 			  <!-- Slider Config for terrain (not applicable incase of bfs, hence isTerrain)-->
 					<mat-slider class="example-margin" 
 						color="primary"
@@ -148,6 +158,7 @@
 	        <button class = "button" (click)="Search()">Start Search</button>
 			<button class = "button" (click)="clearWall()">Clear Walls</button>
 			<button class = "button" (click)="clearPath()">Clear Path</button>
+			<mat-divider></mat-divider>
 			<div class= "info">
 				<h2>Info </h2>
 				<mat-divider></mat-divider>

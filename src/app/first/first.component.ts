@@ -15,6 +15,10 @@ import {BFS} from './BFS';
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants';
 
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
 const Utils: utils = new utils();
 interface DropDownSelect {
   value: string;
@@ -85,7 +89,7 @@ export class FirstComponent implements OnInit {
   // Gaussian Distribution in terrain
 
   isGaussian: boolean = false;
-  isTerrain = this.selectedValue==='bfs'; //doesn't work, expression directly used in html
+  isTerrain:boolean = false; 
   isPref: boolean = false;
   selectedDest: number = 2;
 
