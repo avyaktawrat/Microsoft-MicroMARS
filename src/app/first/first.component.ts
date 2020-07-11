@@ -2,22 +2,17 @@ import { Component, OnInit} from '@angular/core';
 import { GridCoords } from './GridCoords';
 import { MatSliderChange } from '@angular/material/slider';
 
-import { Pair, get_adjacency_list } from './adj';
+import { DPair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
 
 
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
 import {utils } from './utils';
-import {hGrid, vGrid} from './constants';
+import {hGrid, vGrid, totalGrid} from './constants';
 
 // const Utils: utils = new utils();
 interface DropDownSelect {
-  value: string;
-  viewValue: string;
-}
-
-interface Car {
   value: string;
   viewValue: string;
 }
@@ -38,13 +33,8 @@ export class FirstComponent implements OnInit {
   // width = screen.width;
 
   gridCord: GridCoords[] = new Array(totalGrid);
-  hGrid: number = Math.floor((this.height - 200) / 30);
-  vGrid: number = Math.floor((this.width - 300) / 30);
-  totalGrid: number = this.hGrid * this.vGrid;
-  gridCord: GridCoords[] = new Array(this.totalGrid);
-  adjList: Array<Array<Pair>>;
+  adjList: Array<Array<DPair>>;
   mouseDown = false;
-  // toFill = true;
   color = 2; // 0 red 1 green 2 other
   i = 0;
   start = null;
@@ -53,10 +43,10 @@ export class FirstComponent implements OnInit {
   time = '0';
   length = 0;
 
-  terrain : boolean = true;
-  cov_x :number = 2;
-  cov_y : number = 2;
-  showPath: boolean = false;
+  terrain: boolean = true;
+  cov_x: number = 2;
+  cov_y: number = 2;
+  showPath: boolean = true;
   // Slider for Obstacle
   max = 100;
   min = 0;
@@ -107,6 +97,7 @@ export class FirstComponent implements OnInit {
       }
     }
   }
+
 
   fillGrey(a: number, b: number): void {
     let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
@@ -169,7 +160,7 @@ export class FirstComponent implements OnInit {
         }
       }
 
-    }else{//clicking on non (red green grey ) square
+    }else{ // clicking on non (red green grey ) square
       if (this.start == null){
         this.start = coord;
         rect.isEndPoint = true;
@@ -213,6 +204,9 @@ export class FirstComponent implements OnInit {
 
     this.start = null;
     this.end = null;
+    this.length = 0;
+    this.steps = 0;
+    this.time = '0';
     this.updateUI();
      // this.req_step = 0;
   }
@@ -225,6 +219,9 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
+      this.length = 0;
+      this.steps = 0;
+      this.time = '0';
 
     }
     this.updateUI();
@@ -268,11 +265,11 @@ export class FirstComponent implements OnInit {
 
   updateUI(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
-      let rect :GridCoords = this.gridCord[u];
+      let rect: GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
       if(rect.isPath && this.showPath){
         element.style.fill = "orange";
-        element.style.fillOpacity = "1";
+        element.style.fillOpacity = '1';
       }
 
       else if (u == this.start && rect.isEndPoint){
@@ -339,7 +336,7 @@ export class FirstComponent implements OnInit {
       }
     switch (this.selectedValue) {
       case 'bfs':
-        bfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        bfs.search(this.start, this.end, this.gridCord, this.allowDiag);
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;
@@ -347,7 +344,7 @@ export class FirstComponent implements OnInit {
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        astar.search(this.gridCord, this.start, this.end, this.allowDiag);
+        astar.search(this.start, this.end, this.gridCord, this.allowDiag);
 
         this.steps = astar.steps;
         this.length = astar.length1;
@@ -356,10 +353,10 @@ export class FirstComponent implements OnInit {
         break;
       case 'Dijkstra':
         this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-        dij.search(this.start, this.end, this.adjList, this.gridCord);
+        dij.search(this.start, this.end, this.gridCord, this.allowDiag, this.adjList);
         this.time = dij.time;
         this.steps = dij.steps;
-        this.length = dij.length;
+        this.length = dij.length1;
         this.updateUI(); //uncomment this later
         break;
       default:

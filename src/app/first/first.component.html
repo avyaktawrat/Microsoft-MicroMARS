@@ -19,7 +19,7 @@
 			        </mat-option>
 	        	</mat-select>
 			</mat-form-field>
-		
+
 	    	<mat-form-field appearance="fill">
 	        	<mat-label><h4>Algorithms</h4></mat-label>
 	        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
@@ -42,10 +42,10 @@
 			  </mat-form-field> -->
 			<section id = 'Problem_statement 2' *ngIf = "selectedPS === 'PS_2'">
 				<mat-divider></mat-divider>
-				<mat-label><h4 style="color: black;">Choose no of destinations</h4></mat-label>  
+				<mat-label><h4 style="color: black;">Choose no of destinations</h4></mat-label>
 				<div class="example-section">
-					<mat-divider></mat-divider>				
-					
+					<mat-divider></mat-divider>
+
 					<mat-slider class="example-margin"
 						color="primary"
 						[max]=max
@@ -70,13 +70,12 @@
 						User Preference
 				</mat-slide-toggle>
 				<div *ngIf = "isPref">
-					give ideas pljh:
-					choose option <>
+					help!!!!!
 				</div>
 			</section>
 			<mat-divider></mat-divider>
 
-			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
+<!--			<mat-checkbox class="example-margin" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>-->
 
 
 
@@ -84,9 +83,9 @@
 				<mat-divider></mat-divider>
 				<mat-divider></mat-divider>
 				<mat-label ><h4 style="text-align: center;">Terrain</h4></mat-label>
-				<div class="example-section" > 
+				<div class="example-section" >
 			  <!-- Slider Config for terrain (not applicable incase of bfs, hence isTerrain)-->
-					<mat-slider class="example-margin" 
+					<mat-slider class="example-margin"
 						color="primary"
 						[max]=max
 						[min]=min
@@ -112,7 +111,7 @@
 						Gaussian Distribution
 					</mat-slide-toggle>
 				</div>
-		
+
 			<!--Gaussian Tabs-->
 				<div class = "slider-labels-start" *ngIf = "isGaussian">Covariance x-axis</div>
 					<mat-slider *ngIf = "isGaussian" class="example-margin"
@@ -169,7 +168,7 @@
 		</form>
 
 	</div>
-	
+
 </div>
 
 

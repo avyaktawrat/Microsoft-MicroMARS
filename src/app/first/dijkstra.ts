@@ -1,13 +1,14 @@
-import { Pair } from './adj';
+import { DPair } from './adj';
 import {GridCoords} from './GridCoords';
 
 export class Dijkstra {
-  steps: number = 0;
-  length: number;
+  steps = 0;
+  length1: number;
   time: string;
-  search(s: number, t: number, adj: Array<Array<Pair>>, gridCoords: GridCoords[]) {
-    let then = performance.now();
+  search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
+    const then = performance.now();
     const INF = 1000000000;
+    console.log(adj);
     // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
@@ -21,7 +22,7 @@ export class Dijkstra {
       d[i] = INF;
       p[i] = -1;
     }
-    d[s] = 0;
+    d[start] = 0;
 
     for (let i = 0; i < n; i++) {
       let v = -1;
@@ -36,20 +37,26 @@ export class Dijkstra {
       // rects[v].style.fill = 'lightblue';
       // gridCoords[v].visited = true;
       for (let edge of adj[v]){
-        let to: number = edge.first;
-        let len: number = edge.second;
-        if (d[v] + len < d[to]) {
-          d[to] = d[v] + len;
-          p[to] = v;
+        if (edge.first !== null && edge.second !== null) {
+          let to: number = edge.first;
+          let len: number = edge.second;
+          if (d[v] + len < d[to]) {
+            d[to] = d[v] + len;
+            p[to] = v;
+          }
         }
+        // if (d[v] + len < d[to]) {
+        //   d[to] = d[v] + len;
+        //   p[to] = v;
+        // }
       }
-      if (d[v] === INF) {
+      if (d[v] === INF || v === end) {
         break;
       }
     }
     let path: number[] = new Array();
-    for (let v = t; v !== s; v = p[v]) {
-      if (v != t){
+    for (let v = end; v !== start; v = p[v]) {
+      if (v !== end){
         // rects[v].style.fill = 'orange';
         gridCoords[v].isPath = true;
         // gridCoords[v].isPath = true;
@@ -59,17 +66,9 @@ export class Dijkstra {
 
     // rects[s].style.fill = 'green';
     // rects[t].style.fill = 'red';
-    gridCoords[t].isEndPoint = true;
-    path.push(s);
-    console.log(path.reverse());
-    this.length = path.length - 1;
-
-
-    // for (let i = 0; i < gridCoords.length; i++) {
-    //   if (gridCoords[i].isTerrain) {
-    //     rects[i].style.fill = 'gray';
-    //   }
-    // }
+    gridCoords[end].isEndPoint = true;
+    path.push(start);
+    this.length1 = path.length - 1;
     this.time = (performance.now() - then).toFixed(3);
   }
 
