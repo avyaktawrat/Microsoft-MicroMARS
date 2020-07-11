@@ -11,6 +11,8 @@ import { Dijkstra } from './dijkstra';
 
 
 import { Astar } from './Astar' ;
+import { BiAstar } from './BiAstar' ;
+
 import {BFS} from './BFS';
 import {BiBFS} from './BiBFS';
 
@@ -58,7 +60,7 @@ export class FirstComponent implements OnInit {
   terrain : boolean = true;
   cov_x :number = 2;
   cov_y : number = 2;
-  showPath: boolean = false;
+  showPath: boolean = true;
   // Slider for Obstacle
   max = 100;
   min = 0;
@@ -69,7 +71,7 @@ export class FirstComponent implements OnInit {
   tickInterval = 1;
   allowDiag = false;
 
-  selectedValue: string = 'bfs';
+  selectedValue: string = 'Astar';
   selectedPS: string = 'PS_1';
 
   Algorithms: DropDownSelect[] = [
@@ -103,8 +105,8 @@ export class FirstComponent implements OnInit {
                                         value : 0,
                                         isEndPoint : false,
                                         visited: false,
-                                        open : false
-                                        /*debug : false*/};
+                                        open : false,
+                                        debug : false};
 
       }
     }
@@ -272,11 +274,11 @@ export class FirstComponent implements OnInit {
     for (let u = totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-      if(rect.isPath && this.showPath){
-        element.style.fill = "orange";
-        element.style.fillOpacity = "1";
-      }
      
+       if (rect.isTerrain){
+        element.style.fill = "grey";
+        element.style.fillOpacity = (rect.value/100).toString();
+      }
       else if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
@@ -285,10 +287,13 @@ export class FirstComponent implements OnInit {
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }
-      else if (rect.isTerrain){
-        element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/100).toString();
+      else if(rect.isPath && this.showPath){
+        element.style.fill = "orange";
+        element.style.fillOpacity = "1";
       }
+      else if (rect.debug){
+        element.style.fill = "pink";
+      }      
 
       else if (rect.visited && !this.isTerrain){
         element.style.fill = "lightblue";
@@ -299,9 +304,7 @@ export class FirstComponent implements OnInit {
         element.style.fillOpacity = "1";
       }
 
-      // else if (rect.debug){
-      //   element.style.fill = "pink";
-      // }
+
       
       else{
         element.style.fill = 'white';
@@ -332,6 +335,8 @@ export class FirstComponent implements OnInit {
 
   Search(){
     const astar: Astar = new Astar();
+    const biastar: BiAstar = new BiAstar();
+    
     // const bfs: BFS = new BFS();
     const bibfs: BiBFS = new BiBFS();
 
@@ -351,11 +356,11 @@ export class FirstComponent implements OnInit {
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        astar.search(this.gridCord, this.start, this.end, this.allowDiag);
+        biastar.search(this.gridCord, this.start, this.end, this.allowDiag);
 
-        this.steps = astar.steps;
-        this.length = astar.length1;
-        this.time = astar.time;
+        // this.steps = astar.steps;
+        // this.length = astar.length1;
+        // this.time = astar.time;
         this.updateUI();
         break;
       case 'Dijkstra':

@@ -17,12 +17,13 @@ export class BiBFS{
     var quS = new Array();
     var quE = new Array();
 
-    var visitedS : boolean[] = new Array();
-    var visitedE : boolean[] = new Array();
+    var openBy : number[] = new Array();
+    const byStart : number = 1;
+		const byEnd : number = 2;
+
 
     for (var i = 0; i < totalGrid; ++i) {
-    	visitedE[i] = false;
-    	visitedS[i] = false;
+    	openBy[i] = 0;
     }
 
     quS.push(start);
@@ -38,25 +39,26 @@ export class BiBFS{
 				var arrS = Utils.direction8_vector(currentNodeS,gridCord,allowDiag);
 			  // console.log(arrS);
 			  for(let u of arrS){
-					if((u == end || visitedE[u])){	
-						console.log(gridCord[u]);
-						let node:number;					
-						node = u;
-						while(node!=end){
-              gridCord[node].isPath = true;
-              node = gridCord[node].parent;
-          	}
-          	node=currentNodeS;
-          	while(node!=start){
-              gridCord[node].isPath = true;
-              node = gridCord[node].parent;
-          	}
-          	
-						stop= true;
-						break;
-					}
-					if(!visitedS[u]){
-						visitedS[u] = true;
+					if(!(openBy[u]===byStart)){
+					
+						if((u == end || openBy[u]===byEnd)){	
+							console.log(gridCord[u]);
+							let node:number;					
+							node = u;
+							while(node!=end){
+	              gridCord[node].isPath = true;
+	              node = gridCord[node].parent;
+	          	}
+	          	node=currentNodeS;
+	          	while(node!=start){
+	              gridCord[node].isPath = true;
+	              node = gridCord[node].parent;
+	          	}
+	          	
+							stop= true;
+							break;
+						}
+						openBy[u] = byStart;
 						gridCord[u].open = true;
 						gridCord[u].parent = currentNodeS;
 						quS.push(u);
@@ -70,10 +72,9 @@ export class BiBFS{
 	    	// visitedE[currentNodeE] = true;
 	    	var arrE = Utils.direction8_vector(currentNodeE,gridCord,allowDiag);
 	      for(let u of arrE){
-  				if(!visitedE[u]){
-  					visitedE[u] = true;
+  				if(!(openBy[u] === byEnd)){
   					gridCord[u].open = true;
-  					if(u == start || visitedS[u]){
+  					if(u == start || openBy[u]===byStart){
   						let node:number;					
 							node = u;
 							while(node!=start){
@@ -89,11 +90,13 @@ export class BiBFS{
   						break;
   						
   					}
+  					openBy[u] = byEnd;
 						gridCord[u].parent = currentNodeE;
   					quE.push(u);
   				}
   			}
     	}
+    	
     	if(stop){
     		break;
     	}
