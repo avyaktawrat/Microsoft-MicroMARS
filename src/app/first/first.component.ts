@@ -12,6 +12,8 @@ import { Dijkstra } from './dijkstra';
 
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
+import {BiBFS} from './BiBFS';
+
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants';
 
@@ -85,7 +87,7 @@ export class FirstComponent implements OnInit {
   // Gaussian Distribution in terrain
 
   isGaussian: boolean = false;
-  isTerrain = this.selectedValue==='bfs'; //doesn't work, expression directly used in html
+  isTerrain = false;
   isPref: boolean = false;
   selectedDest: number = 2;
 
@@ -330,7 +332,9 @@ export class FirstComponent implements OnInit {
 
   Search(){
     const astar: Astar = new Astar();
-    const bfs: BFS = new BFS();
+    // const bfs: BFS = new BFS();
+    const bibfs: BiBFS = new BiBFS();
+
     const dij: Dijkstra = new Dijkstra();
       this.clearPath();
       this.resetGridParams();
@@ -339,10 +343,10 @@ export class FirstComponent implements OnInit {
       }
     switch (this.selectedValue) {
       case 'bfs':
-        bfs.search(this.gridCord, this.start, this.end, this.allowDiag);
-        this.steps = bfs.steps;
-        this.length = bfs.length1;
-        this.time = bfs.time;
+        bibfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        // this.steps = bfs.steps;
+        // this.length = bfs.length1;
+        // this.time = bfs.time;
         this.updateUI();
         break;
       case 'Astar':
