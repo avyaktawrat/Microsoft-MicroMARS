@@ -99,7 +99,6 @@ export class FirstComponent implements OnInit {
     }
   }
 
-
   fillGrey(a: number, b: number): void {
     let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
