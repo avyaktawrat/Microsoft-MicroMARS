@@ -4,7 +4,7 @@ import { MatSliderChange } from '@angular/material/slider';
 
 import { DPair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
-
+import { FloydWarshall } from './floydWarshall';
 
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
@@ -63,7 +63,8 @@ export class FirstComponent implements OnInit {
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'Astar', viewValue: 'A*'},
-    {value: 'Dijkstra', viewValue: 'Dijkstra'}
+    {value: 'Dijkstra', viewValue: 'Dijkstra'},
+    {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}
   ];
 
   Problem_statement: DropDownSelect[] = [
@@ -329,11 +330,13 @@ export class FirstComponent implements OnInit {
     const astar: Astar = new Astar();
     const bfs: BFS = new BFS();
     const dij: Dijkstra = new Dijkstra();
+    const flyw: FloydWarshall = new FloydWarshall();
       this.clearPath();
       this.resetGridParams();
       if ( this.start == null || this.end == null){
         alert('Insert start and end');
       }
+      console.log(this.selectedValue);
     switch (this.selectedValue) {
       case 'bfs':
         bfs.search(this.start, this.end, this.gridCord, this.allowDiag);
@@ -358,6 +361,16 @@ export class FirstComponent implements OnInit {
         this.steps = dij.steps;
         this.length = dij.length1;
         this.updateUI(); //uncomment this later
+        break;
+
+      case 'Floyd–Warshall':
+        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
+        flyw.search(this.adjList);
+        flyw.getPath(this.start, this.end, this.gridCord);
+        this.length = flyw.length;
+        this.time = flyw.time;
+        this.steps = flyw.steps;
+        this.updateUI();
         break;
       default:
         alert('Select Algorithms');
