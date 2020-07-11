@@ -8,7 +8,7 @@ export class Dijkstra {
   search(s: number, t: number, adj: Array<Array<Pair>>, gridCoords: GridCoords[]) {
     let then = performance.now();
     const INF = 1000000000;
-    let rects = document.getElementsByTagName('rect');
+    // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
     let p = new Array<number>();
@@ -32,8 +32,9 @@ export class Dijkstra {
         }
       }
       u[v] = true;
+      gridCoords[v].visited= true;
       // rects[v].style.fill = 'lightblue';
-      gridCoords[v].visited = true;
+      // gridCoords[v].visited = true;
       for (let edge of adj[v]){
         let to: number = edge.first;
         let len: number = edge.second;
@@ -51,15 +52,18 @@ export class Dijkstra {
       if (v != t){
         // rects[v].style.fill = 'orange';
         gridCoords[v].isPath = true;
+        // gridCoords[v].isPath = true;
       }
       path.push(v);
     }
+
     // rects[s].style.fill = 'green';
     // rects[t].style.fill = 'red';
     gridCoords[t].isEndPoint = true;
     path.push(s);
     console.log(path.reverse());
     this.length = path.length - 1;
+
 
     // for (let i = 0; i < gridCoords.length; i++) {
     //   if (gridCoords[i].isTerrain) {
