@@ -58,7 +58,7 @@ export class FirstComponent implements OnInit {
   allowDiag = false;
 
   selectedValue: string = 'bfs';
-  selectedPS: string = 'PS_1';
+  selectedPS: string = 'TSP';
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
@@ -66,11 +66,11 @@ export class FirstComponent implements OnInit {
     {value: 'Dijkstra', viewValue: 'Dijkstra'},
     {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}
   ];
-
+  minDest =1;
+  maxDest = 5;
   Problem_statement: DropDownSelect[] = [
     {value: 'PS_1', viewValue: 'One way trip'},
-    {value: 'PS_2', viewValue: 'Intermediate Stops'},
-    {value: 'PS_3', viewValue: 'Multiple Destinations'}
+    {value: 'TSP', viewValue: 'Intermediate Stops'}
   ];
 
   // Gaussian Distribution in terrain
@@ -79,6 +79,8 @@ export class FirstComponent implements OnInit {
   isTerrain = this.selectedValue==='bfs'; //doesn't work, expression directly used in html
   isPref: boolean = false;
   selectedDest: number = 2;
+
+  Dest : number[] = new Array();
 
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
@@ -103,11 +105,11 @@ export class FirstComponent implements OnInit {
     let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.choose;
-      if (!this.isGaussian){
+      if (!this.isGaussian ){
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
-      }else{
+      }else if(this.isGaussian && this.isTerrain){
         this.gaussianFill(coord);
         this.updateUI();
       }
@@ -134,49 +136,78 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let rect :GridCoords = this.gridCord[coord];
     // console.log("hello");
-    if (coord === this.start){
-      this.start = null;
-      rect.isEndPoint = false;
-    }else if (coord === this.end){
-      this.end = null;
-      rect.isEndPoint = false;
-    }else if (rect.isTerrain){
-      if(!this.isTerrain){
+    if(this.selectedPS === "PS_1"){
+      if (coord === this.start){
+        this.start = null;
+        rect.isEndPoint = false;
+      }else if (coord === this.end){
+        this.end = null;
+        rect.isEndPoint = false;
+      }else if (rect.isTerrain){
+        if(!this.isTerrain){
+          rect.isTerrain = false;
+          rect.value = 0;
+        }else{
+          if(this.start == null){
+            this.start = coord;
+            rect.isEndPoint = true;
+          }else if(this.end == null){
+            this.end = coord;
+            rect.isEndPoint = true;
+          }
+          else if(!this.isGaussian){
+            rect.isTerrain = true;
+            rect.value = this.choose;
+          }else{
+            this.gaussianFill(coord);
+          }
+        }
+
+      }else{ // clicking on non (red green grey ) square
+        if (this.start == null){
+          this.start = coord;
+          rect.isEndPoint = true;
+        }else if (this.end == null){
+            this.end = coord;
+            rect.isEndPoint = true;
+        }else if (!rect.isTerrain ){
+          rect.isTerrain = true;
+          if(!this.isGaussian){
+            rect.isTerrain = true;
+            rect.value = this.choose;
+          }else{
+            this.gaussianFill(coord);
+          }
+
+        }
+      }
+    }else if(this.selectedPS === "TSP"){
+      if(coord == this.start){
+        this.start = null;
+        rect.isEndPoint = false;
+      }else if(this.Dest.includes(coord)){
+        let a = this.Dest.indexOf(coord);
+        this.Dest[a] = null;
+        rect.isEndPoint = false;
+      }else if(rect.isTerrain){
         rect.isTerrain = false;
-        rect.value = 0;
       }else{
         if(this.start == null){
           this.start = coord;
           rect.isEndPoint = true;
-        }else if(this.end == null){
-          this.end = coord;
+        }else if(this.Dest.length < this.selectedDest){
+          this.Dest.push(coord);
           rect.isEndPoint = true;
-        }
-        else if(!this.isGaussian){
+        }else if(this.Dest.includes(null)){
+          let a = this.Dest.indexOf(null);
+          this.Dest[a] = coord;
+          rect.isEndPoint = true;
+        }else if (!rect.isTerrain ){
           rect.isTerrain = true;
-          rect.value = this.choose;
-        }else{
-          this.gaussianFill(coord);
+          rect.value = 100;
         }
       }
 
-    }else{ // clicking on non (red green grey ) square
-      if (this.start == null){
-        this.start = coord;
-        rect.isEndPoint = true;
-      }else if (this.end == null){
-        this.end = coord;
-        rect.isEndPoint = true;
-      }else if (!rect.isTerrain ){
-        rect.isTerrain = true;
-        if(!this.isGaussian){
-          rect.isTerrain = true;
-          rect.value = this.choose;
-        }else{
-          this.gaussianFill(coord);
-        }
-
-      }
     }
     this.updateUI();    // console.log(rect);
 
@@ -201,7 +232,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].isTerrain = false;
       this.gridCord[u].value = 0;
     }
-
+    this.Dest = [];
     this.start = null;
     this.end = null;
     this.length = 0;
@@ -264,6 +295,7 @@ export class FirstComponent implements OnInit {
   }
 
   updateUI(): void{
+    // console.log(this.Dest);
     for (let u = totalGrid - 1; u >= 0; u--) {
       let rect: GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
@@ -276,7 +308,7 @@ export class FirstComponent implements OnInit {
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
-      else if (u == this.end && rect.isEndPoint){
+      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }
@@ -332,7 +364,7 @@ export class FirstComponent implements OnInit {
     const flyw: FloydWarshall = new FloydWarshall();
       this.clearPath();
       this.resetGridParams();
-      if ( this.start == null || this.end == null){
+      if ( this.start == null || (this.end == null && this.Dest.length < this.selectedDest) ){
         alert('Insert start and end');
       }
       console.log(this.selectedValue);

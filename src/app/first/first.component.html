@@ -40,7 +40,7 @@
 		          </option>
 		        </select>
 			  </mat-form-field> -->
-			<section id = 'Problem_statement 2' *ngIf = "selectedPS === 'PS_2'">
+			<section id = 'Problem_statement 2' *ngIf = "selectedPS === 'TSP'">
 				<mat-divider></mat-divider>
 				<mat-label><h4 style="color: black;">Choose no of destinations</h4></mat-label>
 				<div class="example-section">
@@ -48,8 +48,8 @@
 
 					<mat-slider class="example-margin"
 						color="primary"
-						[max]=max
-						[min]=min
+						[max]=maxDest
+						[min]=minDest
 						[step]="step"
 						[thumbLabel]=true
 						[(ngModel)]="selectedDest"
@@ -57,7 +57,7 @@
 						[ngModelOptions]="{standalone: true}">
 					</mat-slider>
 					<mat-form-field class="example-margin">
-						<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="50" min="1">
+						<input matInput type="number" value="{{selectedDest}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="maxDest" min="minDestin">
 					</mat-form-field>
 				</div>
 				<mat-slide-toggle class="example-margin"
@@ -70,7 +70,7 @@
 						User Preference
 				</mat-slide-toggle>
         <div *ngIf="isPref">
-          help!!!!
+          Click on grid in preference order.
         </div>
 			</section>
 			<mat-divider></mat-divider>
