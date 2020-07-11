@@ -10,6 +10,6 @@ export interface GridCoords {
     value: number;
     parent: number;
     visited: boolean;
-    open : boolean;
+    open: boolean;
     // debug : boolean;
   }

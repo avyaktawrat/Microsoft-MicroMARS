@@ -1,10 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { GridCoords } from './GridCoords';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-// import * as $ from "jQuery";
-import {FormControl, Validators} from '@angular/forms';
 import { MatSliderChange } from '@angular/material/slider';
-import { newArray } from '@angular/compiler/src/util';
 
 import { Pair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
@@ -13,9 +9,9 @@ import { Dijkstra } from './dijkstra';
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
 import {utils } from './utils';
-import {hGrid, vGrid, totalGrid} from './constants';
+import {hGrid, vGrid} from './constants';
 
-const Utils: utils = new utils();
+// const Utils: utils = new utils();
 interface DropDownSelect {
   value: string;
   viewValue: string;
@@ -38,16 +34,13 @@ export class FirstComponent implements OnInit {
   height = screen.availHeight;
   width = screen.availWidth;
 
-  // height = window.innerHeight;
-  // width = screen.width;
-
   hGrid: number = Math.floor((this.height - 200) / 30);
   vGrid: number = Math.floor((this.width - 300) / 30);
   totalGrid: number = this.hGrid * this.vGrid;
   gridCord: GridCoords[] = new Array(this.totalGrid);
   adjList: Array<Array<Pair>>;
   mouseDown = false;
-  toFill = true;
+  // toFill = true;
   color = 2; // 0 red 1 green 2 other
   i = 0;
   start = null;
@@ -64,16 +57,16 @@ export class FirstComponent implements OnInit {
   max = 100;
   min = 0;
   step = 1;
-  thumbLabel = false;
+  // thumbLabel = false;
   choose = 100;
   vertical = false;
-  tickInterval = 1;
+  // tickInterval = 1;
   allowDiag = false;
 
   selectedValue: string;
   selectedPS: string = 'One way trip';
 
-  selectedCar: string;
+  // selectedCar: string;
 
 
   Algorithms: DropDownSelect[] = [
@@ -111,33 +104,33 @@ export class FirstComponent implements OnInit {
   }
 
   fillGrey(a: number, b: number): void {
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
-    if(coord != this.start && coord != this.end && this.mouseDown == true){
+    let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
+    if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.choose;
-      if(!this.isGaussian){
+      if (!this.isGaussian){
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
       }else{
-        this.gaussianFill(a,b)
+        this.gaussianFill(a, b);
       }
     }
   }
 
-  gaussianFill (a: number, b: number):void{
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
+  gaussianFill(a: number, b: number): void {
+    let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
     let height = this.choose;
-    for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
-      for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
-        this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i)/(this.cov_x*this.cov_x) + (j*j)/(this.cov_y*this.cov_y) ) );
-        this.gridCord[coord+i*hGrid+j].isTerrain = true;
+    for (let i = -this.cov_x - 3; i <= this.cov_x + 3; i++) {
+      for (let j = -this.cov_y - 3; j <= this.cov_y + 3; j++) {
+        this.gridCord[coord + i * hGrid + j].value += height * Math.exp(-1 * ((i * i) / (this.cov_x * this.cov_x) + (j * j) / (this.cov_y * this.cov_y) ) );
+        this.gridCord[coord + i * hGrid +j].isTerrain = true;
       }
     }
     this.updateUI();
   }
-  fillColor (a :number , b:number): void{
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
-    let rect :GridCoords = this.gridCord[coord];
+  fillColor(a: number , b: number): void{
+    let coord: number = Math.floor(a / 30) * hGrid + Math.floor(b / 30);
+    let rect: GridCoords = this.gridCord[coord];
 
     if (coord === this.start){
       this.start = null;
@@ -162,7 +155,7 @@ export class FirstComponent implements OnInit {
           this.gridCord[coord].value = this.choose;
           this.updateUI();
         }else{
-          this.gaussianFill(a,b)
+          this.gaussianFill(a, b);
         }
         rect.value = this.choose;
       }
@@ -216,7 +209,7 @@ export class FirstComponent implements OnInit {
    this.updateUI();
   }
 
-  resetGridParams():void{
+  resetGridParams(): void{
      for (let u = this.totalGrid - 1; u >= 0; u--) {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
@@ -249,8 +242,8 @@ export class FirstComponent implements OnInit {
         element.style.fillOpacity = '1';
       }
       else if (rect.isPath && rect.isTerrain){
-        element.style.fill = "brown";
-        element.style.fillOpacity = (rect.value/100).toString();
+        element.style.fill = 'brown';
+        element.style.fillOpacity = (rect.value / 100).toString();
       }
       else if (u === this.start && rect.isEndPoint){
         element.style.fill = 'green';
@@ -262,7 +255,7 @@ export class FirstComponent implements OnInit {
       }
       else if (rect.isTerrain){
         element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/100).toString();
+        element.style.fillOpacity = (rect.value / 100).toString();
       }
 
       // else if (rect.debug){
@@ -312,8 +305,6 @@ export class FirstComponent implements OnInit {
       this.resetGridParams();
     if ( this.start == null || this.end == null){
       alert('Insert start and end');
-    if( this.start == null || this.end == null){
-      alert("Insert start and end");
     }
     switch (this.selectedValue) {
       case 'bfs':
@@ -338,6 +329,7 @@ export class FirstComponent implements OnInit {
         this.time = dij.time;
         this.steps = dij.steps;
         this.length = dij.length;
+        this.updateUI();
         break;
       default:
         alert('Select Algorithms');

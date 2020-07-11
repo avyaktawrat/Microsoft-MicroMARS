@@ -32,7 +32,8 @@ export class Dijkstra {
         }
       }
       u[v] = true;
-      rects[v].style.fill = 'lightblue';
+      // rects[v].style.fill = 'lightblue';
+      gridCoords[v].visited = true;
       for (let edge of adj[v]){
         let to: number = edge.first;
         let len: number = edge.second;
@@ -48,21 +49,23 @@ export class Dijkstra {
     let path: number[] = new Array();
     for (let v = t; v !== s; v = p[v]) {
       if (v != t){
-        rects[v].style.fill = 'orange';
+        // rects[v].style.fill = 'orange';
+        gridCoords[v].isPath = true;
       }
       path.push(v);
     }
-    rects[s].style.fill = 'green';
-    rects[t].style.fill = 'red';
+    // rects[s].style.fill = 'green';
+    // rects[t].style.fill = 'red';
+    gridCoords[t].isEndPoint = true;
     path.push(s);
     console.log(path.reverse());
-    this.length = path.length;
+    this.length = path.length - 1;
 
-    for (let i = 0; i < gridCoords.length; i++) {
-      if (gridCoords[i].isTerrain) {
-        rects[i].style.fill = 'gray';
-      }
-    }
+    // for (let i = 0; i < gridCoords.length; i++) {
+    //   if (gridCoords[i].isTerrain) {
+    //     rects[i].style.fill = 'gray';
+    //   }
+    // }
     this.time = (performance.now() - then).toFixed(3);
   }
 
