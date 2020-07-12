@@ -10,13 +10,13 @@ export class BiAstar{
   public length1 :number= 0;
   public time :string = "0";
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean, req_step:number):void {
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
   	// var startClosedList : number[] = new Array();
   	// var endClosedList : number[] = new Array();
   	var closedList : number[] = new Array();
- 
+ 		let stop : boolean = false;
     var openBy : number[] = new Array();
     const byStart : number = 1;
 		const byEnd : number = 2;
@@ -36,8 +36,16 @@ export class BiAstar{
     gridCord[end].f = gridCord[end].h;
   
   	let currentNode :number;
-
+  	console.log(startOpenList);
+  	console.log(gridCord);
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
+  		
+  		if(this.steps == req_step){
+				// break;
+			}
+			if(stop){
+				break;
+			}
     	var lowInd : number = 0;
     	function removeElement(array, elem) {
           var index = array.indexOf(elem);
@@ -45,50 +53,53 @@ export class BiAstar{
               array.splice(index, 1);
           }
       }
-      if(startOpenList.length != 0){
+      if(startOpenList.length != 0 && !stop) {
+	      this.steps ++;
+      	var lowInd : number = 0;
 	      for(var i=0; i<startOpenList.length; i++) {
 	        if(gridCord[startOpenList[i]].f <= gridCord[startOpenList[lowInd]].f) {
 	           lowInd = i;
 	        }
 	      }
 	      currentNode = startOpenList[lowInd];
+	      removeElement(startOpenList,currentNode);
 	      gridCord[currentNode].visited = true;
-	      console.log(currentNode);
-	      if(closedList.includes(currentNode)){
-	        continue;
-	      }
+	      // console.log(currentNode);
 	      
-	      removeElement(startOpenList, currentNode);
 	      closedList.push(currentNode);
-
-	      if(currentNode == end || openBy[currentNode]===byEnd){
-		      	let node:number;
-	          node = gridCord[currentNode].parent;
-	          while(node!=start){
-	          	console.log(1);
-	            gridCord[node].isPath = true;
-	            node = gridCord[node].parent;
-	          }
-	          node = currentNode
-	          while(node!=end){
-	          	console.log(2);
-	            gridCord[node].isPath = true;
-	            node = gridCord[node].parent;
-	          }
-	      	break;
-	      }
 
 	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
 	      for(let Coord of neighbors){
-	      	// let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-	      	let ng = 1;
-	        if(closedList.includes(Coord) ){//already visited
+	      	if(closedList.includes(Coord) ){//already visited
 	          continue;
 	        }
+	      	if(/*Coord == end || */openBy[Coord]===byEnd){
+		      	let node:number;
+		      	console.log(Coord);
+	          node = currentNode;
+	          while(node!=start && node!= end){
+	          	console.log(1);
+	          	console.log(node);
+	            gridCord[node].isPath = true;
+	            node = gridCord[node].parent;
+	          }
+	          node = Coord
+	          while(node!=end && node!=start){
+	          	console.log(2);
+	          	console.log(node);
+	            gridCord[node].isPath = true;
+	            node = gridCord[node].parent;
+	          }
+	          stop = true;
+	      		break;
+	      	}
+	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+	      	// let ng = 1;
+	        
 
-	        if(startOpenList.includes(Coord)){
-	            let a = startOpenList.indexOf(Coord);
-	            if(gridCord[currentNode].g + ng  < gridCord[startOpenList[a]].g){
+	        if(openBy[Coord]==byStart  ){
+	            // let a = startOpenList.indexOf(Coord);
+	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
 	              gridCord[Coord].h = this.distance(Coord,end);
 	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
@@ -109,52 +120,56 @@ export class BiAstar{
 	      }
 			}
 
-			if(endOpenList.length != 0){
-	      for(var i=1; i<endOpenList.length; i++) {
+			if(endOpenList.length != 0 && !stop){
+	      // currentNode = endOpenList.pop();
+	      gridCord[currentNode].visited = true;
+	      var lowInd : number = 0;
+	      for(var i=0; i<endOpenList.length; i++) {
 	        if(gridCord[endOpenList[i]].f <= gridCord[endOpenList[lowInd]].f) {
 	           lowInd = i;
 	        }
 	      }
 	      currentNode = endOpenList[lowInd];
-	      gridCord[currentNode].visited = true;
-	      console.log(currentNode);
-	      if(closedList.includes(currentNode)){
-	        continue;
-	      }
-	      
+	      gridCord[currentNode].visited= true;
 	      removeElement(endOpenList, currentNode);
 	      closedList.push(currentNode);
 
-	      if(currentNode == start || openBy[currentNode]===byStart){
-		      	let node:number;
-	          node = gridCord[currentNode].parent;
-	          while(node!=start){
-	          	console.log(1);
-	            gridCord[node].isPath = true;
-	            node = gridCord[node].parent;
-	          }
-	          node = currentNode
-	          while(node!=end){
-	          	console.log(2);
-	            gridCord[node].isPath = true;
-	            node = gridCord[node].parent;
-	          }
-	      	break;
-	      }
-
+	      
 	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
 	      for(let Coord of neighbors){
-	      	// let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-	      	let ng = 1;
+	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+	      	// let ng = 1;
 	        if(closedList.includes(Coord) ){//already visited
 	          continue;
 	        }
 
-	        if(endOpenList.includes(Coord)){
-	            let a = endOpenList.indexOf(Coord);
-	            if(gridCord[currentNode].g + ng  < gridCord[endOpenList[a]].g){
+	        if(/*currentNode == start || */openBy[Coord]===byStart){
+		      	console.log(Coord);
+		      	let node:number;
+	          node = currentNode;
+	          while(node!=end && node!= start){
+	          	console.log(3);
+	          	console.log(node);
+	            gridCord[node].isPath = true;
+	            node = gridCord[node].parent;
+	          }
+	          node = Coord
+	          while(node!=start&& node!= end ){
+	          	console.log(4);
+	          	console.log(node);
+	            gridCord[node].isPath = true;
+	            node = gridCord[node].parent;
+	          }
+	        stop = true;
+	      	break;
+	      }
+
+
+	        if(openBy[Coord]==byEnd){
+	            // let a = endOpenList.indexOf(Coord);
+	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              gridCord[Coord].h = this.distance(Coord,end);
+	              gridCord[Coord].h = this.distance(Coord,start);
 	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byEnd;
@@ -163,17 +178,18 @@ export class BiAstar{
 
 	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = this.distance(Coord,end);
+	            gridCord[Coord].h = this.distance(Coord,start);
 	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	            gridCord[Coord].parent = currentNode;    
 	            gridCord[Coord].open = true;
 	            endOpenList.push(Coord);
 	            openBy[Coord] = byEnd;
+	            
 	          }
 	      }
 			}
+
 			
-      
     }
 	}
 

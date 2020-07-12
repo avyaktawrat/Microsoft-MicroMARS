@@ -218,7 +218,7 @@ export class FirstComponent implements OnInit {
     this.start = null;
     this.end = null;
     this.updateUI();
-     // this.req_step = 0;
+     this.req_step = 0;
   }
 
   clearPath(): void{
@@ -226,11 +226,13 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].isPath = false;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
+      this.gridCord[u].debug = false;
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
 
     }
+    // this.req_step = 0;
     this.updateUI();
   }
 
@@ -314,12 +316,13 @@ export class FirstComponent implements OnInit {
     }
   }
 
-  // req_step :number = 0;
-  // inc_step(){
-  //   this.req_step ++;
-  //   this.Search();
-  //   // let element = document.getElementsByTagName('rect')[u];
-  // }
+  req_step :number = 0;
+  inc_step(){
+    this.req_step ++;
+    console.log(this.req_step);
+    this.Search();
+    // let element = document.getElementsByTagName('rect')[u];
+  }
 
   // dijk() {
   //   Utils.reset_color(this.gridCord, this.start, this.end);
@@ -337,7 +340,7 @@ export class FirstComponent implements OnInit {
     const astar: Astar = new Astar();
     const biastar: BiAstar = new BiAstar();
     
-    // const bfs: BFS = new BFS();
+    const bfs: BFS = new BFS();
     const bibfs: BiBFS = new BiBFS();
 
     const dij: Dijkstra = new Dijkstra();
@@ -349,14 +352,14 @@ export class FirstComponent implements OnInit {
     switch (this.selectedValue) {
       case 'bfs':
         bibfs.search(this.gridCord, this.start, this.end, this.allowDiag);
-        // this.steps = bfs.steps;
-        // this.length = bfs.length1;
-        // this.time = bfs.time;
+        this.steps = bfs.steps;
+        this.length = bfs.length1;
+        this.time = bfs.time;
         this.updateUI();
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        biastar.search(this.gridCord, this.start, this.end, this.allowDiag);
+        biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.req_step);
 
         // this.steps = astar.steps;
         // this.length = astar.length1;

@@ -98,7 +98,7 @@ export class Astar{
 
           if(openList.includes(Coord)){
             let a = openList.indexOf(Coord);
-            if(gridCord[currentNode].g + ng+neighbors[i].weight  < gridCord[openList[a]].g){
+            if(gridCord[currentNode].g + ng+neighbors[i].weight  < gridCord[currentNode].g){
               gridCord[Coord].g = gridCord[currentNode].g + ng+ neighbors[i].weight;
               gridCord[Coord].h = this.distance(Coord,end);
               gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
