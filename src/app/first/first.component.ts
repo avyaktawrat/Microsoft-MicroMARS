@@ -25,9 +25,11 @@ interface DropDownSelect {
   viewValue: string;
 }
 
-interface Car {
-  value: string;
-  viewValue: string;
+interface lineCord {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 }
 
 @Component({
@@ -56,6 +58,8 @@ export class FirstComponent implements OnInit {
   steps = 0;
   time = '0';
   length = 0;
+  path: number[] = new Array();
+  pathCord: lineCord[] = new Array();
 
   terrain : boolean = true;
   cov_x :number = 2;
@@ -213,7 +217,10 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].open = false;
       this.gridCord[u].isPath = false;
       this.gridCord[u].isTerrain = false; 
-      this.gridCord[u].value = 0;          
+      this.gridCord[u].value = 0;
+      this.length = 0;
+      this.steps = 0;
+      this.time = '0';
     }
 
     this.start = null;
@@ -319,6 +326,41 @@ export class FirstComponent implements OnInit {
           //console.log('after delay')
       })();
     }
+    
+  }
+  pathLine(): void{
+    // else if(this.selectedValue == 'Dijkstra'){
+    //   for(let p=0;p< this.path.length-1;p++){
+    //     let loc = this.path[p];
+    //     let loc_next = this.path[p+1];
+    //     console.log(loc, Math.floor(loc/hGrid)+15, (loc%hGrid)+15);
+    //     this.pathCord.push({x1: Math.floor(loc/hGrid)*30+15,y1: (loc%hGrid)*30+15,
+    //                       x2: Math.floor(loc_next/hGrid)*30+15,y2: (loc_next%hGrid)*30+15 })
+        
+    //   }
+    // }
+    let node = this.end;
+    if(this.gridCord[node].parent!=null){
+      console.log(this.gridCord[node].parent);
+      this.length = 0;
+      while(node!=this.start){
+        let node_next = this.gridCord[node].parent;
+        let x1 = Math.floor(node/hGrid)*30+15;
+        let x2 = Math.floor(node_next/hGrid)*30+15;
+        let y1 = (node%hGrid)*30+15;
+        let y2 = (node_next%hGrid)*30+15;
+        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+        node = node_next;
+        this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+      }
+    }
+    else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
+      window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
+    }
+    else{
+      window.alert("Sorry, no Path Exists :(");
+    }
+    
   }
 
   // req_step :number = 0;
@@ -356,6 +398,7 @@ export class FirstComponent implements OnInit {
         this.length = bfs.length1;
         this.time = bfs.time;
         this.updateUI();
+        this.pathLine();
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
@@ -365,6 +408,7 @@ export class FirstComponent implements OnInit {
         this.length = astar.length1;
         this.time = astar.time;
         this.updateUI();
+        this.pathLine(); //for tracing the line
         break;
       case 'Dijkstra':
         this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
@@ -373,6 +417,7 @@ export class FirstComponent implements OnInit {
         this.steps = dij.steps;
         this.length = dij.length;
         this.updateUI(); //uncomment this later
+        this.pathLine(); //for tracing the line
         break;
       default:
         alert('Select Algorithms');

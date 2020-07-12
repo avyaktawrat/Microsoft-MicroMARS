@@ -5,6 +5,7 @@ export class Dijkstra {
   steps: number = 0;
   length: number;
   time: string;
+  path: number[] = new Array();
   search(s: number, t: number, adj: Array<Array<Pair>>, gridCoords: GridCoords[]) {
     let then = performance.now();
     const INF = 1000000000;
@@ -45,17 +46,18 @@ export class Dijkstra {
         break;
       }
     }
-    let path: number[] = new Array();
+    //let path: number[] = new Array();
     for (let v = t; v !== s; v = p[v]) {
       if (v != t){
         gridCoords[v].isPath = true;
       }
-      path.push(v);
+      this.path.push(v);
+      gridCoords[v].parent = p[v];
     }
    
-    path.push(s);
-    console.log(path.reverse());
-    this.length = path.length;
+    this.path.push(s);
+    console.log(this.path.reverse());
+    this.length = this.path.length;
 
     
     this.time = (performance.now() - then).toFixed(3);

@@ -32,8 +32,10 @@ export class BFS{
 
           gridCord[u].open= true;
           distance[u]=distance[s]+1;
+          gridCord[u].parent = s;
+
           if (u == end){
-            let node:number;
+            let node:number;  
             node = s;//parent[u]
             while(node!=start){
               gridCord[node].isPath = true;
@@ -47,7 +49,6 @@ export class BFS{
             break;
           }
 
-          gridCord[u].parent = s;
           qu.push(u);
 
         }
