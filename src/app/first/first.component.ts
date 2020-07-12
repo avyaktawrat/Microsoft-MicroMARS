@@ -90,7 +90,7 @@ export class FirstComponent implements OnInit {
   // Gaussian Distribution in terrain
 
   isGaussian: boolean = false;
-  isTerrain = false;
+  isTerrain = true;
   isPref: boolean = false;
   selectedDest: number = 2;
 
@@ -318,12 +318,12 @@ export class FirstComponent implements OnInit {
   }
 
   req_step :number = 0;
-  inc_step(){
-    this.req_step ++;
-    console.log(this.req_step);
-    this.Search();
-    // let element = document.getElementsByTagName('rect')[u];
-  }
+  // inc_step(){
+  //   this.req_step ++;
+  //   console.log(this.req_step);
+  //   this.Search();
+  //   // let element = document.getElementsByTagName('rect')[u];
+  // }
 
   // dijk() {
   //   Utils.reset_color(this.gridCord, this.start, this.end);
