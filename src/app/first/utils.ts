@@ -44,4 +44,13 @@ export class utils{
     return arr;
   }
 
+  distance(a: number, b:number ): number {
+    var x1 = Math.round(a/hGrid);
+    var y1 = a%hGrid;
+    var x2 = Math.round(b/hGrid);
+    var y2 = b%hGrid;
+    let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
+    return dist;
+  }
+
 }

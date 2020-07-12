@@ -6,8 +6,9 @@ import {FormControl, Validators} from '@angular/forms';
 import { MatSliderChange } from '@angular/material/slider';
 import { newArray } from '@angular/compiler/src/util';
 
-import { Pair, get_adjacency_list } from './adj';
+import { DPair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
+import { BiDjk } from './BiDijkstra';
 
 
 import { Astar } from './Astar' ;
@@ -46,7 +47,7 @@ export class FirstComponent implements OnInit {
   // width = screen.width;
 
   gridCord: GridCoords[] = new Array(totalGrid);
-  adjList: Array<Array<Pair>>;
+  adjList: Array<Array<DPair>>;
   mouseDown = false;
   toFill = true;
   color = 2; // 0 red 1 green 2 other
@@ -70,7 +71,7 @@ export class FirstComponent implements OnInit {
   vertical = false;
   tickInterval = 1;
   allowDiag = false;
-
+  bidirection = false;
   selectedValue: string = 'Astar';
   selectedPS: string = 'PS_1';
 
@@ -276,12 +277,7 @@ export class FirstComponent implements OnInit {
     for (let u = totalGrid - 1; u >= 0; u--) {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-     
-       if (rect.isTerrain){
-        element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/100).toString();
-      }
-      else if (u == this.start && rect.isEndPoint){
+     if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
@@ -289,6 +285,7 @@ export class FirstComponent implements OnInit {
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }
+       
       else if(rect.isPath && this.showPath){
         element.style.fill = "orange";
         element.style.fillOpacity = "1";
@@ -297,6 +294,10 @@ export class FirstComponent implements OnInit {
         element.style.fill = "pink";
       }      
 
+      else if (rect.isTerrain){
+        element.style.fill = "grey";
+        element.style.fillOpacity = (rect.value/100).toString();
+      }
       else if (rect.visited && !this.isTerrain){
         element.style.fill = "lightblue";
         element.style.fillOpacity = "1";
@@ -344,6 +345,8 @@ export class FirstComponent implements OnInit {
     const bibfs: BiBFS = new BiBFS();
 
     const dij: Dijkstra = new Dijkstra();
+    const bidjk: BiDjk = new BiDjk();
+
       this.clearPath();
       this.resetGridParams();
       if ( this.start == null || this.end == null){
@@ -351,30 +354,65 @@ export class FirstComponent implements OnInit {
       }
     switch (this.selectedValue) {
       case 'bfs':
-        bibfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        if(this.bidirection){
+          bibfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        }else{
+          bfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        }
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;
         this.updateUI();
         break;
       case 'Astar':
-        // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.req_step);
+        if(this.isTerrain){
+          astar.Wsearch(this.gridCord, this.start,this.end,this.allowDiag/*,this.req_step*/);
+          this.steps = astar.steps;
+          this.length = astar.length1;
+          this.time = astar.time;
+  
+  
+        }else if (this.bidirection){
+          biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.req_step); 
+          this.steps = biastar.steps;
+          this.length = biastar.length1;
+          this.time = biastar.time;
 
-        // this.steps = astar.steps;
-        // this.length = astar.length1;
-        // this.time = astar.time;
+        }else{
+          astar.search(this.gridCord, this.start,this.end,this.allowDiag/*,this.req_step*/);
+          this.steps = astar.steps;
+          this.length = astar.length1;
+          this.time = astar.time;
+        } 
+
+        
         this.updateUI();
         break;
       case 'Dijkstra':
-        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-        dij.search(this.start, this.end, this.adjList, this.gridCord);
-        this.time = dij.time;
-        this.steps = dij.steps;
-        this.length = dij.length;
+        if(this.isTerrain){
+          this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
+          dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag, this.adjList);
+          this.time = dij.time;
+          this.steps = dij.steps;
+          this.length = dij.length1;
+
+        }else if (this.bidirection){
+          bidjk.search(this.gridCord, this.start, this.end, this.allowDiag/*,this.req_step*/); 
+          this.time = bidjk.time;
+          this.steps = bidjk.steps;
+          this.length = bidjk.length1;
+
+        }else{
+          dij.search( this.gridCord,this.start, this.end, this.allowDiag/*,this.req_step*/);
+          this.time = dij.time;
+          this.steps = dij.steps;
+          this.length = dij.length1;
+
+        } 
+
+        
         this.updateUI(); //uncomment this later
-        break;
-      default:
+        break;      default:
         alert('Select Algorithms');
         break;
     }

@@ -5,12 +5,12 @@ import {hGrid, vGrid, totalGrid} from './constants'
 let Utils: utils = new utils();
 
 
-export class BiAstar{
+export class BiDjk{
   public steps :number = 0;
   public length1 :number= 0;
   public time :string = "0";
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean, req_step:number):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean/*, req_step:number*/):void {
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
   	// var startClosedList : number[] = new Array();
@@ -27,23 +27,20 @@ export class BiAstar{
     }
 
   	startOpenList.push(start);
-  	gridCord[start].h = this.distance(start , end); 
-    gridCord[start].g = 0;
-    gridCord[start].f = gridCord[start].h;
+  	gridCord[start].g = 0;
+    
 
   	endOpenList.push(end);
-  	gridCord[end].h = this.distance(start , end); 
-    gridCord[end].g = 0;
-    gridCord[end].f = gridCord[end].h;
-  
+  	gridCord[end].g = 0;
+    
   	let currentNode :number;
   	console.log(startOpenList);
   	console.log(gridCord);
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
   		
-  		if(this.steps == req_step){
-				// break;
-			}
+  	// 	if(this.steps == req_step){
+			// 	// break;
+			// }
 			if(stop){
 				break;
 			}
@@ -58,7 +55,7 @@ export class BiAstar{
 	      this.steps ++;
       	var lowInd : number = 0;
 	      for(var i=0; i<startOpenList.length; i++) {
-	        if(gridCord[startOpenList[i]].f < gridCord[startOpenList[lowInd]].f) {
+	        if(gridCord[startOpenList[i]].g < gridCord[startOpenList[lowInd]].g) {
 	           lowInd = i;
 	        }
 	      }
@@ -104,8 +101,7 @@ export class BiAstar{
 	            // let a = startOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              gridCord[Coord].h = this.distance(Coord,end);
-	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+	              
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byStart;
 	            }
@@ -113,9 +109,8 @@ export class BiAstar{
 
 	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = this.distance(Coord,end);
-	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-	            gridCord[Coord].parent = currentNode;    
+	            
+	          	gridCord[Coord].parent = currentNode;    
 	            gridCord[Coord].open = true;
 	            startOpenList.push(Coord);
 	            openBy[Coord] = byStart;
@@ -128,7 +123,7 @@ export class BiAstar{
 	      gridCord[currentNode].visited = true;
 	      var lowInd : number = 0;
 	      for(var i=0; i<endOpenList.length; i++) {
-	        if(gridCord[endOpenList[i]].f < gridCord[endOpenList[lowInd]].f) {
+	        if(gridCord[endOpenList[i]].g < gridCord[endOpenList[lowInd]].g) {
 	           lowInd = i;
 	        }
 	      }
@@ -174,8 +169,6 @@ export class BiAstar{
 	            // let a = endOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              gridCord[Coord].h = this.distance(Coord,start);
-	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byEnd;
 	            }
@@ -183,8 +176,6 @@ export class BiAstar{
 
 	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = this.distance(Coord,start);
-	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	            gridCord[Coord].parent = currentNode;    
 	            gridCord[Coord].open = true;
 	            endOpenList.push(Coord);
