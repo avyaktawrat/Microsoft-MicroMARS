@@ -28,8 +28,10 @@
 			        </mat-option>
 	        	</mat-select>
 			</mat-form-field>
-			<mat-checkbox class="example-margin" color="primary" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
-
+			<div class = "example-margin" >
+			<mat-checkbox color="primary" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
+			<mat-checkbox color = "primary" [(ngModel)]="notCrossCorner" [ngModelOptions]="{standalone: true}">Do not cross corners</mat-checkbox>
+			</div>
 			<!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>

@@ -60,7 +60,7 @@ export class FirstComponent implements OnInit {
   terrain : boolean = true;
   cov_x :number = 2;
   cov_y : number = 2;
-  showPath: boolean = false;
+  showPath: boolean = true;
   // Slider for Obstacle
   max = 100;
   min = 0;
@@ -69,7 +69,8 @@ export class FirstComponent implements OnInit {
   choose = 100;
   vertical = false;
   tickInterval = 1;
-  allowDiag = false;
+  allowDiag = true;
+  notCrossCorner:boolean = false;
 
   selectedValue: string = 'bfs';
   selectedPS: string = 'PS_1';
@@ -272,6 +273,10 @@ export class FirstComponent implements OnInit {
 
   updateUI(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
+      (async () => { 
+        // Do something before delay
+        //console.log('before delay')
+
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
       if(rect.isPath && this.showPath){
@@ -293,7 +298,8 @@ export class FirstComponent implements OnInit {
       }
 
       else if (rect.visited && !this.isTerrain){
-        element.style.fill = "lightblue";
+        //await delay(10000);
+        element.style.fill = "lightblue";        
         element.style.fillOpacity = "1";
       }
       else if (rect.open && !this.isTerrain){
@@ -310,6 +316,8 @@ export class FirstComponent implements OnInit {
         element.style.fillOpacity = '1';
 
       }
+          //console.log('after delay')
+      })();
     }
   }
 
@@ -343,7 +351,7 @@ export class FirstComponent implements OnInit {
       }
     switch (this.selectedValue) {
       case 'bfs':
-        bfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+        bfs.search(this.gridCord, this.start, this.end, this.allowDiag, this.notCrossCorner);
         this.steps = bfs.steps;
         this.length = bfs.length1;
         this.time = bfs.time;

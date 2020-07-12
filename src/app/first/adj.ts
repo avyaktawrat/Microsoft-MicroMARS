@@ -7,6 +7,7 @@ export function get_adjacency_list(width: number, height: number, diag: boolean)
   const rects = document.getElementsByTagName('rect');
   let adj = new Array<Array<Pair>>();
   adj.length = rects.length;
+  console.log(adj)
   for (let i = 0; i < rects.length; i++) {
     adj[i] = new Array<Pair>();
     const possibilities = [i - height, i - 1, i + 1, i + height];

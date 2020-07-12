@@ -10,7 +10,7 @@ export class BFS{
   public length1: number = 0;
   public time: string = '0';
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean):void {
 
     let milli = performance.now();
     let distance: number[] = new Array();
@@ -24,7 +24,7 @@ export class BFS{
       var s =   qu[0];
       qu.shift();
       gridCord[s].visited= true;
-      var arr = Utils.direction8_vector(s,gridCord,allowDiag);
+      var arr = Utils.direction8_vector(s,gridCord,allowDiag, notCrossCorner);
       for(let u of arr){
         
 
