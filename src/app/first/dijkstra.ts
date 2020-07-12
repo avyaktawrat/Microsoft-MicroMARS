@@ -5,10 +5,10 @@ export class Dijkstra {
   steps = 0;
   length1: number;
   time: string;
+  paths: number[] = new Array<number>();
   search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     const then = performance.now();
     const INF = 1000000000;
-    console.log(adj);
     // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
@@ -33,7 +33,7 @@ export class Dijkstra {
         }
       }
       u[v] = true;
-      gridCoords[v].visited= true;
+      gridCoords[v].visited = true;
       // rects[v].style.fill = 'lightblue';
       // gridCoords[v].visited = true;
       for (let edge of adj[v]){

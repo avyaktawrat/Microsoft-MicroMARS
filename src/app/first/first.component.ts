@@ -5,6 +5,7 @@ import { MatSliderChange } from '@angular/material/slider';
 import { DPair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
 import { FloydWarshall } from './floydWarshall';
+import { TravSalesMan } from './travSalesMan';
 
 import { Astar } from './Astar' ;
 import {BFS} from './BFS';
@@ -362,45 +363,80 @@ export class FirstComponent implements OnInit {
     const bfs: BFS = new BFS();
     const dij: Dijkstra = new Dijkstra();
     const flyw: FloydWarshall = new FloydWarshall();
-      this.clearPath();
-      this.resetGridParams();
-      if ( this.start == null || (this.end == null && this.Dest.length < this.selectedDest) ){
+    this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
+    this.clearPath();
+    this.resetGridParams();
+    if ( this.start == null || (this.end == null && this.Dest.length < this.selectedDest) ){
         alert('Insert start and end');
-      }
-      console.log(this.selectedValue);
+    }
+    console.log(this.selectedValue);
     switch (this.selectedValue) {
       case 'bfs':
-        bfs.search(this.start, this.end, this.gridCord, this.allowDiag);
-        this.steps = bfs.steps;
-        this.length = bfs.length1;
-        this.time = bfs.time;
+        if (this.selectedPS === 'PS_1') {
+          bfs.search(this.start, this.end, this.gridCord, this.allowDiag);
+          this.steps = bfs.steps;
+          this.length = bfs.length1;
+          this.time = bfs.time;
+        }
+        else {
+          const tsp = new TravSalesMan();
+          tsp.start = this.start;
+          tsp.destinations = this.Dest;
+          tsp.search(bfs, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+          this.length = tsp.length;
+          this.steps = tsp.steps;
+          this.time = tsp.time;
+        }
         this.updateUI();
         break;
       case 'Astar':
         // astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.req_step);
-        astar.search(this.start, this.end, this.gridCord, this.allowDiag);
+        if (this.selectedPS === 'PS_1') {
+          astar.search(this.start, this.end, this.gridCord, this.allowDiag);
+          this.steps = astar.steps;
+          this.length = astar.length1;
+          this.time = astar.time;
+        }
+        else {
+          const tsp = new TravSalesMan();
+          tsp.start = this.start;
+          tsp.destinations = this.Dest;
+          tsp.search(astar, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+          this.length = tsp.length;
+          this.steps = tsp.steps;
+          this.time = tsp.time;
+        }
 
-        this.steps = astar.steps;
-        this.length = astar.length1;
-        this.time = astar.time;
         this.updateUI();
         break;
       case 'Dijkstra':
-        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-        dij.search(this.start, this.end, this.gridCord, this.allowDiag, this.adjList);
-        this.time = dij.time;
-        this.steps = dij.steps;
-        this.length = dij.length1;
+        if (this.selectedPS === 'PS_1') {
+          dij.search(this.start, this.end, this.gridCord, this.allowDiag, this.adjList);
+          this.time = dij.time;
+          this.steps = dij.steps;
+          this.length = dij.length1;
+        }
+        else {
+          const tsp = new TravSalesMan();
+          tsp.start = this.start;
+          tsp.destinations = this.Dest;
+          tsp.search(dij, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+          this.length = tsp.length;
+          this.steps = tsp.steps;
+          this.time = tsp.time;
+        }
         this.updateUI(); //uncomment this later
         break;
 
       case 'Floyd–Warshall':
-        this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-        flyw.search(this.adjList);
-        flyw.getPath(this.start, this.end, this.gridCord);
-        this.length = flyw.length;
-        this.time = flyw.time;
-        this.steps = flyw.steps;
+        if (this.selectedPS !== 'PS_1') {
+          const tsp = new TravSalesMan();
+          tsp.start = this.start;
+          tsp.destinations = this.Dest;
+          tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
+          tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+          console.log('Flyod Warshall');
+        }
         this.updateUI();
         break;
       default:
