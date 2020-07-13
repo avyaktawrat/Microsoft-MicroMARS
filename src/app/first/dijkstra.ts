@@ -11,7 +11,7 @@ export class Dijkstra {
   public time: string;
   public path = new  Array();
 
-  Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
+  Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>,notCrossCorner?:boolean) {
     const then = performance.now();
 
     const INF = 1000000000;
@@ -84,7 +84,7 @@ export class Dijkstra {
   }
 
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean/*,req_step:number*/):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
@@ -146,7 +146,7 @@ export class Dijkstra {
       //find neighbors
 
       // let neighbors = new Array<Pair>() ;
-      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
+      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
       // console.log(neighbors);
       for (var Coord of neighbors) {
 

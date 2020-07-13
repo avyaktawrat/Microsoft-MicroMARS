@@ -5,7 +5,7 @@ import {hGrid, vGrid, totalGrid} from './constants'
 
 export class utils{
 
-  public  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean = false): number[]{
+  public  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean ): number[]{
     var arr = new Array();
     //console.log(a)
 

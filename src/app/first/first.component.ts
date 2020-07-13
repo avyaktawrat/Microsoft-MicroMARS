@@ -83,6 +83,8 @@ export class FirstComponent implements OnInit {
 
   allowDiag = false;
   bidirection = false;
+  bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
+  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
   selectedValue: string = 'bfs';
   notCrossCorner = false;
   selectedPS: string = 'PS_1';
@@ -304,6 +306,15 @@ export class FirstComponent implements OnInit {
     console.log(searchValue);
     this.choose = searchValue;
   }
+  terrainToggle(isT: boolean){
+    //console.log('This is emitted as the thumb slides');
+    //console.log(event.value);
+    if(isT == true){
+      this.bidirection = false;
+      this.notCrossCorner = false;
+    }
+    console.log (isT, this.bidirection);
+  }
 
   updateUI(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
@@ -366,8 +377,41 @@ export class FirstComponent implements OnInit {
     //   }
     // }
     let node = this.end;
-    if(this.gridCord[node].parent!=null){
-      console.log(this.gridCord[node].parent);
+    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
+      let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
+      this.length = 0;
+
+      let x1 = Math.floor(node1/hGrid)*30+15;
+      let x2 = Math.floor(node2/hGrid)*30+15;
+      let y1 = (node1%hGrid)*30+15;
+      let y2 = (node2%hGrid)*30+15;
+      this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+      this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+      
+      while(node1!=this.start){
+        let node_next = this.gridCord[node1].parent;
+        let x1 = Math.floor(node1/hGrid)*30+15;
+        let x2 = Math.floor(node_next/hGrid)*30+15;
+        let y1 = (node1%hGrid)*30+15;
+        let y2 = (node_next%hGrid)*30+15;
+        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+        node1 = node_next;
+        this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+      }
+      while(node2!=this.end){
+        let node_next = this.gridCord[node2].parent;
+        let x1 = Math.floor(node2/hGrid)*30+15;
+        let x2 = Math.floor(node_next/hGrid)*30+15;
+        let y1 = (node2%hGrid)*30+15;
+        let y2 = (node_next%hGrid)*30+15;
+        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+        node2 = node_next;
+        this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+      }
+      this.lengthS = this.length.toFixed(2);
+    }
+    else if(!this.bidirection && this.gridCord[node].parent!=null){
+      //console.log(this.gridCord[node].parent);
       this.length = 0;
       while(node!=this.start){
         let node_next = this.gridCord[node].parent;
@@ -429,31 +473,35 @@ export class FirstComponent implements OnInit {
     switch (this.selectedValue) {
       case 'bfs':
         if(this.bidirection){
-          bibfs.search(this.gridCord, this.start, this.end, this.allowDiag);
+          bibfs.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner);
         }else{
           bfs.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner);
         }
 
         this.steps = bfs.steps;
-        this.length = bfs.length1;
+       // this.length = bfs.length1;
         this.time = bfs.time;
+        this.bidirecNodeS = bibfs.bidirecNodeS;
+        this.bidirecNodeE = bibfs.bidirecNodeE;
         break;
       case 'Astar':
         if(this.isTerrain){
-          astar.Wsearch(this.gridCord, this.start,this.end,this.allowDiag/*,this.req_step*/);
+          astar.Wsearch(this.gridCord, this.start,this.end,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
           this.steps = astar.steps;
           this.length = astar.length1;
           this.time = astar.time;
   
   
         }else if (this.bidirection){
-          biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.req_step); 
+          biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner,this.req_step); 
           this.steps = biastar.steps;
           this.length = biastar.length1;
           this.time = biastar.time;
+          this.bidirecNodeS = bidjk.bidirecNodeS;
+          this.bidirecNodeE = bidjk.bidirecNodeE;
 
         }else{
-          astar.search(this.gridCord, this.start,this.end,this.allowDiag/*,this.req_step*/);
+          astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
           this.steps = astar.steps;
           this.length = astar.length1;
           this.time = astar.time;
@@ -462,19 +510,21 @@ export class FirstComponent implements OnInit {
       case 'Dijkstra':
         if(this.isTerrain){
           this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-          dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag, this.adjList);
+          dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag, this.adjList,this.notCrossCorner);
           this.time = dij.time;
           this.steps = dij.steps;
           this.length = dij.length1;
 
         }else if (this.bidirection){
-          bidjk.search(this.gridCord, this.start, this.end, this.allowDiag/*,this.req_step*/); 
+          bidjk.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
           this.time = bidjk.time;
           this.steps = bidjk.steps;
           this.length = bidjk.length1;
+          this.bidirecNodeS = bidjk.bidirecNodeS;
+          this.bidirecNodeE = bidjk.bidirecNodeE;
 
         }else{
-          dij.search( this.gridCord,this.start, this.end, this.allowDiag/*,this.req_step*/);
+          dij.search( this.gridCord,this.start, this.end, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
           this.time = dij.time;
           this.steps = dij.steps;
           this.length = dij.length1;
@@ -489,7 +539,7 @@ export class FirstComponent implements OnInit {
         break;
     }
       this.updateUI(); //uncomment this later
-  // this.pathLine(); //for tracing the line
+      this.pathLine(); //for tracing the line
   }
 }
 

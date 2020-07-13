@@ -9,8 +9,10 @@ export class BiDjk{
   public steps :number = 0;
   public length1 :number= 0;
   public time :string = "0";
+  bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
+  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean/*, req_step:number*/):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*, req_step:number*/):void {
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
   	// var startClosedList : number[] = new Array();
@@ -66,7 +68,7 @@ export class BiDjk{
 	      
 	      closedList.push(currentNode);
 
-	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
+	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
 	      for(let Coord of neighbors){
 	      	if(closedList.includes(Coord) ){//already visited
 	          continue;
@@ -89,7 +91,9 @@ export class BiDjk{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-	          stop = true;
+			  stop = true;
+			  this.bidirecNodeE=Coord;
+			  this.bidirecNodeS=currentNode;
 	          this.time =  (milli2-milli).toFixed(3);
 	      		break;
 	      	}
@@ -133,7 +137,7 @@ export class BiDjk{
 	      closedList.push(currentNode);
 
 	      
-	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
+	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
 	      for(let Coord of neighbors){
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
 	      	// let ng = 1;
@@ -159,7 +163,9 @@ export class BiDjk{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-	        stop = true;
+			stop = true;
+			this.bidirecNodeS=Coord;
+			this.bidirecNodeE=currentNode;
 	        this.time =  (milli2-milli).toFixed(3);
 	      	break;
 	      }

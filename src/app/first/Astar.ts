@@ -16,7 +16,7 @@ export class Astar{
   public time :string = "0";
   public path = new Array();
 
-  public Wsearch(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean/*,req_step:number*/):void {
+  public Wsearch(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
@@ -80,7 +80,7 @@ export class Astar{
       //find neighbors
 
       let neighbors = new Array<Pair>() ;
-      neighbors = this.direction8_vector(currentNode,gridCord,allowDiag);
+      neighbors = this.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
       // console.log(neighbors);
       for (var i = 0; i < neighbors.length; ++i) {
         let Coord  = neighbors[i].coord;
@@ -93,6 +93,7 @@ export class Astar{
 
           if(openList.includes(Coord)){
             if(gridCord[currentNode].g + ng+neighbors[i].weight  < gridCord[Coord].g){
+              gridCord[Coord].g = gridCord[currentNode].g + ng +neighbors[i].weight;
               gridCord[Coord].h = Utils.distance(Coord,end);
               gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
               gridCord[Coord].parent = currentNode;
@@ -116,7 +117,7 @@ export class Astar{
   }
 
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean/*,req_step:number*/):void {
+  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
@@ -180,7 +181,7 @@ export class Astar{
       //find neighbors
 
       // let neighbors = new Array<Pair>() ;
-      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag);
+      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
       // console.log(neighbors);
       for (var Coord of neighbors) {
 
@@ -215,7 +216,7 @@ export class Astar{
     }
   }
 
-  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean): Array<Pair>{
+  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean,notCrossCorner:boolean): Array<Pair>{
     var arr = new Array<Pair>();
     
     if((a)%hGrid !=0 && a-1>=0){ //up
