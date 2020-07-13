@@ -30,6 +30,7 @@
 			
 			<mat-checkbox class = "example-margin" color="primary" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
 			
+
 			<!--   <h4>Scam fill</h4>
 		      <mat-form-field appearance="fill">
 		        <mat-label>Favorite car</mat-label>
@@ -97,7 +98,7 @@
 				<mat-divider *ngIf = "selectedValue!='bfs'"></mat-divider>
 				<h4 *ngIf = "selectedValue!='bfs'"><em>Options Not applicable with Terrain distribution</em></h4>
 				<mat-checkbox color = "primary" [(ngModel)]="notCrossCorner" [ngModelOptions]="{standalone: true}">Do not cross corners</mat-checkbox>
-				<mat-checkbox color = "primary" >Bi-Directional</mat-checkbox>
+				<mat-checkbox color = "primary" [(ngModel)]="bidirection" [ngModelOptions]="{standalone: true}" >Bi-Directional</mat-checkbox>
 			</div>
 			<section id = "Terrain" *ngIf = "selectedValue!='bfs'">
 				<div class="example-section" *ngIf = "isTerrain"> 

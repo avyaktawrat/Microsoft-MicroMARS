@@ -59,24 +59,6 @@ export class BFS{
     }
 
 	}
-
-
-  // shortest_path(a: number): number{
-  //   if(a==this.end){
-  //     console.log('reached');
-  //     return 0;
-  //   }
-  //   var arr = this.direction_vector(a);
-  //   for(let j in arr){
-  //     if(this.gridCord[arr[j]].obstacle==0){
-  //       let element = document.getElementsByTagName('rect')[arr[j]];
-  //       element.style.fill = "yellow";
-  //       //this.gridCord[arr[j]].obstacle = 1;
-  //     }
-  //   }
-  //   //return 0;
-  // }
-
 }
 
 
