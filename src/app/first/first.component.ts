@@ -58,6 +58,8 @@ export class FirstComponent implements OnInit {
   steps = 0;
   time = '0';
   length = 0;
+  lengthS = "0";
+  
   path: number[] = new Array();
   pathCord: lineCord[] = new Array();
 
@@ -222,7 +224,14 @@ export class FirstComponent implements OnInit {
       this.steps = 0;
       this.time = '0';
     }
-
+    let element = document.getElementsByTagName("line")
+    let length = element.length
+    for (var i = 0; i < length; ++i) {
+      
+       element[0].parentNode.removeChild(element[0]);
+       element = document.getElementsByTagName("line")
+     
+    }
     this.start = null;
     this.end = null;
     this.updateUI();
@@ -294,19 +303,20 @@ export class FirstComponent implements OnInit {
 
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
-      if(rect.isPath && this.showPath){
-        element.style.fill = "orange";
-        element.style.fillOpacity = "1";
-      }
-     
-      else if (u == this.start && rect.isEndPoint){
+      
+      if (u == this.start && rect.isEndPoint){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
       else if (u == this.end && rect.isEndPoint){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
+      }else if(rect.isPath && this.showPath){
+        element.style.fill = "orange";
+        element.style.fillOpacity = "1";
       }
+     
+       
       else if (rect.isTerrain){
         element.style.fill = "grey";
         element.style.fillOpacity = (rect.value/100).toString();
@@ -361,7 +371,9 @@ export class FirstComponent implements OnInit {
         node = node_next;
         this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
       }
+      this.lengthS = this.length.toFixed(2);
     }
+    
     else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
       window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
     }
