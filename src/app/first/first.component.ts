@@ -239,6 +239,14 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].h = null;
 
     }
+    let element = document.getElementsByTagName("line")
+    let length = element.length
+    for (var i = 0; i < length; ++i) {
+      
+       element[0].parentNode.removeChild(element[0]);
+       element = document.getElementsByTagName("line")
+     
+    }
     this.updateUI();
   }
 
