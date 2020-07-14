@@ -39,8 +39,6 @@ export class BiAstar{
     gridCord[end].f = gridCord[end].h;
   
   	let currentNode :number;
-  	console.log(startOpenList);
-  	console.log(gridCord);
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
   		
   		if(this.steps == req_step){
@@ -94,9 +92,9 @@ export class BiAstar{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-			  stop = true;
-			  this.bidirecNodeE=Coord;
-			  this.bidirecNodeS=currentNode;
+					  stop = true;
+					  this.bidirecNodeE=Coord;
+					  this.bidirecNodeS=currentNode;
 	          this.time =  (milli2-milli).toFixed(3);
 	      		break;
 	      	}
@@ -168,11 +166,11 @@ export class BiAstar{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-			stop = true;
-			this.bidirecNodeS=Coord;
-			this.bidirecNodeE=currentNode;
-	        this.time =  (milli2-milli).toFixed(3);
-	      	break;
+						stop = true;
+						this.bidirecNodeS=Coord;
+						this.bidirecNodeE=currentNode;
+		        this.time =  (milli2-milli).toFixed(3);
+		      	break;
 	      }
 
 
@@ -202,6 +200,7 @@ export class BiAstar{
 
 			
     }
+    console.log(this.bidirecNodeE,this.bidirecNodeS);
 	}
 
   distance(a: number, b:number ): number {

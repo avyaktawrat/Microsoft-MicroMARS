@@ -10,15 +10,24 @@
 	</svg>
 	<div id = "menu-bar">
 		<form>
+
 	    	<mat-form-field appearance="fill">
 	        	<mat-label><h4>Problem Statement</h4></mat-label>
-	        	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS" [ngModelOptions]="{standalone: true}">
+	        	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS" [ngModelOptions]="{standalone: true}" >
 			        <mat-option *ngFor="let ps of Problem_statement" [value]="ps.value">
 		        	    {{ps.viewValue}}
 			        </mat-option>
 	        	</mat-select>
-			</mat-form-field>
-		
+				</mat-form-field>
+		    	<mat-form-field appearance="fill">
+	        	<mat-label><h4>Maze</h4></mat-label>
+	        	<mat-select [(ngModel)]="selectedMaze" name="maze" value = "selectedMaze" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeMaze()"> 
+			        <mat-option *ngFor="let ps of maze" [value]="ps.value">
+		        	    {{ps.viewValue}}
+			        </mat-option>
+	        	</mat-select>
+					</mat-form-field>
+
 	    	<mat-form-field appearance="fill">
 	        	<mat-label><h4>Algorithms</h4></mat-label>
 	        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">

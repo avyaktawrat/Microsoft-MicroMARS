@@ -88,7 +88,7 @@ export class FirstComponent implements OnInit {
   selectedValue: string = 'bfs';
   notCrossCorner = false;
   selectedPS: string = 'PS_1';
-
+  selectedMaze: string;
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'Astar', viewValue: 'A*'},
@@ -100,6 +100,11 @@ export class FirstComponent implements OnInit {
     {value: 'PS_2', viewValue: 'Intermediate Stops'},
     {value: 'PS_3', viewValue: 'Multiple Destinations'}
   ];
+  maze : DropDownSelect[] = [
+    {value: 'hori', viewValue: 'Horizontal '},
+    {value: 'vert', viewValue: 'Vertical'},
+    {value: 'rand', viewValue: 'Random'},
+    {value: 'stair', viewValue:'Stair Case'}];
 
   // Gaussian Distribution in terrain
 
@@ -321,7 +326,88 @@ export class FirstComponent implements OnInit {
     }
     console.log (isT, this.bidirection);
   }
-
+  changeMaze(){
+    this.clearWall();
+    switch (this.selectedMaze) {
+      case "hori":
+          for (var i = 0; i < hGrid; i+=2) {
+            for (var j = 0; j < vGrid; ++j) {
+              if(Math.random()>0.3){
+                this.gridCord[j*hGrid+i].isTerrain = true;
+                this.gridCord[j*hGrid+i].value = 100;
+              }           
+            } 
+          }
+          for (var i = 0; i < totalGrid; ++i) {
+            if(this.gridCord[i].isTerrain){
+              continue;
+            }
+            if(Math.random()>0.9){
+              this.gridCord[i].isTerrain = true;
+              this.gridCord[i].value = 100;
+            }else{
+              this.gridCord[i].isTerrain = false;
+              this.gridCord[i].value = 0;
+            }
+          }
+        break;
+      case "vert":
+          for (var i = 0; i < hGrid; i++) {
+            for (var j = 0; j < vGrid; j+=2) {
+              if(Math.random()>0.3){
+                this.gridCord[j*hGrid+i].isTerrain = true;
+                this.gridCord[j*hGrid+i].value = 100;
+              }           
+            } 
+          }
+          for (var i = 0; i < totalGrid; ++i) {
+            if(this.gridCord[i].isTerrain){
+              continue;
+            }
+            if(Math.random()>0.9){
+              this.gridCord[i].isTerrain = true;
+              this.gridCord[i].value = 100;
+            }else{
+              this.gridCord[i].isTerrain = false;
+              this.gridCord[i].value = 0;
+            }
+          }
+        break;
+      case "rand":
+        for (var i = 0; i < totalGrid; ++i) {
+          if(Math.random()>0.7){
+            this.gridCord[i].isTerrain = true;
+            this.gridCord[i].value = 100;
+          }else{
+            this.gridCord[i].isTerrain = false;
+            this.gridCord[i].value = 0;
+          }
+        }
+        break;
+      case "stair":
+        var  i = 0;
+        for ( i = 0; i <= 22*(hGrid+1); i=i+hGrid+1) {
+          this.gridCord[i].isTerrain = true;
+          this.gridCord[i].value = 100;
+        }
+        for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) { 
+          this.gridCord[i].isTerrain = true;
+          this.gridCord[i].value = 100;         // code...
+        }
+          this.gridCord[i].isTerrain = false;
+          this.gridCord[i].value = 0;
+          i+=2;  
+        for(var j=0; j<5;j++){
+          this.gridCord[i+j*(hGrid+1)].isTerrain = true;
+          this.gridCord[i+j*(hGrid+1)].value = 100;         // code... 
+        }
+        break;
+      default:
+        // code...
+        break;
+    }
+    this.updateUI();
+  }
   updateUI(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
       (async () => { 
@@ -383,7 +469,8 @@ export class FirstComponent implements OnInit {
     //   }
     // }
     let node = this.end;
-    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
+    // console.log(this.bidirecNodeE, this.bidirecNodeS)
+    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){ 
       let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
       this.length = 0;
 
@@ -503,8 +590,9 @@ export class FirstComponent implements OnInit {
           this.steps = biastar.steps;
           this.length = biastar.length1;
           this.time = biastar.time;
-          this.bidirecNodeS = bidjk.bidirecNodeS;
-          this.bidirecNodeE = bidjk.bidirecNodeE;
+          this.bidirecNodeS = biastar.bidirecNodeS;
+          this.bidirecNodeE = biastar.bidirecNodeE;
+          // console.log(this.bidirecNodeE,this.bidirecNodeS);
 
         }else{
           astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
@@ -544,8 +632,9 @@ export class FirstComponent implements OnInit {
         alert('Select Algorithms');
         break;
     }
-      this.updateUI(); //uncomment this later
+      this.updateUI(); 
       this.pathLine(); //for tracing the line
+      // console.log(this.gridCord)
   }
 }
 

@@ -95,7 +95,7 @@ export class BiBFS{
 						  stop= true;
 						  this.bidirecNodeS=u;
 						  this.bidirecNodeE=currentNodeE;
-						  console.log(currentNodeS,currentNodeE, gridCord[currentNodeE].parent, "loop 2");
+						  // console.log(currentNodeS,currentNodeE, gridCord[currentNodeE].parent, "loop 2");
   						break;
   						
   					}
