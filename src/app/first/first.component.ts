@@ -311,7 +311,13 @@ export class FirstComponent implements OnInit {
     //console.log(event.value);
     if(isT == true){
       this.bidirection = false;
+      this.notCrossCorner = false; 
+      this.isGaussian = false;
+      
+    }else{
+      this.bidirection = false;
       this.notCrossCorner = false;
+      this.isGaussian = false;      
     }
     console.log (isT, this.bidirection);
   }

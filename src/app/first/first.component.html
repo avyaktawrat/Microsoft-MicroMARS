@@ -125,7 +125,8 @@
 						color="primary"
 						[checked]="false"
 						[disabled]="false"
-						[(ngModel)]="isGaussian"
+						[(ngModel)]="isGaussian"	
+						*ngIf = "isTerrain == true"
 						[ngModelOptions]="{standalone: true}">
 						Gaussian Distribution
 					</mat-slide-toggle>
