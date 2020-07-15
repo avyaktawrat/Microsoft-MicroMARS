@@ -436,6 +436,9 @@ export class FirstComponent implements OnInit {
           tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
           tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
           console.log('Flyod Warshall');
+          this.time = tsp.time;
+          this.steps = tsp.steps;
+          this.length = tsp.length;
         }
         this.updateUI();
         break;

@@ -59,6 +59,7 @@ export class Dijkstra {
       if (v !== end){
         // rects[v].style.fill = 'orange';
         gridCoords[v].isPath = true;
+        this.paths.push(v);
         // gridCoords[v].isPath = true;
       }
       path.push(v);

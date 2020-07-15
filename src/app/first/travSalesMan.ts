@@ -16,15 +16,15 @@ export class TravSalesMan {
   path: number[][][] = new Array<Array<Array<number>>>(); // for floyd-warshall only
   prepareNewGraph(gridCoords: GridCoords[], allowDiag: boolean, adj: Array<Array<DPair>>) {   // function to make a new graph
     this.newNodes = [this.start, ...this.destinations];
-    console.log(this.newNodes);
     this.newGraph.length = this.newNodes.length;
     this.path.length = this.newNodes.length;
-    let dij = new Dijkstra(); // Using BFS as it always gives shortest path between two nodes in a graph
     for (let i = 0; i < this.newNodes.length; i++) {
       this.newGraph[i] = new Array<number>(this.newNodes.length);
       this.path[i] = new Array<Array<number>>();
       for (let j = 0; j < this.newNodes.length; j++) {
+        this.steps += 1;
         if (i !== j) {
+          let dij = new Dijkstra(); // Using BFS as it always gives shortest path between two nodes in a graph
           dij.search(this.newNodes[i], this.newNodes[j], gridCoords, allowDiag, adj);
           this.newGraph[i][j] = dij.length1;
           this.path[i].push(dij.paths);
@@ -53,8 +53,12 @@ export class TravSalesMan {
       // prepare a new graph
       /* now apply the new algorithms and get the optimal traversal order */
       if (algo instanceof FloydWarshall) {
+        let then = performance.now();
         algo.search(this.newGraph);
         algo.getPath(0, [1,2], gridCoords, this.path);
+        this.time = (performance.now() - then).toFixed(3);
+        this.length = algo.length1;
+        this.steps += algo.steps;
       }
     }
   }
