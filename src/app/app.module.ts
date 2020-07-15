@@ -21,7 +21,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
@@ -31,26 +32,27 @@ import {MatDialogModule} from '@angular/material/dialog';
     ClickableDirective,
     WelcomePageComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatGridListModule,
-        BrowserAnimationsModule,
-        MatTabsModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatIconModule,
-        MatSliderModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatDividerModule,
-        MatSlideToggleModule,
-        MatDialogModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatGridListModule,
+    BrowserAnimationsModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSliderModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatSlideToggleModule,
+    MatRadioModule
+  ],
+
   exports: [
     MatTabsModule,
     MatSelectModule,
