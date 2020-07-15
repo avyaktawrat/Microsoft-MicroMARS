@@ -5,8 +5,8 @@
 }
 .svg{
 /*	padding-top: 200px;
-	padding-left: 1200px;*/
-  padding-top: 20px;
+	padding-left: 1200px;
+*/  padding-top: 20px;
   padding-left: 20px;
 
     height: 100%;
@@ -86,7 +86,7 @@ form mat-form-field {
     margin: 3%;
     display: block;
     width: 100%;
-    text-align: left;
+    text-align: center;
   }
 
   .mat-slider-horizontal {
