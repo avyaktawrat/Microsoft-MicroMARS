@@ -13,7 +13,7 @@ export class BiBFS{
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean):void {
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean):void {
   	let milli = performance.now();
     let distance: number[] = new Array();
     let stop :boolean = false;

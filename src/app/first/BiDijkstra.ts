@@ -12,7 +12,7 @@ export class BiDjk{
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*, req_step:number*/):void {
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*, req_step:number*/):void {
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
   	// var startClosedList : number[] = new Array();

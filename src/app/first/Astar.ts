@@ -1,6 +1,7 @@
 import {utils } from './utils';
 import { GridCoords } from './GridCoords';
-import {hGrid, vGrid, totalGrid} from './constants'
+import {hGrid, vGrid, totalGrid} from './constants';
+import { DPair } from './adj';
 
 let Utils: utils = new utils();
 
@@ -16,19 +17,18 @@ export class Astar{
   public time :string = "0";
   public path = new Array();
 
-  public Wsearch(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+  public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
     
 
     openList.push(start);
+    gridCoords[start].h = Utils.distance(start , end);
+    gridCoords[start].g = 0;
+    gridCoords[start].f = gridCoords[start].h;
 
-    gridCord[start].h = Utils.distance(start , end); 
-    gridCord[start].g = 0;
-    gridCord[start].f = gridCord[start].h;
-    
-    let currentNode :number;
+    let currentNode: number;
 
     while(openList.length != 0) {
       this.steps ++;
@@ -36,13 +36,13 @@ export class Astar{
       //select least f 
       var leastF : number = openList[0];
       for (let node of openList){
-        if(gridCord[node].f < gridCord[leastF].f ){
+        if(gridCoords[node].f < gridCoords[leastF].f ){
           leastF = node;
         }
       }
       // currentNode = openList[lowInd];
       currentNode = leastF;
-      gridCord[currentNode].visited = true;
+      gridCoords[currentNode].visited = true;
 
       if(closedList.includes(currentNode)){
         continue;
@@ -64,13 +64,12 @@ export class Astar{
           let milli2 = performance.now();
           let node:number;
           this.path.push(currentNode);
-          node = gridCord[currentNode].parent;
+          node = gridCoords[currentNode].parent;
           while(node!=start){
-            gridCord[node].isPath = true;
+            gridCoords[node].isPath = true;
             this.path.push(node);
-            node = gridCord[node].parent;
-            
-           }
+            node = gridCoords[node].parent;            
+          }
           this.path.push(start);
           this.path = this.path.reverse();
           this.time =  (milli2-milli).toFixed(3);
@@ -80,7 +79,7 @@ export class Astar{
       //find neighbors
 
       let neighbors = new Array<Pair>() ;
-      neighbors = this.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
+      neighbors = this.direction8_vector(currentNode,gridCoords,allowDiag);
       // console.log(neighbors);
       for (var i = 0; i < neighbors.length; ++i) {
         let Coord  = neighbors[i].coord;
@@ -92,20 +91,20 @@ export class Astar{
         }
 
           if(openList.includes(Coord)){
-            if(gridCord[currentNode].g + ng+neighbors[i].weight  < gridCord[Coord].g){
-              gridCord[Coord].g = gridCord[currentNode].g + ng +neighbors[i].weight;
-              gridCord[Coord].h = Utils.distance(Coord,end);
-              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-              gridCord[Coord].parent = currentNode;
+            if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[Coord].g){
+              gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
+              gridCoords[Coord].h = Utils.distance(Coord,end);
+              gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+              gridCoords[Coord].parent = currentNode;
             }
           }
 
           else{ //seeing the node for first time
-            gridCord[Coord].g = gridCord[currentNode].g + ng +neighbors[i].weight;
-            gridCord[Coord].h = Utils.distance(Coord,end);
-            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-            gridCord[Coord].parent = currentNode;    
-            gridCord[Coord].open = true;
+            gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
+            gridCoords[Coord].h = Utils.distance(Coord,end);
+            gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+            gridCoords[Coord].parent = currentNode;    
+            gridCoords[Coord].open = true;
             openList.push(Coord);
           }
         }
@@ -116,8 +115,7 @@ export class Astar{
     }
   }
 
-
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+  public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
@@ -125,9 +123,9 @@ export class Astar{
 
     openList.push(start);
 
-    gridCord[start].h = Utils.distance(start , end); 
-    gridCord[start].g = 0;
-    gridCord[start].f = gridCord[start].h;
+    gridCoords[start].h = Utils.distance(start , end); 
+    gridCoords[start].g = 0;
+    gridCoords[start].f = gridCoords[start].h;
     
     let currentNode :number;
 
@@ -137,13 +135,13 @@ export class Astar{
       //select least f 
       var leastF : number = openList[0];
       for (let node of openList){
-        if(gridCord[node].f < gridCord[leastF].f ){ // "=" for a reason
+        if(gridCoords[node].f < gridCoords[leastF].f ){ // "=" for a reason
           leastF = node;
         }
       }
       // currentNode = openList[lowInd];
       currentNode = leastF ;
-      gridCord[currentNode].visited = true;
+      gridCoords[currentNode].visited = true;
 
       if(closedList.includes(currentNode)){
         continue;
@@ -165,11 +163,11 @@ export class Astar{
           let milli2 = performance.now();
           let node:number;
           this.path.push(currentNode);
-          node = gridCord[currentNode].parent;
+          node = gridCoords[currentNode].parent;
           while(node!=start){
-            gridCord[node].isPath = true;
+            gridCoords[node].isPath = true;
             this.path.push(node);
-            node = gridCord[node].parent;
+            node = gridCoords[node].parent;
             
            }
           this.path.push(start);
@@ -181,7 +179,7 @@ export class Astar{
       //find neighbors
 
       // let neighbors = new Array<Pair>() ;
-      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
+      let neighbors = Utils.direction8_vector(currentNode,gridCoords,allowDiag,notCrossCorner);
       // console.log(neighbors);
       for (var Coord of neighbors) {
 
@@ -192,20 +190,20 @@ export class Astar{
         }
 
           if(openList.includes(Coord)){
-            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
-              gridCord[Coord].g = gridCord[currentNode].g + ng;
-              gridCord[Coord].h = Utils.distance(Coord,end);
-              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-              gridCord[Coord].parent = currentNode;
+            if(gridCoords[currentNode].g + ng  < gridCoords[Coord].g){
+              gridCoords[Coord].g = gridCoords[currentNode].g + ng;
+              gridCoords[Coord].h = Utils.distance(Coord,end);
+              gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+              gridCoords[Coord].parent = currentNode;
             }
           }
 
           else{ //seeing the node for first time
-            gridCord[Coord].g = gridCord[currentNode].g + ng;
-            gridCord[Coord].h = Utils.distance(Coord,end);
-            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-            gridCord[Coord].parent = currentNode;    
-            gridCord[Coord].open = true;
+            gridCoords[Coord].g = gridCoords[currentNode].g + ng;
+            gridCoords[Coord].h = Utils.distance(Coord,end);
+            gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+            gridCoords[Coord].parent = currentNode;    
+            gridCoords[Coord].open = true;
             openList.push(Coord);
           }
         }
@@ -216,33 +214,35 @@ export class Astar{
     }
   }
 
-  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean,notCrossCorner:boolean): Array<Pair>{
+
+
+direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Array<Pair>{
     var arr = new Array<Pair>();
-    
+
     if((a)%hGrid !=0 && a-1>=0){ //up
       let vector = {coord : 0, weight:0};
       vector.coord = a-1;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
     if ( a+hGrid < totalGrid){  //right
       let vector = {coord : 0, weight:0};
       vector.coord = a+hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     if((a+1)%hGrid !=0 && a+1 < totalGrid){ //down
       let vector = {coord : 0, weight:0};
       vector.coord = a+1;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     if(a-hGrid >= 0 ){ //left
       let vector = {coord : 0, weight:0};
       vector.coord = a-hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
@@ -250,36 +250,36 @@ export class Astar{
     if((a)%hGrid !=0 && a-1>=0 && a+hGrid < totalGrid && allowDiag){ //right up
       let vector = {coord : 0, weight:0};
       vector.coord = a-1+hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     if ( a+hGrid < totalGrid && (a+1)%hGrid !=0 && a+1 < totalGrid  && allowDiag){  //right down
       let vector = {coord : 0, weight:0};
       vector.coord = a+1+hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     if((a+1)%  hGrid !=0 && a-hGrid >= 0 && a+1 < totalGrid && allowDiag){ //down left
       let vector = {coord : 0, weight:0};
       vector.coord = a+1-hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     if(a-hGrid >= 0 && (a)%hGrid !=0 && a-1>=0 && allowDiag){ //left up
       let vector = {coord : 0, weight:0};
       vector.coord = a-1-hGrid;
-      vector.weight = this.calWeight(gridCord,vector.coord,a);
+      vector.weight = this.calWeight(gridCoords,vector.coord,a);
       arr.push(vector);
     }
 
     return arr;
   }
-  calWeight(gridCord: GridCoords[],a:number , b:number) : number{
+  calWeight(gridCoords: GridCoords[],a:number , b:number) : number{
     // console.log(a);
-    let weight = 0.1*Math.abs(gridCord[a].value - gridCord[b].value) ;
+    let weight = 0.1*Math.abs(gridCoords[a].value - gridCoords[b].value) ;
     return  weight;
   }
 

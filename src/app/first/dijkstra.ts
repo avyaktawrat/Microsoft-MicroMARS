@@ -9,11 +9,12 @@ export class Dijkstra {
   public steps = 0;
   public length1: number;
   public time: string;
-  public path = new  Array();
+  public paths: number[] = new Array<number>();
 
-  Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>,notCrossCorner?:boolean) {
+
+
+  Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     const then = performance.now();
-
     const INF = 1000000000;
     console.log(adj);
     // let rects = document.getElementsByTagName('rect');
@@ -40,7 +41,7 @@ export class Dijkstra {
         }
       }
       u[v] = true;
-      gridCoords[v].visited= true;
+      gridCoords[v].visited = true;
       // rects[v].style.fill = 'lightblue';
       // gridCoords[v].visited = true;
       for (let edge of adj[v]){
@@ -66,14 +67,12 @@ export class Dijkstra {
     for (let v = end; v !== start; v = p[v]) {
       if (v !== end){
         // rects[v].style.fill = 'orange';
-
         gridCoords[v].isPath = true;
+        this.paths.push(v);
         // gridCoords[v].isPath = true;
       }
-      this.path.push(v);
       gridCoords[v].parent = p[v];
     }
-
 
     // rects[s].style.fill = 'green';
     // rects[t].style.fill = 'red';
@@ -84,7 +83,7 @@ export class Dijkstra {
   }
 
 
-  public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
@@ -129,16 +128,16 @@ export class Dijkstra {
       if(currentNode == end){   //end found
           let milli2 = performance.now();
           let node:number;
-          this.path.push(currentNode);
+          this.paths.push(currentNode);
           node = gridCord[currentNode].parent;
           while(node!=start){
             gridCord[node].isPath = true;
-            this.path.push(node);
+            this.paths.push(node);
             node = gridCord[node].parent;
             
            }
-          this.path.push(start);
-          this.path = this.path.reverse();
+          this.paths.push(start);
+          this.paths = this.paths.reverse();
           this.time =  (milli2-milli).toFixed(3);
           break;
       }
@@ -176,4 +175,5 @@ export class Dijkstra {
 
     }
   }
+
 }

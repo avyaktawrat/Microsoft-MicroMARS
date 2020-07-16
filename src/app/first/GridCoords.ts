@@ -12,4 +12,4 @@ export interface GridCoords {
     visited: boolean;
     open : boolean;
     debug : boolean;
-  }
+}

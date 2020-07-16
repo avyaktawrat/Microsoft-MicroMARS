@@ -1,15 +1,13 @@
 import { Component, OnInit} from '@angular/core';
 import { GridCoords } from './GridCoords';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-// import * as $ from "jQuery";
-import {FormControl, Validators} from '@angular/forms';
 import { MatSliderChange } from '@angular/material/slider';
-import { newArray } from '@angular/compiler/src/util';
 
 import { DPair, get_adjacency_list } from './adj';
 import { Dijkstra } from './dijkstra';
 import { BiDjk } from './BiDijkstra';
 
+import { FloydWarshall } from './floydWarshall';
+import { TravSalesMan } from './travSalesMan';
 
 import { Astar } from './Astar' ;
 import { BiAstar } from './BiAstar' ;
@@ -25,6 +23,7 @@ function delay(ms: number) {
 }
 
 const Utils: utils = new utils();
+
 interface DropDownSelect {
   value: string;
   viewValue: string;
@@ -55,7 +54,6 @@ export class FirstComponent implements OnInit {
   gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<DPair>>;
   mouseDown = false;
-  toFill = true;
   color = 2; // 0 red 1 green 2 other
   i = 0;
   start = null;
@@ -68,37 +66,38 @@ export class FirstComponent implements OnInit {
   path: number[] = new Array();
   pathCord: lineCord[] = new Array();
 
-  terrain : boolean = true;
-  cov_x :number = 2;
-  cov_y : number = 2;
+  terrain: boolean = true;
+  cov_x: number = 2;
+  cov_y: number = 2;
   showPath: boolean = true;
   // Slider for Obstacle
   max = 100;
   min = 0;
   step = 1;
-  thumbLabel = false;
+  // thumbLabel = false;
   choose = 100;
   vertical = false;
-  tickInterval = 1;
-
+  tickInterval = 1;  //check
   allowDiag = false;
   bidirection = false;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
   selectedValue: string = 'bfs';
   notCrossCorner = false;
-  selectedPS: string = 'PS_1';
+  selectedPS: string = 'TSP';
   selectedMaze: string;
+  minDest =1;
+  maxDest = 5;
+
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'Astar', viewValue: 'A*'},
-    {value: 'Dijkstra', viewValue: 'Dijkstra'}
+    {value: 'Dijkstra', viewValue: 'Dijkstra'},
+    {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}
   ];
-
   Problem_statement: DropDownSelect[] = [
     {value: 'PS_1', viewValue: 'One way trip'},
-    {value: 'PS_2', viewValue: 'Intermediate Stops'},
-    {value: 'PS_3', viewValue: 'Multiple Destinations'}
+    {value: 'TSP', viewValue: 'Intermediate Stops'}
   ];
   maze : DropDownSelect[] = [
     {value: 'hori', viewValue: 'Horizontal '},
@@ -109,11 +108,10 @@ export class FirstComponent implements OnInit {
   // Gaussian Distribution in terrain
 
   isGaussian: boolean = false;
-
   isTerrain = false;
-
   isPref: boolean = false;
   selectedDest: number = 2;
+  Dest : number[] = new Array();
 
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
@@ -135,14 +133,14 @@ export class FirstComponent implements OnInit {
   }
 
   fillGrey(a: number, b: number): void {
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
-    if(coord != this.start && coord != this.end && this.mouseDown == true){
+    let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
+    if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.choose;
-      if(!this.isGaussian){
+      if (!this.isGaussian ){
         this.gridCord[coord].isTerrain = true;
         this.gridCord[coord].value = height;
         this.updateUI();
-      }else{
+      }else if(this.isGaussian && this.isTerrain){
         this.gaussianFill(coord);
         this.updateUI();
       }
@@ -169,49 +167,78 @@ export class FirstComponent implements OnInit {
     let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
     let rect :GridCoords = this.gridCord[coord];
     // console.log("hello");
-    if (coord === this.start){
-      this.start = null;
-      rect.isEndPoint = false;
-    }else if (coord === this.end){
-      this.end = null;
-      rect.isEndPoint = false;
-    }else if (rect.isTerrain){
-      if(!this.isTerrain){
+    if(this.selectedPS === "PS_1"){
+      if (coord === this.start){
+        this.start = null;
+        rect.isEndPoint = false;
+      }else if (coord === this.end){
+        this.end = null;
+        rect.isEndPoint = false;
+      }else if (rect.isTerrain){
+        if(!this.isTerrain){
+          rect.isTerrain = false;
+          rect.value = 0;
+        }else{
+          if(this.start == null){
+            this.start = coord;
+            rect.isEndPoint = true;
+          }else if(this.end == null){
+            this.end = coord;
+            rect.isEndPoint = true;
+          }
+          else if(!this.isGaussian){
+            rect.isTerrain = true;
+            rect.value = this.choose;
+          }else{
+            this.gaussianFill(coord);
+          }
+        }
+
+      }else{ // clicking on non (red green grey ) square
+        if (this.start == null){
+          this.start = coord;
+          rect.isEndPoint = true;
+        }else if (this.end == null){
+            this.end = coord;
+            rect.isEndPoint = true;
+        }else if (!rect.isTerrain ){
+          rect.isTerrain = true;
+          if(!this.isGaussian){
+            rect.isTerrain = true;
+            rect.value = this.choose;
+          }else{
+            this.gaussianFill(coord);
+          }
+
+        }
+      }
+    }else if(this.selectedPS === "TSP"){
+      if(coord == this.start){
+        this.start = null;
+        rect.isEndPoint = false;
+      }else if(this.Dest.includes(coord)){
+        let a = this.Dest.indexOf(coord);
+        this.Dest[a] = null;
+        rect.isEndPoint = false;
+      }else if(rect.isTerrain){
         rect.isTerrain = false;
-        rect.value = 0;
-      }else{ 
+      }else{
         if(this.start == null){
           this.start = coord;
           rect.isEndPoint = true;
-        }else if(this.end == null){
-          this.end = coord;
+        }else if(this.Dest.length < this.selectedDest){
+          this.Dest.push(coord);
           rect.isEndPoint = true;
-        }
-        else if(!this.isGaussian){  
+        }else if(this.Dest.includes(null)){
+          let a = this.Dest.indexOf(null);
+          this.Dest[a] = coord;
+          rect.isEndPoint = true;
+        }else if (!rect.isTerrain ){
           rect.isTerrain = true;
-          rect.value = this.choose;
-        }else{
-          this.gaussianFill(coord);
+          rect.value = 100;
         }
       }
 
-    }else{//clicking on non (red green grey ) square
-      if (this.start == null){
-        this.start = coord;
-        rect.isEndPoint = true;
-      }else if (this.end == null){
-        this.end = coord;
-        rect.isEndPoint = true;
-      }else if (!rect.isTerrain ){
-        rect.isTerrain = true;
-        if(!this.isGaussian){  
-          rect.isTerrain = true;
-          rect.value = this.choose;
-        }else{
-          this.gaussianFill(coord);
-        }
-    
-      }
     }
     this.updateUI();    // console.log(rect);
 
@@ -247,8 +274,12 @@ export class FirstComponent implements OnInit {
        element = document.getElementsByTagName("line")
      
     }
+    this.Dest = [];
     this.start = null;
     this.end = null;
+    this.length = 0;
+    this.steps = 0;
+    this.time = '0';
     this.updateUI();
      this.req_step = 0;
   }
@@ -262,6 +293,9 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
+      this.length = 0;
+      this.steps = 0;
+      this.time = '0';
 
     }
 
@@ -278,7 +312,7 @@ export class FirstComponent implements OnInit {
 
   clearWall(): void{
    for (let u = totalGrid - 1; u >= 0; u--) {
-    this.gridCord[u].isTerrain = false; 
+    this.gridCord[u].isTerrain = false;
      this.gridCord[u].value = 0;
     }
    this.updateUI();
@@ -305,6 +339,10 @@ export class FirstComponent implements OnInit {
       console.log('This is emitted as the thumb slides');
       console.log(event.value);
       this.choose = event.value;
+    }
+
+  onChangeDest(event: MatSliderChange){
+      this.selectedDest = event.value;
     }
 
   onSearchChange(searchValue: number): void {
@@ -409,6 +447,7 @@ export class FirstComponent implements OnInit {
     this.updateUI();
   }
   updateUI(): void{
+    // console.log(this.Dest);
     for (let u = totalGrid - 1; u >= 0; u--) {
       (async () => { 
         // Do something before delay
@@ -421,7 +460,7 @@ export class FirstComponent implements OnInit {
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
-      else if (u == this.end && rect.isEndPoint){
+      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }else if(rect.isPath && this.showPath){
@@ -433,20 +472,17 @@ export class FirstComponent implements OnInit {
       }      
       else if (rect.isTerrain){
         element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value/100).toString();
+        element.style.fillOpacity = (rect.value / 100).toString();
       }
-      else if (rect.visited && !this.isTerrain){
+      else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);
         element.style.fill = "lightblue";        
         element.style.fillOpacity = "1";
       }
-      else if (rect.open && !this.isTerrain){
+      else if (rect.open && !this.isTerrain && this.selectedPS == 'PS_1'){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
       }
-
-
-      
       else{
         element.style.fill = 'white';
         element.style.fillOpacity = '1';
@@ -557,83 +593,134 @@ export class FirstComponent implements OnInit {
 
     const dij: Dijkstra = new Dijkstra();
     const bidjk: BiDjk = new BiDjk();
+    const flyw: FloydWarshall = new FloydWarshall();
+    
+    this.clearPath();
+    this.resetGridParams();
 
-      this.clearPath();
-      this.resetGridParams();
-      if ( this.start == null || this.end == null){
+    this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
+    if ( this.start == null || (this.end == null && this.Dest.length < this.selectedDest) ){
         alert('Insert start and end');
-      }
-    switch (this.selectedValue) {
-      case 'bfs':
-        if(this.bidirection){
-          bibfs.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner);
-        }else{
-          bfs.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner);
-        }
-
-        this.steps = bfs.steps;
-       // this.length = bfs.length1;
-        this.time = bfs.time;
-        this.bidirecNodeS = bibfs.bidirecNodeS;
-        this.bidirecNodeE = bibfs.bidirecNodeE;
-        break;
-      case 'Astar':
-        if(this.isTerrain){
-          astar.Wsearch(this.gridCord, this.start,this.end,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
-          this.steps = astar.steps;
-          this.length = astar.length1;
-          this.time = astar.time;
-  
-  
-        }else if (this.bidirection){
-          biastar.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner,this.req_step); 
-          this.steps = biastar.steps;
-          this.length = biastar.length1;
-          this.time = biastar.time;
-          this.bidirecNodeS = biastar.bidirecNodeS;
-          this.bidirecNodeE = biastar.bidirecNodeE;
-          // console.log(this.bidirecNodeE,this.bidirecNodeS);
-
-        }else{
-          astar.search(this.gridCord, this.start,this.end,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
-          this.steps = astar.steps;
-          this.length = astar.length1;
-          this.time = astar.time;
-        } 
-        break;
-      case 'Dijkstra':
-        if(this.isTerrain){
-          this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-          dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag, this.adjList,this.notCrossCorner);
-          this.time = dij.time;
-          this.steps = dij.steps;
-          this.length = dij.length1;
-
-        }else if (this.bidirection){
-          bidjk.search(this.gridCord, this.start, this.end, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
-          this.time = bidjk.time;
-          this.steps = bidjk.steps;
-          this.length = bidjk.length1;
-          this.bidirecNodeS = bidjk.bidirecNodeS;
-          this.bidirecNodeE = bidjk.bidirecNodeE;
-
-        }else{
-          dij.search( this.gridCord,this.start, this.end, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
-          this.time = dij.time;
-          this.steps = dij.steps;
-          this.length = dij.length1;
-
-        } 
-
-        
-
-        break;
-      default:
-        alert('Select Algorithms');
-        break;
+        return;
     }
-      this.updateUI(); 
-      this.pathLine(); //for tracing the line
+    console.log(this.selectedValue);
+    if(this.selectedPS === "PS_1"){
+      switch (this.selectedValue) {
+        case 'bfs':
+          if(this.bidirection){
+            bibfs.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner);
+          }else{
+            bfs.search( this.start, this.end, this.gridCord,this.allowDiag,this.notCrossCorner);
+          }
+          this.steps = bfs.steps;
+          this.time = bfs.time;
+          this.bidirecNodeS = bibfs.bidirecNodeS;
+          this.bidirecNodeE = bibfs.bidirecNodeE;
+          break;
+        case 'Astar':
+          if(this.isTerrain){
+            astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,/*,this.req_step*/);
+            this.steps = astar.steps;
+            this.time = astar.time;
+          }else if (this.bidirection){
+            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
+            this.steps = biastar.steps;
+            this.length = biastar.length1;
+            this.time = biastar.time;
+            this.bidirecNodeS = biastar.bidirecNodeS;
+            this.bidirecNodeE = biastar.bidirecNodeE;
+            // console.log(this.bidirecNodeE,this.bidirecNodeS);
+
+          }else{
+            astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
+            this.steps = astar.steps;
+            this.length = astar.length1;
+            this.time = astar.time;
+          } 
+          break;
+        case 'Dijkstra':
+          if(this.isTerrain){
+            this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
+            dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag);
+            this.time = dij.time;
+            this.steps = dij.steps;
+            this.length = dij.length1;
+
+          }else if (this.bidirection){
+            bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
+            this.time = bidjk.time;
+            this.steps = bidjk.steps;
+            this.length = bidjk.length1;
+            this.bidirecNodeS = bidjk.bidirecNodeS;
+            this.bidirecNodeE = bidjk.bidirecNodeE;
+
+          }else{
+            dij.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
+            this.time = dij.time;
+            this.steps = dij.steps;
+            this.length = dij.length1;
+
+          } 
+          break;
+        default:
+          alert('Select Algorithms');
+        break;
+      }
+    }else{      
+      switch (this.selectedValue) {
+        case 'bfs':
+          if(this.selectedPS == "TSP"){
+            const tsp = new TravSalesMan();    
+            tsp.start = this.start;
+            tsp.destinations = this.Dest;
+            tsp.search(bfs, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+            this.length = tsp.length;
+            this.steps = tsp.steps;
+            this.time = tsp.time;
+          }
+          break;
+        case 'Astar':
+          if(this.selectedPS == "TSP"){
+            const tsp = new TravSalesMan();
+            tsp.start = this.start;
+            tsp.destinations = this.Dest;
+            tsp.search(astar, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+            this.length = tsp.length;
+            this.steps = tsp.steps;
+            this.time = tsp.time;
+          }
+          break;
+        case 'Dijkstra':
+          if(this.selectedPS == "TSP"){
+            const tsp = new TravSalesMan();
+            tsp.start = this.start;
+            tsp.destinations = this.Dest;
+            tsp.search(dij, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+            this.length = tsp.length;
+            this.steps = tsp.steps;
+            this.time = tsp.time;
+          }
+          break;
+        case 'Floyd–Warshall':
+          if(this.selectedPS == "TSP"){
+            const tsp = new TravSalesMan();
+            tsp.start = this.start;
+            tsp.destinations = this.Dest;
+            tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
+            tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
+            console.log('Flyod Warshall');
+            this.time = tsp.time;
+            this.steps = tsp.steps;
+            this.length = tsp.length;
+          }
+          break;
+        default:
+          alert('Select Algorithms');
+          break;
+      }
+    }
+    this.updateUI(); 
+      // this.pathLine(); //for tracing the line
       // console.log(this.gridCord)
   }
 }
