@@ -362,20 +362,27 @@ export class FirstComponent implements OnInit {
     console.log(searchValue);
     this.choose = searchValue;
   }
+
+  prefToggle(isPref : boolean){
+    if(isPref){
+      this.Algorithms = [
+      {value: 'bfs', viewValue: 'Breadth First Search'},
+      {value: 'Astar', viewValue: 'A*'},
+      {value: 'Dijkstra', viewValue: 'Dijkstra'}];
+      this.selectedValue = 'bfs';
+    }else{
+      this.Algorithms = [{value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}];
+      this.selectedValue = 'Floyd–Warshall';
+    }
+    console.log(this.Algorithms);
+  }
+
   terrainToggle(isT: boolean){
     //console.log('This is emitted as the thumb slides');
     //console.log(event.value);
-    if(isT == true){
-      this.bidirection = false;
-      this.notCrossCorner = false; 
-      this.isGaussian = false;
-      
-    }else{
       this.bidirection = false;
       this.notCrossCorner = false;
       this.isGaussian = false;      
-    }
-    console.log (isT, this.bidirection);
   }
   changeMaze(){
     this.clearWall();
