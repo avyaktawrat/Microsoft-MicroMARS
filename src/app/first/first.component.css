@@ -132,3 +132,8 @@ form mat-form-field {
  .info h4{
  	margin-left: 5%;
  }
+ ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  min-width: 0!important;
+  padding: 3px!important;
+  margin: 3px!important;
+ }

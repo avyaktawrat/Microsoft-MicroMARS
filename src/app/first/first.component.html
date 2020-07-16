@@ -9,6 +9,12 @@
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.f}} </text> -->
 	</svg>
 	<div id = "menu-bar">
+		<!-- Choosing problem statement -->
+		<mat-tab-group [(selectedIndex)]="PS_index" (selectedIndexChange)="selectedPS = PS_index ? 'TSP':'PS_1';reset()">
+			<mat-tab *ngFor="let ps of Problem_statement">
+			  <ng-template mat-tab-label >{{ps.viewValue}}</ng-template>
+			  {{selectedPS}}
+			
 		<form>
     	<mat-form-field appearance="fill" *ngIf="selectedPS !== 'TSP'">
       	<mat-label><h4>Maze</h4></mat-label>
@@ -19,14 +25,14 @@
       	</mat-select>
 			</mat-form-field>
 
-    	<mat-form-field appearance="fill">
+    	<!-- <mat-form-field appearance="fill">
         	<mat-label><h4>Problem Statement</h4></mat-label>
         	<mat-select [(ngModel)]="selectedPS" name="PS" value = "selectedPS" [ngModelOptions]="{standalone: true}" (ngModelChange)="reset()" >
 		        <mat-option *ngFor="let ps of Problem_statement" [value]="ps.value">
 	        	    {{ps.viewValue}}
 		        </mat-option>
         	</mat-select>
-			</mat-form-field>
+		</mat-form-field> -->
 
 			<section id = 'Problem_statement _2' *ngIf = "selectedPS === 'TSP'">
 				<mat-slide-toggle class="example-margin"
@@ -43,7 +49,7 @@
         </div>
      	</section>
 
-    	<mat-form-field appearance="fill">
+    	<mat-form-field appearance="fill" *ngIf = "selectedPS!=='TSP'">
         	<mat-label><h4>Algorithms</h4></mat-label>
         	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
 		        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
@@ -206,7 +212,8 @@
 					</div>
 			  	</div>-->
 		</form>
-
+		</mat-tab>
+	</mat-tab-group>
 	</div>
 
 </div>

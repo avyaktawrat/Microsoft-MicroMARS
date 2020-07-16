@@ -88,6 +88,7 @@ export class FirstComponent implements OnInit {
   notCrossCorner = false;
 
   selectedPS: string = 'PS_1';
+  PS_index: number = 0;
   selectedMaze: string;
   selectedHeuristic: string = 'l1';
   minDest =1;
