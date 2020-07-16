@@ -292,6 +292,8 @@ export class FirstComponent implements OnInit {
     this.length = 0;
     this.steps = 0;
     this.time = '0';
+    this.isPref = true;
+    this.prefToggle(this.isPref);
     this.updateUI();
      this.req_step = 0;
   }
