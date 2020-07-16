@@ -354,8 +354,6 @@ export class FirstComponent implements OnInit {
   }
 
   onChange(event: MatSliderChange){
-      console.log('This is emitted as the thumb slides');
-      console.log(event.value);
       this.choose = event.value;
     }
 
@@ -364,7 +362,6 @@ export class FirstComponent implements OnInit {
     }
 
   onSearchChange(searchValue: any): void {
-    console.log(searchValue);
     this.choose = searchValue.target.value;
   }
 
@@ -409,7 +406,6 @@ export class FirstComponent implements OnInit {
     this.selectedValue = 'bfs';
     this.isTerrain = false;
     this.isGaussian = false;
-    this.selectedPS = 'PS_1';
     this.updateAlgoList();
     switch (this.selectedMaze) {
       case "hori":
@@ -486,6 +482,7 @@ export class FirstComponent implements OnInit {
         }
         break;
       case "mountE":
+        this.selectedPS = 'PS_1';
         this.selectedValue = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
@@ -499,6 +496,7 @@ export class FirstComponent implements OnInit {
         this.gaussianFill(this.end);
       break;
       case "mountS":
+        this.selectedPS = 'PS_1';
         this.selectedValue = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
@@ -512,6 +510,7 @@ export class FirstComponent implements OnInit {
         this.gaussianFill(this.start);
       break;
       case "mountB":
+        this.selectedPS = 'PS_1';
         this.selectedValue = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
