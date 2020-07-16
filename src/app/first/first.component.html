@@ -28,7 +28,7 @@
         	</mat-select>
 			</mat-form-field>
 
-			<section id = 'Problem_statement 2' *ngIf = "selectedPS === 'TSP'">
+			<section id = 'Problem_statement _2' *ngIf = "selectedPS === 'TSP'">
 				<mat-slide-toggle class="example-margin"
 						color="primary"
 						(change)="prefToggle(isPref)"
@@ -83,7 +83,7 @@
 						[ngModelOptions]="{standalone: true}">
 					</mat-slider>
 					<mat-form-field class="example-margin">
-						<input matInput type="number" value="{{selectedDest}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="maxDest" min="minDestin">
+						<input matInput type="number" value="{{selectedDest}}" [(ngModel)]="choose" (input)="onSearchChange($event)" [ngModelOptions]="{standalone: true}" max="maxDest" min="minDestin">
 					</mat-form-field>
 				</div>
 
@@ -93,7 +93,7 @@
 
 
 			<mat-divider></mat-divider>
-			<section id = "Terrain" *ngIf = "(selectedValue=='Astar' || selectedValue =='Dijkstra' )&& selectedPS=='PS_1'">
+			<section id = "Terrain_" *ngIf = "(selectedValue=='Astar' || selectedValue =='Dijkstra' )&& selectedPS=='PS_1'">
 				<div class="example-section">
 					<mat-divider></mat-divider>
 					<mat-slide-toggle class="example-margin"
@@ -134,7 +134,7 @@
 								[ngModelOptions]="{standalone: true}">
 							</mat-slider>
 							<mat-form-field class="example-margin">
-								<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="100" min="0">
+								<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event)" [ngModelOptions]="{standalone: true}" max="100" min="0">
 							</mat-form-field>
 						</div>
 				<!-- </mat-slider> -->

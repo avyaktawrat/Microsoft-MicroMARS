@@ -64,7 +64,7 @@ export class FirstComponent implements OnInit {
   time = '0';
   length = 0;
   lengthS = "0";
-  
+
   path: number[] = new Array();
   pathCord: lineCord[] = new Array();
 
@@ -275,7 +275,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
       this.gridCord[u].isPath = false;
-      this.gridCord[u].isTerrain = false; 
+      this.gridCord[u].isTerrain = false;
       this.gridCord[u].value = 0;
       this.length = 0;
       this.steps = 0;
@@ -284,10 +284,10 @@ export class FirstComponent implements OnInit {
     let element = document.getElementsByTagName("line")
     let length = element.length
     for (var i = 0; i < length; ++i) {
-      
+
        element[0].parentNode.removeChild(element[0]);
        element = document.getElementsByTagName("line")
-     
+
     }
     this.Dest = [];
     this.start = null;
@@ -319,10 +319,10 @@ export class FirstComponent implements OnInit {
     let element = document.getElementsByTagName("line")
     let length = element.length
     for (var i = 0; i < length; ++i) {
-      
+
        element[0].parentNode.removeChild(element[0]);
        element = document.getElementsByTagName("line")
-     
+
     }
     this.updateUI();
   }
@@ -362,9 +362,9 @@ export class FirstComponent implements OnInit {
       this.selectedDest = event.value;
     }
 
-  onSearchChange(searchValue: number): void {
+  onSearchChange(searchValue: any): void {
     console.log(searchValue);
-    this.choose = searchValue;
+    this.choose = searchValue.target.value;
   }
 
   prefToggle(isPref : boolean){
@@ -401,7 +401,7 @@ export class FirstComponent implements OnInit {
     //console.log(event.value);
       this.bidirection = false;
       this.notCrossCorner = false;
-      this.isGaussian = false;      
+      this.isGaussian = false;
   }
   changeMaze(){
     this.clearWall();
@@ -417,8 +417,8 @@ export class FirstComponent implements OnInit {
               if(Math.random()>0.3){
                 this.gridCord[j*hGrid+i].isTerrain = true;
                 this.gridCord[j*hGrid+i].value = 100;
-              }           
-            } 
+              }
+            }
           }
           for (var i = 0; i < totalGrid; ++i) {
             if(this.gridCord[i].isTerrain){
@@ -439,8 +439,8 @@ export class FirstComponent implements OnInit {
               if(Math.random()>0.3){
                 this.gridCord[j*hGrid+i].isTerrain = true;
                 this.gridCord[j*hGrid+i].value = 100;
-              }           
-            } 
+              }
+            }
           }
           for (var i = 0; i < totalGrid; ++i) {
             if(this.gridCord[i].isTerrain){
@@ -472,16 +472,16 @@ export class FirstComponent implements OnInit {
           this.gridCord[i].isTerrain = true;
           this.gridCord[i].value = 100;
         }
-        for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) { 
+        for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
           this.gridCord[i].isTerrain = true;
           this.gridCord[i].value = 100;         // code...
         }
           this.gridCord[i].isTerrain = false;
           this.gridCord[i].value = 0;
-          i+=2;  
+          i+=2;
         for(var j=0; j<5;j++){
           this.gridCord[i+j*(hGrid+1)].isTerrain = true;
-          this.gridCord[i+j*(hGrid+1)].value = 100;         // code... 
+          this.gridCord[i+j*(hGrid+1)].value = 100;         // code...
         }
         break;
       case "mountE":
@@ -539,7 +539,7 @@ export class FirstComponent implements OnInit {
   updateUI(): void{
     // console.log(this.Dest);
     for (let u = totalGrid - 1; u >= 0; u--) {
-      (async () => { 
+      (async () => {
         // Do something before delay
         //console.log('before delay')
 
@@ -559,14 +559,14 @@ export class FirstComponent implements OnInit {
       }
       else if (rect.debug){
         element.style.fill = "pink";
-      }      
+      }
       else if (rect.isTerrain){
         element.style.fill = "grey";
         element.style.fillOpacity = (rect.value / 100).toString();
       }
       else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);
-        element.style.fill = "lightblue";        
+        element.style.fill = "lightblue";
         element.style.fillOpacity = "1";
       }
       else if (rect.open && !this.isTerrain && this.selectedPS == 'PS_1'){
@@ -581,7 +581,7 @@ export class FirstComponent implements OnInit {
           //console.log('after delay')
       })();
     }
-    
+
   }
   pathLine(): void{
     // else if(this.selectedValue == 'Dijkstra'){
@@ -591,12 +591,12 @@ export class FirstComponent implements OnInit {
     //     console.log(loc, Math.floor(loc/hGrid)+15, (loc%hGrid)+15);
     //     this.pathCord.push({x1: Math.floor(loc/hGrid)*30+15,y1: (loc%hGrid)*30+15,
     //                       x2: Math.floor(loc_next/hGrid)*30+15,y2: (loc_next%hGrid)*30+15 })
-        
+
     //   }
     // }
     let node = this.end;
     // console.log(this.bidirecNodeE, this.bidirecNodeS)
-    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){ 
+    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
       let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
       this.length = 0;
 
@@ -606,7 +606,7 @@ export class FirstComponent implements OnInit {
       let y2 = (node2%hGrid)*30+15;
       this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
       this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-      
+
       while(node1!=this.start){
         let node_next = this.gridCord[node1].parent;
         let x1 = Math.floor(node1/hGrid)*30+15;
@@ -644,14 +644,14 @@ export class FirstComponent implements OnInit {
       }
       this.lengthS = this.length.toFixed(2);
     }
-    
+
     else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
       window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
     }
     else{
       window.alert("Sorry, no Path Exists :(");
     }
-    
+
   }
 
   req_step :number = 0;
@@ -665,7 +665,7 @@ export class FirstComponent implements OnInit {
   Search(){
     const astar: Astar = new Astar();
     const biastar: BiAstar = new BiAstar();
-    
+
     const bfs: BFS = new BFS();
     const bibfs: BiBFS = new BiBFS();
 
@@ -722,7 +722,7 @@ export class FirstComponent implements OnInit {
             this.steps = astar.steps;
             this.time = astar.time;
           }else if (this.bidirection){
-            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur); 
+            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = biastar.steps;
             this.length = biastar.length1;
             this.time = biastar.time;
@@ -735,7 +735,7 @@ export class FirstComponent implements OnInit {
             this.steps = astar.steps;
             this.length = astar.length1;
             this.time = astar.time;
-          } 
+          }
           break;
         case 'Dijkstra':
           if(this.isTerrain){
@@ -746,7 +746,7 @@ export class FirstComponent implements OnInit {
             this.length = dij.length1;
 
           }else if (this.bidirection){
-            bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
+            bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
             this.time = bidjk.time;
             this.steps = bidjk.steps;
             this.length = bidjk.length1;
@@ -759,9 +759,9 @@ export class FirstComponent implements OnInit {
             this.steps = dij.steps;
             this.length = dij.length1;
 
-          } 
+          }
           break;
-         case 'BestFirst':  
+         case 'BestFirst':
           console.log(this.bidirection);
           if(this.bidirection){
             best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
@@ -779,11 +779,11 @@ export class FirstComponent implements OnInit {
           alert('Select Algorithms');
         break;
       }
-    }else{      
+    }else{
       switch (this.selectedValue) {
         case 'bfs':
           if(this.selectedPS == "TSP"){
-            const tsp = new TravSalesMan();    
+            const tsp = new TravSalesMan();
             tsp.start = this.start;
             tsp.destinations = this.Dest;
             tsp.search(bfs, this.isPref, this.gridCord, this.allowDiag, this.adjList);
@@ -832,7 +832,7 @@ export class FirstComponent implements OnInit {
           break;
       }
     }
-    this.updateUI(); 
+    this.updateUI();
       // this.pathLine(); //for tracing the line
       // console.log(this.gridCord)
   }
