@@ -97,7 +97,6 @@ export class FirstComponent implements OnInit {
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'Astar', viewValue: 'A*'},
     {value: 'Dijkstra', viewValue: 'Dijkstra'},
-    {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'},
     {value: 'BestFirst', viewValue: 'Best First Search'}
   ];
   Problem_statement: DropDownSelect[] = [
