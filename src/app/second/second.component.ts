@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';// import Jquery here
 
 
+
 import {
   trigger,
   state,
