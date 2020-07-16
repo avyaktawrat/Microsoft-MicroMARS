@@ -107,7 +107,10 @@ export class FirstComponent implements OnInit {
     {value: 'hori', viewValue: 'Horizontal '},
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
-    {value: 'stair', viewValue:'Stair Case'}
+    {value: 'stair', viewValue:'Stair Case'},
+    {value: 'mountE', viewValue: 'Mountain on End'},
+    {value: 'mountS', viewValue: 'Mountain on Start'},
+    {value: 'mountB', viewValue: 'Mountain between start and end'}
   ];
   Heuristic: DropDownSelect[] = [
     {value: 'l1', viewValue: 'Manhattan'},
@@ -378,6 +381,21 @@ export class FirstComponent implements OnInit {
     console.log(this.Algorithms);
   }
 
+  updateAlgoList(){
+    if(this.isTerrain){
+      this.Algorithms = [
+      {value: 'Astar', viewValue: 'A*'},
+      {value: 'Dijkstra', viewValue: 'Dijkstra'}];
+      this.selectedValue = 'Astar';
+    }else{
+      this.Algorithms = [
+      {value: 'bfs', viewValue: 'Breadth First Search'},
+      {value: 'Astar', viewValue: 'A*'},
+      {value: 'Dijkstra', viewValue: 'Dijkstra'},
+      {value: 'BestFirst', viewValue: 'Best First Search'}];
+    }
+  }
+
   terrainToggle(isT: boolean){
     //console.log('This is emitted as the thumb slides');
     //console.log(event.value);
@@ -387,6 +405,11 @@ export class FirstComponent implements OnInit {
   }
   changeMaze(){
     this.clearWall();
+    this.selectedValue = 'bfs';
+    this.isTerrain = false;
+    this.isGaussian = false;
+    this.selectedPS = 'PS_1';
+    this.updateAlgoList();
     switch (this.selectedMaze) {
       case "hori":
           for (var i = 0; i < hGrid; i+=2) {
@@ -461,6 +484,52 @@ export class FirstComponent implements OnInit {
           this.gridCord[i+j*(hGrid+1)].value = 100;         // code... 
         }
         break;
+      case "mountE":
+        this.selectedValue = 'Astar';
+        this.isTerrain = true;
+        this.isGaussian = true;
+        this.updateAlgoList();
+        if(this.end ==null){
+          alert("Click on end grid cell");
+          return;
+        }
+        this.cov_x = 25;
+        this.cov_y = 18;
+        this.gaussianFill(this.end);
+      break;
+      case "mountS":
+        this.selectedValue = 'Astar';
+        this.isTerrain = true;
+        this.isGaussian = true;
+        this.updateAlgoList();
+        if(this.start ==null){
+          alert("Click on start grid cell");
+          return;
+        }
+        this.cov_x = 25;
+        this.cov_y = 18;
+        this.gaussianFill(this.start);
+      break;
+      case "mountB":
+        this.selectedValue = 'Astar';
+        this.isTerrain = true;
+        this.isGaussian = true;
+        this.updateAlgoList();
+        if(this.start ==null || this.end ==null){
+          alert("Click on start/end grid cell");
+          return;
+        }
+        var x1 = Math.round(this.start/hGrid);
+        var y1 = this.start%hGrid;
+        var x2 = Math.round(this.end/hGrid);
+        var y2 = this.end%hGrid;
+        this.cov_x = Math.abs(x1-x2-5);
+        this.cov_y = Math.max(Math.abs(y1-y2-5),18);
+        let midx = Math.round((x1+x2)/2);
+        let midy = Math.round((y1+y2)/2);
+
+        this.gaussianFill(midx*hGrid + midy);
+      break;
       default:
         // code...
         break;

@@ -93,7 +93,7 @@
 
 
 			<mat-divider></mat-divider>
-			<section id = "Terrain" *ngIf = "selectedValue!='bfs'  && selectedPS=='PS_1'">
+			<section id = "Terrain" *ngIf = "(selectedValue=='Astar' || selectedValue =='Dijkstra' )&& selectedPS=='PS_1'">
 				<div class="example-section">
 					<mat-divider></mat-divider>
 					<mat-slide-toggle class="example-margin"
