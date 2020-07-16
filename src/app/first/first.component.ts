@@ -15,6 +15,8 @@ import { BiAstar } from './BiAstar' ;
 import {BFS} from './BFS';
 import {BiBFS} from './BiBFS';
 
+import { BestFirst } from './BestFirst'
+
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants';
 
@@ -84,8 +86,10 @@ export class FirstComponent implements OnInit {
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
   selectedValue: string = 'bfs';
   notCrossCorner = false;
-  selectedPS: string = 'TSP';
+
+  selectedPS: string = 'PS_1';
   selectedMaze: string;
+  selectedHeuristic: string = 'l1';
   minDest =1;
   maxDest = 5;
 
@@ -93,7 +97,8 @@ export class FirstComponent implements OnInit {
     {value: 'bfs', viewValue: 'Breadth First Search'},
     {value: 'Astar', viewValue: 'A*'},
     {value: 'Dijkstra', viewValue: 'Dijkstra'},
-    {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}
+    {value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'},
+    {value: 'BestFirst', viewValue: 'Best First Search'}
   ];
   Problem_statement: DropDownSelect[] = [
     {value: 'PS_1', viewValue: 'One way trip'},
@@ -103,7 +108,15 @@ export class FirstComponent implements OnInit {
     {value: 'hori', viewValue: 'Horizontal '},
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
-    {value: 'stair', viewValue:'Stair Case'}];
+    {value: 'stair', viewValue:'Stair Case'}
+  ];
+  Heuristic: DropDownSelect[] = [
+    {value: 'l1', viewValue: 'Manhattan'},
+    {value: 'l2', viewValue: 'Euclidean'},
+    {value: 'octile', viewValue: 'Octile'},
+    {value: 'cheby', viewValue: 'Chebyshev'}
+  ];
+
 
   // Gaussian Distribution in terrain
 
@@ -572,18 +585,6 @@ export class FirstComponent implements OnInit {
   //   // let element = document.getElementsByTagName('rect')[u];
   // }
 
-  // dijk() {
-  //   Utils.reset_color(this.gridCord, this.start, this.end);
-  //   const p1 = performance.now();
-  //   const adj = get_adjacency_list(this.vGrid, this.hGrid, this.allowDiag);
-  //   console.log(adj);
-  //   [this.steps, this.length] = dijkstra(this.start, this.end, adj);
-  //   const p2 = performance.now();
-  //   this.time = (p2 - p1).toFixed(3);
-  // }
-
-
-
   Search(){
     const astar: Astar = new Astar();
     const biastar: BiAstar = new BiAstar();
@@ -591,10 +592,31 @@ export class FirstComponent implements OnInit {
     const bfs: BFS = new BFS();
     const bibfs: BiBFS = new BiBFS();
 
+    const best : BestFirst = new BestFirst();
+
     const dij: Dijkstra = new Dijkstra();
     const bidjk: BiDjk = new BiDjk();
     const flyw: FloydWarshall = new FloydWarshall();
-    
+
+    let heur;
+    switch (this.selectedHeuristic) {
+      case "l1":
+        heur = Utils.Manhattan;
+        break;
+      case "l2":
+        heur = Utils.Euclidean;
+        break;
+      case "octile":
+        heur = Utils.Octile;
+        break;
+      case "cheby":
+        heur = Utils.Chebyshev;
+        break;
+      default:
+        heur = Utils.Manhattan;
+        break;
+    }
+
     this.clearPath();
     this.resetGridParams();
 
@@ -619,11 +641,11 @@ export class FirstComponent implements OnInit {
           break;
         case 'Astar':
           if(this.isTerrain){
-            astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,/*,this.req_step*/);
+            astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,false,this.adjList,heur/*,this.req_step*/);
             this.steps = astar.steps;
             this.time = astar.time;
           }else if (this.bidirection){
-            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/); 
+            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur); 
             this.steps = biastar.steps;
             this.length = biastar.length1;
             this.time = biastar.time;
@@ -632,7 +654,7 @@ export class FirstComponent implements OnInit {
             // console.log(this.bidirecNodeE,this.bidirecNodeS);
 
           }else{
-            astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/);
+            astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = astar.steps;
             this.length = astar.length1;
             this.time = astar.time;
@@ -641,7 +663,7 @@ export class FirstComponent implements OnInit {
         case 'Dijkstra':
           if(this.isTerrain){
             this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-            dij.Wsearch(this.start, this.end, this.gridCord, this.allowDiag);
+            dij.Wsearch(this.start, this.end, this.gridCord ,this.allowDiag,this.adjList);
             this.time = dij.time;
             this.steps = dij.steps;
             this.length = dij.length1;
@@ -661,6 +683,20 @@ export class FirstComponent implements OnInit {
             this.length = dij.length1;
 
           } 
+          break;
+         case 'BestFirst':  
+          console.log(this.bidirection);
+          if(this.bidirection){
+            best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            this.time = best.time;
+            this.steps = best.steps;
+            this.length = best.length1;
+          }else{
+            best.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            this.time = best.time;
+            this.steps = best.steps;
+            this.length = best.length1;
+          }
           break;
         default:
           alert('Select Algorithms');

@@ -12,9 +12,13 @@ export class BiAstar{
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
-  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*, req_step:number*/):void {
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag?:boolean,notCrossCorner?:boolean/*, req_step:number*/,heuristic?):void {
+
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
+  	    if(heuristic == null){
+      heuristic = Utils.Manhattan;
+    }
   	// var startClosedList : number[] = new Array();
   	// var endClosedList : number[] = new Array();
   	var closedList : number[] = new Array();
@@ -29,12 +33,12 @@ export class BiAstar{
     }
 
   	startOpenList.push(start);
-  	gridCord[start].h = this.distance(start , end); 
+  	gridCord[start].h = heuristic(start , end); 
     gridCord[start].g = 0;
     gridCord[start].f = gridCord[start].h;
 
   	endOpenList.push(end);
-  	gridCord[end].h = this.distance(start , end); 
+  	gridCord[end].h = heuristic(start , end); 
     gridCord[end].g = 0;
     gridCord[end].f = gridCord[end].h;
   
@@ -106,7 +110,7 @@ export class BiAstar{
 	            // let a = startOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              gridCord[Coord].h = this.distance(Coord,end);
+	              gridCord[Coord].h = heuristic(Coord,end);
 	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byStart;
@@ -115,7 +119,7 @@ export class BiAstar{
 
 	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = this.distance(Coord,end);
+	            gridCord[Coord].h = heuristic(Coord,end);
 	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	            gridCord[Coord].parent = currentNode;    
 	            gridCord[Coord].open = true;
@@ -178,7 +182,7 @@ export class BiAstar{
 	            // let a = endOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              gridCord[Coord].h = this.distance(Coord,start);
+	              gridCord[Coord].h = heuristic(Coord,start);
 	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byEnd;
@@ -187,7 +191,7 @@ export class BiAstar{
 
 	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = this.distance(Coord,start);
+	            gridCord[Coord].h = heuristic(Coord,start);
 	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	            gridCord[Coord].parent = currentNode;    
 	            gridCord[Coord].open = true;
@@ -203,12 +207,4 @@ export class BiAstar{
     console.log(this.bidirecNodeE,this.bidirecNodeS);
 	}
 
-  distance(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
-    let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
-    return dist;
-  }
 }
