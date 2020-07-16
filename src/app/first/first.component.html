@@ -2,7 +2,7 @@
 <div id="main-page">
 	<svg class="svg"  [attr.height]="height" [attr.width]="width">
         <rect *ngFor="let i of gridCord" [id]="i.value + ',' + i.x + ',' + i.y"  [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y)" (mouseup)="mouseUp(i.x,i.y)" (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"> </rect>
-		<line *ngFor="let i of pathCord" [attr.x1]="i.x1" [attr.y1]="i.y1" 
+		<line *ngFor="let i of pathCord" [attr.x1]="i.x1" [attr.y1]="i.y1"
 		[attr.x2]="i.x2" [attr.y2]="i.y2" style="stroke:rgb(255,0,0);stroke-width:2" />
    		<!-- <text  *ngFor="let i of gridCord" [attr.x]=i.x+3 [attr.y]=i.y+27 font-size= "11"> {{i.g}} </text>
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+16 [attr.y]=i.y+27 font-size= "11"> {{i.h}} </text>
@@ -10,9 +10,9 @@
 	</svg>
 	<div id = "menu-bar">
 		<form>
-    	<mat-form-field appearance="fill">
+    	<mat-form-field appearance="fill" *ngIf="selectedPS !== 'TSP'">
       	<mat-label><h4>Maze</h4></mat-label>
-      	<mat-select [(ngModel)]="selectedMaze" name="maze" value = "selectedMaze" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeMaze()"> 
+      	<mat-select [(ngModel)]="selectedMaze" name="maze" value = "selectedMaze" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeMaze()">
 	        <mat-option *ngFor="let m of maze" [value]="m.value">
         	    {{m.viewValue}}
 	        </mat-option>
@@ -56,14 +56,14 @@
 			<section id = 'Heuristic' *ngIf = "(selectedValue == 'Astar' || selectedValue == 'BestFirst') && selectedPS == 'PS_1'">
 	    	<mat-form-field appearance="fill">
 	      	<mat-label><h4>Heuristic</h4></mat-label>
-	      	<mat-select [(ngModel)]="selectedHeuristic" name="Heuristic" value = "selectedHeuristic" [ngModelOptions]="{standalone: true}" > 
+	      	<mat-select [(ngModel)]="selectedHeuristic" name="Heuristic" value = "selectedHeuristic" [ngModelOptions]="{standalone: true}" >
 		        <mat-option *ngFor="let heu of Heuristic" [value]="heu.value">
 	        	    {{heu.viewValue}}
 		        </mat-option>
 	      	</mat-select>
 				</mat-form-field>
 			</section>
-			
+
 			<mat-checkbox class = "example-margin" color="primary" [(ngModel)]="allowDiag" [ngModelOptions]="{standalone: true}" >Allow Diagonal</mat-checkbox>
 			<mat-checkbox class="example-margin" color="primary" [(ngModel)]="showPath" [ngModelOptions]="{standalone: true}" (change)="checkValue(showPath?'yes':'no')" >Show Path</mat-checkbox>
 
@@ -86,7 +86,7 @@
 						<input matInput type="number" value="{{selectedDest}}" [(ngModel)]="choose" (input)="onSearchChange($event.target.value)" [ngModelOptions]="{standalone: true}" max="maxDest" min="minDestin">
 					</mat-form-field>
 				</div>
-				
+
 			</section>
 			<mat-divider></mat-divider>
 
@@ -114,7 +114,7 @@
 				<mat-checkbox color = "primary" [(ngModel)]="bidirection" [ngModelOptions]="{standalone: true}" >Bi-Directional</mat-checkbox>
 			</div>
 			<section id = "Terrain" *ngIf = "selectedValue!='bfs' && selectedPS=='PS_1' && isTerrain">
-			<!-- 	<div class="example-section" *ngIf = "isTerrain"> 
+			<!-- 	<div class="example-section" *ngIf = "isTerrain">
 			 -->  <!-- Slider Config for terrain (not applicable incase of bfs)-->
 				<!-- <mat-slider class="example-margin" > -->
 					<mat-divider></mat-divider>
@@ -144,7 +144,7 @@
 						color="primary"
 						[checked]="false"
 						[disabled]="false"
-						[(ngModel)]="isGaussian"	
+						[(ngModel)]="isGaussian"
 						*ngIf = "isTerrain == true"
 						[ngModelOptions]="{standalone: true}">
 						Gaussian Distribution
