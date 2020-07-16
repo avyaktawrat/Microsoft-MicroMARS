@@ -53,12 +53,45 @@ export class utils{
     return arr;
   }
 
-  distance(a: number, b:number ): number {
+  Manhattan(a: number, b:number ): number {
     var x1 = Math.round(a/hGrid);
     var y1 = a%hGrid;
     var x2 = Math.round(b/hGrid);
     var y2 = b%hGrid;
     let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
+    return dist;
+  }
+  Euclidean(a: number, b:number ): number {
+    var x1 = Math.round(a/hGrid);
+    var y1 = a%hGrid;
+    var x2 = Math.round(b/hGrid);
+    var y2 = b%hGrid;
+    let dist = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    return dist;
+  }
+  Octile(a: number, b:number ): number {
+    var x1 = Math.round(a/hGrid);
+    var y1 = a%hGrid;
+    var x2 = Math.round(b/hGrid);
+    var y2 = b%hGrid;
+    var F = Math.SQRT2 - 1;
+    let dist;
+    let dx = Math.abs(x1-x2);
+    let dy = Math.abs(y1-y2)
+    if(dx  <  dy ){
+      dist = F*dx + dy;
+    }else{
+      dist = F*dy + dx;
+    }
+
+    return dist;
+  }
+  Chebyshev(a: number, b:number ): number {
+    var x1 = Math.round(a/hGrid);
+    var y1 = a%hGrid;
+    var x2 = Math.round(b/hGrid);
+    var y2 = b%hGrid;
+    let dist = Math.max(Math.abs(x1-x2) , Math.abs(y1-y2));
     return dist;
   }
 

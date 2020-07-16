@@ -15,16 +15,18 @@ export class Astar{
   public steps :number = 0;
   public length1 :number= 0;
   public time :string = "0";
-  public path = new Array();
 
-  public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>):void {
+  public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>,heuristic?):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
     
+    if(heuristic == null){
+      heuristic = Utils.Manhattan;
+    }
 
     openList.push(start);
-    gridCoords[start].h = Utils.distance(start , end);
+    gridCoords[start].h = heuristic(start , end);
     gridCoords[start].g = 0;
     gridCoords[start].f = gridCoords[start].h;
 
@@ -63,15 +65,11 @@ export class Astar{
       if(currentNode == end){   //end found
           let milli2 = performance.now();
           let node:number;
-          this.path.push(currentNode);
           node = gridCoords[currentNode].parent;
           while(node!=start){
             gridCoords[node].isPath = true;
-            this.path.push(node);
             node = gridCoords[node].parent;            
           }
-          this.path.push(start);
-          this.path = this.path.reverse();
           this.time =  (milli2-milli).toFixed(3);
           break;
       }
@@ -93,7 +91,7 @@ export class Astar{
           if(openList.includes(Coord)){
             if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[Coord].g){
               gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
-              gridCoords[Coord].h = Utils.distance(Coord,end);
+              gridCoords[Coord].h = heuristic(Coord,end);
               gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
               gridCoords[Coord].parent = currentNode;
             }
@@ -101,7 +99,7 @@ export class Astar{
 
           else{ //seeing the node for first time
             gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
-            gridCoords[Coord].h = Utils.distance(Coord,end);
+            gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
             gridCoords[Coord].parent = currentNode;    
             gridCoords[Coord].open = true;
@@ -115,15 +113,17 @@ export class Astar{
     }
   }
 
-  public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+  public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/,heuristic? ):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
-    
-
+    if(heuristic == null){
+      heuristic = Utils.Manhattan;
+    }
+    console.log(heuristic(5,10));
     openList.push(start);
 
-    gridCoords[start].h = Utils.distance(start , end); 
+    gridCoords[start].h = heuristic(start , end); 
     gridCoords[start].g = 0;
     gridCoords[start].f = gridCoords[start].h;
     
@@ -162,16 +162,12 @@ export class Astar{
       if(currentNode == end){   //end found
           let milli2 = performance.now();
           let node:number;
-          this.path.push(currentNode);
           node = gridCoords[currentNode].parent;
           while(node!=start){
             gridCoords[node].isPath = true;
-            this.path.push(node);
             node = gridCoords[node].parent;
             
            }
-          this.path.push(start);
-          this.path = this.path.reverse();
           this.time =  (milli2-milli).toFixed(3);
           break;
       }
@@ -192,7 +188,7 @@ export class Astar{
           if(openList.includes(Coord)){
             if(gridCoords[currentNode].g + ng  < gridCoords[Coord].g){
               gridCoords[Coord].g = gridCoords[currentNode].g + ng;
-              gridCoords[Coord].h = Utils.distance(Coord,end);
+              gridCoords[Coord].h = heuristic(Coord,end);
               gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
               gridCoords[Coord].parent = currentNode;
             }
@@ -200,7 +196,7 @@ export class Astar{
 
           else{ //seeing the node for first time
             gridCoords[Coord].g = gridCoords[currentNode].g + ng;
-            gridCoords[Coord].h = Utils.distance(Coord,end);
+            gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
             gridCoords[Coord].parent = currentNode;    
             gridCoords[Coord].open = true;
