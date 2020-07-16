@@ -11,7 +11,8 @@ export class BFS{
   public length1: number = 0;
   public time: string = '0';
 
-  public search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>): void {
+  // public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean):void {
+  public search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean,adj?: Array<Array<DPair>>): void {
 
     let milli = performance.now();
     let distance: number[] = new Array();
@@ -25,7 +26,7 @@ export class BFS{
       var s =   qu[0];
       qu.shift();
       gridCoords[s].visited= true;
-      var arr = Utils.direction8_vector(s,gridCoords,allowDiag);
+      var arr = Utils.direction8_vector(s,gridCoords,allowDiag, notCrossCorner);
       for(let u of arr){
 
 
@@ -33,8 +34,10 @@ export class BFS{
 
           gridCoords[u].open= true;
           distance[u]=distance[s]+1;
+          gridCoords[u].parent = s;
+
           if (u == end){
-            let node:number;
+            let node:number;  
             node = s;//parent[u]
             while(node!=start){
               gridCoords[node].isPath = true;
@@ -47,8 +50,6 @@ export class BFS{
             stop = true;
             break;
           }
-
-          gridCoords[u].parent = s;
           qu.push(u);
 
         }
@@ -59,24 +60,6 @@ export class BFS{
     }
 
 	}
-
-
-  // shortest_path(a: number): number{
-  //   if(a==this.end){
-  //     console.log('reached');
-  //     return 0;
-  //   }
-  //   var arr = this.direction_vector(a);
-  //   for(let j in arr){
-  //     if(this.gridCoords[arr[j]].obstacle==0){
-  //       let element = document.getElementsByTagName('rect')[arr[j]];
-  //       element.style.fill = "yellow";
-  //       //this.gridCoords[arr[j]].obstacle = 1;
-  //     }
-  //   }
-  //   //return 0;
-  // }
-
 }
 
 

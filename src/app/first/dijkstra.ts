@@ -1,14 +1,22 @@
 import { DPair } from './adj';
 import {GridCoords} from './GridCoords';
+import {utils } from './utils';
+import {hGrid, vGrid, totalGrid} from './constants'
+
+let Utils: utils = new utils();
 
 export class Dijkstra {
-  steps = 0;
-  length1: number;
-  time: string;
-  paths: number[] = new Array<number>();
-  search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
+  public steps = 0;
+  public length1: number;
+  public time: string;
+  public paths: number[] = new Array<number>();
+
+
+
+  Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     const then = performance.now();
     const INF = 1000000000;
+    console.log(adj);
     // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
@@ -54,6 +62,7 @@ export class Dijkstra {
         break;
       }
     }
+
     let path: number[] = new Array();
     for (let v = end; v !== start; v = p[v]) {
       if (v !== end){
@@ -62,7 +71,7 @@ export class Dijkstra {
         this.paths.push(v);
         // gridCoords[v].isPath = true;
       }
-      path.push(v);
+      gridCoords[v].parent = p[v];
     }
 
     // rects[s].style.fill = 'green';
@@ -71,6 +80,100 @@ export class Dijkstra {
     path.push(start);
     this.length1 = path.length - 1;
     this.time = (performance.now() - then).toFixed(3);
+  }
+
+
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+    let milli = performance.now();
+    var openList = new Array();
+    var closedList = new Array();
+    
+
+    openList.push(start);
+
+    gridCord[start].g = 0; 
+    
+    let currentNode :number;
+
+    while(openList.length != 0) {
+      this.steps ++;
+
+      //select least f 
+      var leastG : number = openList[0];
+      for (let node of openList){
+        if(gridCord[node].g < gridCord[leastG].g ){
+          leastG = node;
+        }
+      }
+      // currentNode = openList[lowInd];
+      currentNode = leastG ;
+      gridCord[currentNode].visited = true;
+
+      if(closedList.includes(currentNode)){
+        continue;
+      }
+
+      //remove currentNode from openList
+      function removeElement(array, elem) {
+          var index = array.indexOf(elem);
+          if (index > -1) {
+              array.splice(index, 1);
+          }
+      }
+      removeElement(openList, currentNode);
+
+      //add currentNode to openList
+      closedList.push(currentNode);
+
+      if(currentNode == end){   //end found
+          let milli2 = performance.now();
+          let node:number;
+          this.paths.push(currentNode);
+          node = gridCord[currentNode].parent;
+          while(node!=start){
+            gridCord[node].isPath = true;
+            this.paths.push(node);
+            node = gridCord[node].parent;
+            
+           }
+          this.paths.push(start);
+          this.paths = this.paths.reverse();
+          this.time =  (milli2-milli).toFixed(3);
+          break;
+      }
+
+      //find neighbors
+
+      // let neighbors = new Array<Pair>() ;
+      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
+      // console.log(neighbors);
+      for (var Coord of neighbors) {
+
+        let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+        // let ng :number= 0;
+        if(closedList.includes(Coord) ){//already visited
+          continue;
+        }
+
+          if(openList.includes(Coord)){
+            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
+              gridCord[Coord].g = gridCord[currentNode].g + ng;
+              gridCord[Coord].parent = currentNode;
+            }
+          }
+
+          else{ //seeing the node for first time
+            gridCord[Coord].g = gridCord[currentNode].g + ng;
+            gridCord[Coord].parent = currentNode;    
+            gridCord[Coord].open = true;
+            openList.push(Coord);
+          }
+        }
+    // if(this.steps == req_step){
+    //   break;
+    // }
+
+    }
   }
 
 }

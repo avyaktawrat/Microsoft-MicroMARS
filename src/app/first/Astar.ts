@@ -15,17 +15,16 @@ export class Astar{
   public steps :number = 0;
   public length1 :number= 0;
   public time :string = "0";
+  public path = new Array();
 
-
-
-  public search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>):void {
+  public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>):void {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
+    
 
     openList.push(start);
-
-    gridCoords[start].h = this.distance(start , end);
+    gridCoords[start].h = Utils.distance(start , end);
     gridCoords[start].g = 0;
     gridCoords[start].f = gridCoords[start].h;
 
@@ -34,22 +33,15 @@ export class Astar{
     while(openList.length != 0) {
       this.steps ++;
 
-      //select least f if same f then find least h
-      var lowInd : number = 0;
-      for(var i=0; i<openList.length; i++) {
-        if(gridCoords[openList[i]].f <= gridCoords[openList[lowInd]].f) {
-           lowInd = i;
+      //select least f 
+      var leastF : number = openList[0];
+      for (let node of openList){
+        if(gridCoords[node].f < gridCoords[leastF].f ){
+          leastF = node;
         }
       }
-      var lowIndH : number = lowInd;
-      for(var i=0; i<openList.length; i++) {
-        if(gridCoords[openList[i]].f <= gridCoords[openList[lowInd]].f){
-          if(gridCoords[openList[i]].h <= gridCoords[openList[lowIndH]].h){
-            lowIndH = i;
-          }
-        }
-      }
-      currentNode = openList[lowIndH];
+      // currentNode = openList[lowInd];
+      currentNode = leastF;
       gridCoords[currentNode].visited = true;
 
       if(closedList.includes(currentNode)){
@@ -69,16 +61,17 @@ export class Astar{
       closedList.push(currentNode);
 
       if(currentNode == end){   //end found
+          let milli2 = performance.now();
           let node:number;
+          this.path.push(currentNode);
           node = gridCoords[currentNode].parent;
           while(node!=start){
             gridCoords[node].isPath = true;
-
-            node = gridCoords[node].parent;
-            this.length1 ++;
-           }
-          this.length1++;
-          let milli2 = performance.now();
+            this.path.push(node);
+            node = gridCoords[node].parent;            
+          }
+          this.path.push(start);
+          this.path = this.path.reverse();
           this.time =  (milli2-milli).toFixed(3);
           break;
       }
@@ -98,10 +91,9 @@ export class Astar{
         }
 
           if(openList.includes(Coord)){
-            let a = openList.indexOf(Coord);
-            if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[openList[a]].g){
-              gridCoords[Coord].g = gridCoords[currentNode].g + ng+ neighbors[i].weight;
-              gridCoords[Coord].h = this.distance(Coord,end);
+            if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[Coord].g){
+              gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
+              gridCoords[Coord].h = Utils.distance(Coord,end);
               gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
               gridCoords[Coord].parent = currentNode;
             }
@@ -109,17 +101,113 @@ export class Astar{
 
           else{ //seeing the node for first time
             gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
-            gridCoords[Coord].h = this.distance(Coord,end);
+            gridCoords[Coord].h = Utils.distance(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
-            gridCoords[Coord].parent = currentNode;
+            gridCoords[Coord].parent = currentNode;    
             gridCoords[Coord].open = true;
             openList.push(Coord);
           }
-
         }
-    // if(this.steps == reqstep){
-    //   // this.update_FGH(gridCoords,f,g,h);
-    //   // console.log(parent);
+    // if(this.steps == req_step){
+    //   break;
+    // }
+
+    }
+  }
+
+  public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
+    let milli = performance.now();
+    var openList = new Array();
+    var closedList = new Array();
+    
+
+    openList.push(start);
+
+    gridCoords[start].h = Utils.distance(start , end); 
+    gridCoords[start].g = 0;
+    gridCoords[start].f = gridCoords[start].h;
+    
+    let currentNode :number;
+
+    while(openList.length != 0) {
+      this.steps ++;
+
+      //select least f 
+      var leastF : number = openList[0];
+      for (let node of openList){
+        if(gridCoords[node].f < gridCoords[leastF].f ){ // "=" for a reason
+          leastF = node;
+        }
+      }
+      // currentNode = openList[lowInd];
+      currentNode = leastF ;
+      gridCoords[currentNode].visited = true;
+
+      if(closedList.includes(currentNode)){
+        continue;
+      }
+
+      //remove currentNode from openList
+      function removeElement(array, elem) {
+          var index = array.indexOf(elem);
+          if (index > -1) {
+              array.splice(index, 1);
+          }
+      }
+      removeElement(openList, currentNode);
+
+      //add currentNode to openList
+      closedList.push(currentNode);
+
+      if(currentNode == end){   //end found
+          let milli2 = performance.now();
+          let node:number;
+          this.path.push(currentNode);
+          node = gridCoords[currentNode].parent;
+          while(node!=start){
+            gridCoords[node].isPath = true;
+            this.path.push(node);
+            node = gridCoords[node].parent;
+            
+           }
+          this.path.push(start);
+          this.path = this.path.reverse();
+          this.time =  (milli2-milli).toFixed(3);
+          break;
+      }
+
+      //find neighbors
+
+      // let neighbors = new Array<Pair>() ;
+      let neighbors = Utils.direction8_vector(currentNode,gridCoords,allowDiag,notCrossCorner);
+      // console.log(neighbors);
+      for (var Coord of neighbors) {
+
+        let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+        // let ng :number= 1;
+        if(closedList.includes(Coord) ){//already visited
+          continue;
+        }
+
+          if(openList.includes(Coord)){
+            if(gridCoords[currentNode].g + ng  < gridCoords[Coord].g){
+              gridCoords[Coord].g = gridCoords[currentNode].g + ng;
+              gridCoords[Coord].h = Utils.distance(Coord,end);
+              gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+              gridCoords[Coord].parent = currentNode;
+            }
+          }
+
+          else{ //seeing the node for first time
+            gridCoords[Coord].g = gridCoords[currentNode].g + ng;
+            gridCoords[Coord].h = Utils.distance(Coord,end);
+            gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+            gridCoords[Coord].parent = currentNode;    
+            gridCoords[Coord].open = true;
+            openList.push(Coord);
+          }
+        }
+    // if(this.steps == req_step){
     //   break;
     // }
 
@@ -127,25 +215,6 @@ export class Astar{
   }
 
 
-  distance(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
-    let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
-    return dist;
-  }
-
-
- // update_FGH(gridCoords: GridCoords[], f:Array<number> , g:Array<number> ,h:Array<number> ) :void{
- //     for (let i = 0; i < vGrid; i++) {
- //      for (let j = 0; j < hGrid; j++) {
- //        gridCoords[i*hGrid+j].f = f[i*hGrid+j];
- //        gridCoords[i*hGrid+j].g = g[i*hGrid+j];
- //        gridCoords[i*hGrid+j].h = h[i*hGrid+j];
- //      }
- //    }
- //  }
 
 direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Array<Pair>{
     var arr = new Array<Pair>();
