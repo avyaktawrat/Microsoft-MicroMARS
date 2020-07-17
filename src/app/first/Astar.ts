@@ -14,7 +14,7 @@ export class Astar{
 
   public steps :number = 0;
   public length1 :number= 0;
-  public time :string = "0";
+  public time :number = 0;
 
   public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>,heuristic?):void {
 
@@ -73,7 +73,7 @@ export class Astar{
             gridCoords[node].isPath = true;
             node = gridCoords[node].parent;            
           }
-          this.time =  (milli2-milli).toFixed(3);
+          this.time =  (milli2-milli);
           break;
       }
 
@@ -171,7 +171,7 @@ export class Astar{
             node = gridCoords[node].parent;
             
            }
-          this.time =  (milli2-milli).toFixed(3);
+          this.time =  (milli2-milli);
           break;
       }
 

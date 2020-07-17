@@ -8,7 +8,7 @@ let Utils: utils = new utils();
 export class Dijkstra {
   public steps = 0;
   public length1: number = 0;
-  public time: string;
+  public time: number = 0;
   public paths: number[] = new Array<number>();
 
 
@@ -78,7 +78,7 @@ export class Dijkstra {
     gridCoords[end].isEndPoint = true;
     path.push(start);
     this.length1 = path.length - 1;
-    this.time = (performance.now() - then).toFixed(3);
+    this.time = (performance.now() - then);
   }
 
 
@@ -138,7 +138,7 @@ export class Dijkstra {
            }
           this.paths.push(start);
           this.paths = this.paths.reverse();
-          this.time =  (milli2-milli).toFixed(3);
+          this.time =  (milli2-milli);
           this.length1 = this.paths.length;
           break;
       }

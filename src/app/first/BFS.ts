@@ -9,7 +9,7 @@ export class BFS{
 
   public steps: number = 0;
   public length1: number = 0;
-  public time: string = '0';
+  public time: number = 0;
 
   // public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean):void {
   public search(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean,adj?: Array<Array<DPair>>): void {
@@ -45,7 +45,7 @@ export class BFS{
               this.length1 ++;
             }
             let milli2 = performance.now();
-            this.time = (milli2-milli).toFixed(3);
+            this.time = (milli2-milli);
             this.length1 ++;
             stop = true;
             break;

@@ -8,7 +8,7 @@ import { BiDjk } from './BiDijkstra';
 
 import { FloydWarshall } from './floydWarshall';
 import { TravSalesMan } from './travSalesMan';
-
+import { lineCord} from './lineCoord'
 import { Astar } from './Astar' ;
 import { BiAstar } from './BiAstar' ;
 
@@ -29,13 +29,6 @@ const Utils: utils = new utils();
 interface DropDownSelect {
   value: string;
   viewValue: string;
-}
-
-interface lineCord {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
 }
 
 @Component({
@@ -296,8 +289,13 @@ export class FirstComponent implements OnInit {
     this.length = 0;
     this.steps = 0;
     this.time = '0';
-    this.isPref = true;
-    this.prefToggle(this.isPref);
+    // this.isPref = true;
+    // this.prefToggle(this.isPref);
+    if(this.selectedPS == 'PS_1'){
+      this.updateAlgoList();
+    }else{
+      this.prefToggle(this.isPref);
+    }
     this.updateUI();
      this.req_step = 0;
   }
@@ -380,6 +378,7 @@ export class FirstComponent implements OnInit {
   }
 
   updateAlgoList(){
+    console.log(this.isTerrain);
     if(this.isTerrain){
       this.Algorithms = [
       {value: 'Astar', viewValue: 'A*'},
@@ -391,6 +390,7 @@ export class FirstComponent implements OnInit {
       {value: 'Astar', viewValue: 'A*'},
       {value: 'Dijkstra', viewValue: 'Dijkstra'},
       {value: 'BestFirst', viewValue: 'Best First Search'}];
+      this.selectedValue = 'bfs';
     }
   }
 
@@ -583,7 +583,7 @@ export class FirstComponent implements OnInit {
     }
 
   }
-  pathLine(): void{
+  pathLine(start:number, end:number): void{
     // else if(this.selectedValue == 'Dijkstra'){
     //   for(let p=0;p< this.path.length-1;p++){
     //     let loc = this.path[p];
@@ -594,64 +594,65 @@ export class FirstComponent implements OnInit {
 
     //   }
     // }
-    let node = this.end;
+    let node = end;
     // console.log(this.bidirecNodeE, this.bidirecNodeS)
-    if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
-      let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
-      this.length = 0;
+    // if(this.selectedPS == 'PS_1'){
+      if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
+        let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
+        this.length = 0;
 
-      let x1 = Math.floor(node1/hGrid)*30+15;
-      let x2 = Math.floor(node2/hGrid)*30+15;
-      let y1 = (node1%hGrid)*30+15;
-      let y2 = (node2%hGrid)*30+15;
-      this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
-      this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-
-      while(node1!=this.start){
-        let node_next = this.gridCord[node1].parent;
         let x1 = Math.floor(node1/hGrid)*30+15;
-        let x2 = Math.floor(node_next/hGrid)*30+15;
+        let x2 = Math.floor(node2/hGrid)*30+15;
         let y1 = (node1%hGrid)*30+15;
-        let y2 = (node_next%hGrid)*30+15;
+        let y2 = (node2%hGrid)*30+15;
         this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
-        node1 = node_next;
         this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-      }
-      while(node2!=this.end){
-        let node_next = this.gridCord[node2].parent;
-        let x1 = Math.floor(node2/hGrid)*30+15;
-        let x2 = Math.floor(node_next/hGrid)*30+15;
-        let y1 = (node2%hGrid)*30+15;
-        let y2 = (node_next%hGrid)*30+15;
-        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
-        node2 = node_next;
-        this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-      }
-      this.lengthS = this.length.toFixed(2);
-    }
-    else if(!this.bidirection && this.gridCord[node].parent!=null){
-      //console.log(this.gridCord[node].parent);
-      this.length = 0;
-      while(node!=this.start){
-        let node_next = this.gridCord[node].parent;
-        let x1 = Math.floor(node/hGrid)*30+15;
-        let x2 = Math.floor(node_next/hGrid)*30+15;
-        let y1 = (node%hGrid)*30+15;
-        let y2 = (node_next%hGrid)*30+15;
-        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
-        node = node_next;
-        this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-      }
-      this.lengthS = this.length.toFixed(2);
-    }
 
-    else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
-      window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
-    }
-    else{
-      window.alert("Sorry, no Path Exists :(");
-    }
+        while(node1!=start){
+          let node_next = this.gridCord[node1].parent;
+          let x1 = Math.floor(node1/hGrid)*30+15;
+          let x2 = Math.floor(node_next/hGrid)*30+15;
+          let y1 = (node1%hGrid)*30+15;
+          let y2 = (node_next%hGrid)*30+15;
+          this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+          node1 = node_next;
+          this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+        }
+        while(node2!=this.end){
+          let node_next = this.gridCord[node2].parent;
+          let x1 = Math.floor(node2/hGrid)*30+15;
+          let x2 = Math.floor(node_next/hGrid)*30+15;
+          let y1 = (node2%hGrid)*30+15;
+          let y2 = (node_next%hGrid)*30+15;
+          this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+          node2 = node_next;
+          this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+        }
+        this.lengthS = this.length.toFixed(2);
+      }
+      else if(!this.bidirection && this.gridCord[node].parent!=null){
+        //console.log(this.gridCord[node].parent);
+        this.length = 0;
+        while(node!=start){
+          let node_next = this.gridCord[node].parent;
+          let x1 = Math.floor(node/hGrid)*30+15;
+          let x2 = Math.floor(node_next/hGrid)*30+15;
+          let y1 = (node%hGrid)*30+15;
+          let y2 = (node_next%hGrid)*30+15;
+          this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+          node = node_next;
+          this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
+        }
+        this.lengthS = this.length.toFixed(2);
+      }
 
+      else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
+        window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
+      }
+      else{
+        window.alert("Sorry, no Path Exists :(");
+      }
+    
   }
 
   req_step :number = 0;
@@ -708,24 +709,28 @@ export class FirstComponent implements OnInit {
         case 'bfs':
           if(this.bidirection){
             bibfs.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner);
+            this.bidirecNodeS = bibfs.bidirecNodeS;
+            this.bidirecNodeE = bibfs.bidirecNodeE;
+            this.steps = bibfs.steps;
+            this.time = bibfs.time.toFixed(3);
+
           }else{
             bfs.search( this.start, this.end, this.gridCord,this.allowDiag,this.notCrossCorner);
+            this.steps = bfs.steps;
+            this.time = bfs.time.toFixed(3);
           }
-          this.steps = bfs.steps;
-          this.time = bfs.time;
-          this.bidirecNodeS = bibfs.bidirecNodeS;
-          this.bidirecNodeE = bibfs.bidirecNodeE;
+
           break;
         case 'Astar':
           if(this.isTerrain){
             astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,false,this.adjList,heur/*,this.req_step*/);
             this.steps = astar.steps;
-            this.time = astar.time;
+            this.time = astar.time.toFixed(3);
           }else if (this.bidirection){
             biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = biastar.steps;
             this.length = biastar.length1;
-            this.time = biastar.time;
+            this.time = biastar.time.toFixed(3);
             this.bidirecNodeS = biastar.bidirecNodeS;
             this.bidirecNodeE = biastar.bidirecNodeE;
             // console.log(this.bidirecNodeE,this.bidirecNodeS);
@@ -734,20 +739,20 @@ export class FirstComponent implements OnInit {
             astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = astar.steps;
             this.length = astar.length1;
-            this.time = astar.time;
+            this.time = astar.time.toFixed(3);
           }
           break;
         case 'Dijkstra':
           if(this.isTerrain){
             this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
             dij.Wsearch(this.start, this.end, this.gridCord ,this.allowDiag,this.adjList);
-            this.time = dij.time;
+            this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
             this.length = dij.length1;
 
           }else if (this.bidirection){
             bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
-            this.time = bidjk.time;
+            this.time = bidjk.time.toFixed(3);
             this.steps = bidjk.steps;
             this.length = bidjk.length1;
             this.bidirecNodeS = bidjk.bidirecNodeS;
@@ -755,7 +760,7 @@ export class FirstComponent implements OnInit {
 
           }else{
             dij.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
-            this.time = dij.time;
+            this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
             this.length = dij.length1;
 
@@ -765,12 +770,15 @@ export class FirstComponent implements OnInit {
           console.log(this.bidirection);
           if(this.bidirection){
             best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
-            this.time = best.time;
+            this.time = best.time.toFixed(3);
             this.steps = best.steps;
             this.length = best.length1;
+            this.bidirecNodeS = best.bidirecNodeS;
+            this.bidirecNodeE = best.bidirecNodeE;
+
           }else{
             best.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
-            this.time = best.time;
+            this.time = best.time.toFixed(3);
             this.steps = best.steps;
             this.length = best.length1;
           }
@@ -779,6 +787,7 @@ export class FirstComponent implements OnInit {
           alert('Select Algorithms');
         break;
       }
+    this.pathLine(this.start,this.end);
     }else{
       switch (this.selectedValue) {
         case 'bfs':
@@ -789,7 +798,8 @@ export class FirstComponent implements OnInit {
             tsp.search(bfs, this.isPref, this.gridCord, this.allowDiag, this.adjList);
             this.length = tsp.length;
             this.steps = tsp.steps;
-            this.time = tsp.time;
+            this.time = tsp.time.toFixed(3);
+            this.pathCord = tsp.pathCord;
           }
           break;
         case 'Astar':
@@ -800,7 +810,8 @@ export class FirstComponent implements OnInit {
             tsp.search(astar, this.isPref, this.gridCord, this.allowDiag, this.adjList);
             this.length = tsp.length;
             this.steps = tsp.steps;
-            this.time = tsp.time;
+            this.time = tsp.time.toFixed(3);
+            this.pathCord = tsp.pathCord;
           }
           break;
         case 'Dijkstra':
@@ -811,7 +822,9 @@ export class FirstComponent implements OnInit {
             tsp.search(dij, this.isPref, this.gridCord, this.allowDiag, this.adjList);
             this.length = tsp.length;
             this.steps = tsp.steps;
-            this.time = tsp.time;
+            this.time = tsp.time.toFixed(3);
+            this.pathCord = tsp.pathCord;
+
           }
           break;
         case 'Floyd–Warshall':
@@ -822,7 +835,7 @@ export class FirstComponent implements OnInit {
             tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
             tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
             console.log('Flyod Warshall');
-            this.time = tsp.time;
+            this.time = tsp.time.toFixed(3);
             this.steps = tsp.steps;
             this.length = tsp.length;
           }
@@ -832,8 +845,8 @@ export class FirstComponent implements OnInit {
           break;
       }
     }
-    this.updateUI();
-      // this.pathLine(); //for tracing the line
+
+    this.updateUI(); //for tracing the line
       // console.log(this.gridCord)
   }
 }

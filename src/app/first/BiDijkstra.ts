@@ -8,7 +8,7 @@ let Utils: utils = new utils();
 export class BiDjk{
   public steps :number = 0;
   public length1 :number= 0;
-  public time :string = "0";
+  public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
@@ -94,7 +94,7 @@ export class BiDjk{
 			  stop = true;
 			  this.bidirecNodeE=Coord;
 			  this.bidirecNodeS=currentNode;
-	          this.time =  (milli2-milli).toFixed(3);
+	          this.time =  (milli2-milli);
 	      		break;
 	      	}
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
@@ -166,7 +166,7 @@ export class BiDjk{
 			stop = true;
 			this.bidirecNodeS=Coord;
 			this.bidirecNodeE=currentNode;
-	        this.time =  (milli2-milli).toFixed(3);
+	        this.time =  (milli2-milli);
 	      	break;
 	      }
 

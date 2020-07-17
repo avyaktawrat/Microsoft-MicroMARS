@@ -5,15 +5,16 @@ import { GridCoords } from './GridCoords';
 import { DPair } from './adj';
 import { FloydWarshall } from './floydWarshall';
 import {hGrid, vGrid, totalGrid} from './constants';
-
+import { lineCord} from './lineCoord'
 export class TravSalesMan {
   start: number;
   destinations: number[];
   newNodes: number[]; // nodes for the new graph made from start and end points only
   newGraph: number[][] = new Array<Array<number>>(); // adjacency matrix storing edge weights of this new graph
   length: number = 0;
-  time: string = '';
+  time: number = 0;
   steps: number = 0;
+  pathCord: lineCord[] = new Array();
   path: number[][][] = new Array<Array<Array<number>>>(); // for floyd-warshall only
   prepareNewGraph(gridCoords: GridCoords[], allowDiag: boolean, adj: Array<Array<DPair>>) {   // function to make a new graph
     this.newNodes = [this.start, ...this.destinations];
@@ -44,7 +45,7 @@ export class TravSalesMan {
           for (let dest of this.destinations) {
             this.resetGrid(gridCoords);
             algo.search(this.start, dest, gridCoords, allowDiag, false);
-
+            this.linePath(this.start,dest,gridCoords);
             this.start = dest;
             this.length += algo.length1;
             this.time += algo.time;
@@ -59,7 +60,7 @@ export class TravSalesMan {
         let then = performance.now();
         algo.search(this.newGraph);
         algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
-        this.time = (performance.now() - then).toFixed(3);
+        this.time = (performance.now() - then);
         this.length = algo.length1;
         this.steps += algo.steps;
       }
@@ -74,5 +75,19 @@ export class TravSalesMan {
       gridCoords[i].g = null;
       gridCoords[i].h = null;
     }
+  }
+
+  linePath(start:number,end :number,gridCord:GridCoords[]){
+    let node :number = end;
+    while(node!=start){
+          let node_next = gridCord[node].parent;
+          let x1 = Math.floor(node/hGrid)*30+15;
+          let x2 = Math.floor(node_next/hGrid)*30+15;
+          let y1 = (node%hGrid)*30+15;
+          let y2 = (node_next%hGrid)*30+15;
+          this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+          node = node_next;
+        }
+
   }
 }

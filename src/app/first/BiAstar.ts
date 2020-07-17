@@ -8,7 +8,7 @@ let Utils: utils = new utils();
 export class BiAstar{
   public steps :number = 0;
   public length1 :number= 0;
-  public time :string = "0";
+  public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
@@ -44,7 +44,7 @@ export class BiAstar{
   
   	let currentNode :number;
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
-  		
+  		this.steps ++;
   	// 	if(this.steps == req_step){
 			// 	// break;
 			// }
@@ -59,7 +59,7 @@ export class BiAstar{
           }
       }
       if(startOpenList.length != 0 && !stop) {
-	      this.steps ++;
+	      
       	var lowInd : number = 0;
 	      for(var i=0; i<startOpenList.length; i++) {
 	        if(gridCord[startOpenList[i]].f < gridCord[startOpenList[lowInd]].f) {
@@ -99,7 +99,7 @@ export class BiAstar{
 					  stop = true;
 					  this.bidirecNodeE=Coord;
 					  this.bidirecNodeS=currentNode;
-	          this.time =  (milli2-milli).toFixed(3);
+	          this.time =  (milli2-milli);
 	      		break;
 	      	}
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
@@ -173,7 +173,7 @@ export class BiAstar{
 						stop = true;
 						this.bidirecNodeS=Coord;
 						this.bidirecNodeE=currentNode;
-		        this.time =  (milli2-milli).toFixed(3);
+		        this.time =  (milli2-milli);
 		      	break;
 	      }
 
