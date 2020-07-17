@@ -49,7 +49,7 @@
         </div>
      	</section>
 
-    	<mat-form-field appearance="fill" *ngIf = "selectedPS!=='TSP'">
+    	<mat-form-field appearance="fill" >
         	<mat-label><h4>Algorithms</h4></mat-label>
         	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
 		        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
