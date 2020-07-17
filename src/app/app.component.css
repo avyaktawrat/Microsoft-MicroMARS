@@ -57,3 +57,19 @@
   margin: none;
   padding: 0%;
 }
+
+/* .mat-tab-link-active,
+.mat-tab-label-active {
+    background-color: #120258;
+    color: whitesmoke;
+    border: 1px solid #6B7F7F;
+    font-weight: bold;
+}
+
+.mat-tab-link,
+.mat-tab-label {
+    line-height: 30px !important;
+    height: 30px !important;
+    min-width: 100px !important;
+    border: 1px solid #7e7e7e;
+} */
