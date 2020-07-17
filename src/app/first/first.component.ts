@@ -146,8 +146,13 @@ export class FirstComponent implements OnInit {
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.choose;
       if (!this.isGaussian ){
-        this.gridCord[coord].isTerrain = true;
-        this.gridCord[coord].value = height;
+        if(this.color == 1){
+          this.gridCord[coord].isTerrain = true;
+          this.gridCord[coord].value = height;
+        }else{
+          this.gridCord[coord].isTerrain = false;
+          this.gridCord[coord].value = 0;
+        }
         this.updateUI();
       }else if(this.isGaussian && this.isTerrain){
         this.gaussianFill(coord);
@@ -256,8 +261,13 @@ export class FirstComponent implements OnInit {
   mouseUp(a: number , b: number): void{
    this.mouseDown = false;
   }
-  mouseDownE(a: number , b: number): void{
+  mouseDownE(a: number , b: number,isT:boolean): void{
     this.mouseDown = true;
+    if(isT){
+       this.color = 0;
+    }else{
+      this.color = 1;
+    }
   }
 
   reset(): void{
@@ -390,7 +400,6 @@ export class FirstComponent implements OnInit {
       {value: 'Astar', viewValue: 'A*'},
       {value: 'Dijkstra', viewValue: 'Dijkstra'},
       {value: 'BestFirst', viewValue: 'Best First Search'}];
-      this.selectedValue = 'bfs';
     }
   }
 
