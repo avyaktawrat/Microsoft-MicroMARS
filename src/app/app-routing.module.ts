@@ -7,9 +7,9 @@ import { from } from 'rxjs';
 
 
 const routes: Routes = [
-  { path: '', component: WelcomePageComponent},
-  { path: 'home', component: FirstComponent, data: {animation: 'HomePage'} },
-  { path: 'my-team', component: SecondComponent, data: {animation: 'AboutPage'} }
+  { path: '', component: WelcomePageComponent, data:{animation: 'TutPage'}},
+  { path: 'home', component: FirstComponent, data: {animation: 'PlaygroundPage'} },
+  { path: 'my-team', component: SecondComponent, data: {animation: 'TeamPage'} }
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 .main-page{
 	width: 100%;
   height: fit-content;
+  position: relative;
   overflow-x: hidden;
 }
 .svg{
@@ -14,6 +15,9 @@
     overflow-y: hidden;
     overflow-x: hidden;
     position: center;
+    background-color: #ee4c2c;
+    border-width: 0px;
+    border-inline-style: solid;
 }
 .svg rect{
     stroke-opacity:1;
@@ -28,7 +32,7 @@
     font-size: 0.75em;
   }
 #menu-bar{
-    background-color: rgb(200,200,200);
+    background-color:#cae7df;
     text-decoration-color: blanchedalmond;
     position: absolute;
     float: right;
@@ -37,7 +41,9 @@
     border-radius: 8px;
     width: 250px;
     height: fit-content;
-    border-width:  50px;
+    border-width:  0.5px;
+    border-style: solid;
+    overflow: hidden;
 }
 form{
     text-emphasis: black;
@@ -78,6 +84,11 @@ form mat-form-field {
   margin: 3%;
 }*/
 /* slider */
+.button{
+  color: white;
+  font-weight: none;
+}
+
 .example-h2 {
     margin: 0;
   }
@@ -136,5 +147,13 @@ form mat-form-field {
   min-width: 0!important;
   padding: 3px!important;
   margin: 3px!important;
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  opacity: 100%;
+
  }
+ /* ::ng-deep .mat-select-panel,::ng-deep .mat-select-content {
+  background: red;
+} */
+.mat-divider {
+  border-top-color: white;
+}
