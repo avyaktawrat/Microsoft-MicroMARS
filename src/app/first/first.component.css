@@ -68,7 +68,7 @@ form mat-form-field {
   margin: 0px;
   width: fit-content;
 }
-
+/*
 .button{
   display: inline-flex;
 	background-color: grey;
@@ -76,7 +76,7 @@ form mat-form-field {
   padding:  3px 5px;
   position: relative;
   margin: 3%;
-}
+}*/
 /* slider */
 .example-h2 {
     margin: 0;

@@ -29,7 +29,7 @@ export class TravSalesMan {
           let dij = new Dijkstra(); // Using Dijkstra to get shortest path between two nodes in a graph
           dij.search(this.newNodes[i], this.newNodes[j], gridCoords, allowDiag,false);
           this.newGraph[i][j] = dij.length1;
-          this.path[i].push(dij.paths);
+          this.path[i].push(dij.paths.reverse());
         }
         else {
           this.newGraph[i][j] = 0;
@@ -60,6 +60,11 @@ export class TravSalesMan {
         let then = performance.now();
         algo.search(this.newGraph);
         algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
+        // for (let dest of this.destinations) {
+        //   console.log(this.start, dest);
+        //   this.linePath(this.start, dest, gridCoords);
+        //   this.start = dest;
+        // }
         this.time = (performance.now() - then);
         this.length = algo.length1;
         this.steps += algo.steps;
