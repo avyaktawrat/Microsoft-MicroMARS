@@ -1,4 +1,3 @@
-import { FirstComponent } from './first.component';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
@@ -94,5 +93,5 @@ export class utils{
     let dist = Math.max(Math.abs(x1-x2) , Math.abs(y1-y2));
     return dist;
   }
-  
+
 }

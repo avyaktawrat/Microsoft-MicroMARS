@@ -16,7 +16,7 @@
 			  {{selectedPS}}
 			
 		<form>
-    	<mat-form-field appearance="fill" *ngIf="selectedPS !== 'TSP'">
+    	<mat-form-field appearance="fill">
       	<mat-label><h4>Maze</h4></mat-label>
       	<mat-select [(ngModel)]="selectedMaze" name="maze" value = "selectedMaze" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeMaze()">
 	        <mat-option *ngFor="let m of maze" [value]="m.value">
