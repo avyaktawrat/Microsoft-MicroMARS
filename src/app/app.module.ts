@@ -24,6 +24,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatSlideToggleModule,
     MatRadioModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    RouterModule
   ],
   exports: [
     MatTabsModule,
