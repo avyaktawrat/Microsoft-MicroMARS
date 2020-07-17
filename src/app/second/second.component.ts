@@ -54,7 +54,8 @@ export class SecondComponent {
       email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},
 
       {text: 'Ipsit', cols: 2, rows: 2, color: 'linear-gradient( #84bcf1,#5299eb)',
-      content: 'Howdy! I am Ipsit from Electrical Engineering Department of IIT Bombay. Nice that you are seeing our project :P',photoId:'https://lh3.googleusercontent.com/NND5r4lbj99m2X-_qwvwFteUsV3cNCcLAchYyC9Z_kVP_AFWNIIAGJKBYPqCMq8RUisUR2IKJVowIsUYr_dUmsaJjFzU0NRf2xtaOjsvTthI9d0TDNgSFDvlR7V5a2PDSsnaHP3lVcmKGJ4VPOo4vEuSYAKDw72q9Yqbe1jzI41qbo-MTEyJdDpUmAh6Ois-7Evc1y9RV5n-XbMtN_QrzdTjL4zdLCXWrpqGJCm-y8wUbCyqhP3xMYJDuffMb_UOAyyPm1CGfd1A1vxw_qPdwAAoYHlR7mYXv7KYwweau2cffQ-z_XyPbiTk6wMksywqqOf7yZFSkrOHuOSX8uYsgLQNSC3efZidAXrVTvKuFa3Gn_lp1zVnOMQBsBhcLl1gAvHgTzV2yhixuqJ2XEFo4SaEtyoRobAuOiUYc3oQcQWwRd4nrWUZCiZsSLb391vrSu4KfWNvxFEaXPRd6RNiXfL90t330ZwD9IpBQs5_SmwUiWTUCeJ9790TPgBBu_63iTXqQNGJpsqrx74sWi3gaQ0IxEN_sKfMOothXTvijXHh0Q52GrxYhOACLEkZMmNkuGPoqp9Z_r4akJqnp4Z_xJL95v7yQI33l9H06uwwrZHyLbkLfushiu9hICH8vDQq4kE6ud_cCgKiSULzdq5zsf-DD-pKsMcGGL3JSw2PuIJtd4T0ZkKchT3D6Paq=w258-h229-no?authuser=0',email:'mmkipsit@gmail.com',git:'https://github.com/Ipsit1234'},
+      content: 'Howdy! I am Ipsit from Electrical Engineering Department of IIT Bombay. Nice that you are seeing our project :P',
+        photoId:'',email:'mmkipsit@gmail.com',git:'https://github.com/Ipsit1234'},
 
      {text: 'Nayan', cols: 2, rows: 2, color: 'linear-gradient( #84c9f1,#52abeb)',
      content: 'Hey There! I am Nayan from Electrical Engineering Department of IIT-Bombay.',

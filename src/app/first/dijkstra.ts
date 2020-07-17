@@ -64,6 +64,7 @@ export class Dijkstra {
 
     let path: number[] = new Array();
     for (let v = end; v !== start; v = p[v]) {
+      // this.paths.push(v);
       if (v !== end){
         // rects[v].style.fill = 'orange';
         gridCoords[v].isPath = true;
@@ -77,6 +78,7 @@ export class Dijkstra {
     // rects[t].style.fill = 'red';
     gridCoords[end].isEndPoint = true;
     path.push(start);
+    // this.paths.push(start);
     this.length1 = path.length - 1;
     this.time = (performance.now() - then);
   }

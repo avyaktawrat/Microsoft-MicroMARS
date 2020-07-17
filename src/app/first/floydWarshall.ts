@@ -23,7 +23,7 @@ export class FloydWarshall {
           this.steps += 1;
           if (this.d[i][k] + this.d[k][j] < this.d[i][j]) {
             this.d[i][j] = this.d[i][k] + this.d[k][j];
-            // this.p[i][j] = this.p[k][j];
+            // this.p[i][j] = this.p[i][k];
           }
         }
       }
@@ -37,6 +37,7 @@ export class FloydWarshall {
     let i = 0;
     let min_idx = -1;
     let seen = [];
+    // console.log(this.p);
     while (i < dests.length) {
       let min = 1000000000;
       for (let j = 0; j < this.d[start].length; j++) {
@@ -45,6 +46,14 @@ export class FloydWarshall {
           min = this.d[start][j];
         }
       }
+      // gridCoords[path[start][min_idx][0]].isPath = true;
+      // gridCoords[path[start][min_idx][0]].parent = path[start][min_idx][0];
+      // for (let idx = 1; idx < path[start][min_idx].length; idx++) {
+      //   this.length1 += 1;
+      //   gridCoords[path[start][min_idx][idx]].isPath = true;
+      //   gridCoords[path[start][min_idx][idx]].parent = path[start][min_idx][idx - 1];
+      //   // console.log(path[start][min_idx][idx - 1]);
+      // }
       for (let idx of path[start][min_idx]) {
         this.length1 += 1;
         gridCoords[idx].isPath = true;
