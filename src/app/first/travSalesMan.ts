@@ -25,13 +25,13 @@ export class TravSalesMan {
       for (let j = 0; j < this.newNodes.length; j++) {
         this.steps += 1;
         if (i !== j) {
-          let dij = new Dijkstra(); // Using BFS as it always gives shortest path between two nodes in a graph
+          let dij = new Dijkstra(); // Using Dijkstra to get shortest path between two nodes in a graph
           dij.search(this.newNodes[i], this.newNodes[j], gridCoords, allowDiag,false);
           this.newGraph[i][j] = dij.length1;
           this.path[i].push(dij.paths);
         }
         else {
-          this.newGraph[i][j] = 500;
+          this.newGraph[i][j] = 0;
           this.path[i].push([]);
         }
       }
@@ -41,11 +41,10 @@ export class TravSalesMan {
   search(algo: BFS | Dijkstra | Astar | FloydWarshall, userPref: boolean, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     if (userPref) {
         if (!(algo instanceof FloydWarshall)) {
-          // console.log(this.destinations);
           for (let dest of this.destinations) {
             this.resetGrid(gridCoords);
             algo.search(this.start, dest, gridCoords, allowDiag, false);
-            
+
             this.start = dest;
             this.length += algo.length1;
             this.time += algo.time;
@@ -59,7 +58,7 @@ export class TravSalesMan {
       if (algo instanceof FloydWarshall) {
         let then = performance.now();
         algo.search(this.newGraph);
-        algo.getPath(0, [1,2], gridCoords, this.path);
+        algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
         this.time = (performance.now() - then).toFixed(3);
         this.length = algo.length1;
         this.steps += algo.steps;
