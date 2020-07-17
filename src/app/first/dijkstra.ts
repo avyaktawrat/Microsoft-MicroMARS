@@ -7,7 +7,7 @@ let Utils: utils = new utils();
 
 export class Dijkstra {
   public steps = 0;
-  public length1: number;
+  public length1: number = 0;
   public time: string;
   public paths: number[] = new Array<number>();
 
@@ -16,7 +16,6 @@ export class Dijkstra {
   Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     const then = performance.now();
     const INF = 1000000000;
-    console.log(adj);
     // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
@@ -87,18 +86,18 @@ export class Dijkstra {
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
-    
+
 
     openList.push(start);
 
-    gridCord[start].g = 0; 
-    
+    gridCord[start].g = 0;
+
     let currentNode :number;
 
     while(openList.length != 0) {
       this.steps ++;
 
-      //select least f 
+      //select least f
       var leastG : number = openList[0];
       for (let node of openList){
         if(gridCord[node].g < gridCord[leastG].g ){
@@ -108,6 +107,7 @@ export class Dijkstra {
       // currentNode = openList[lowInd];
       currentNode = leastG ;
       gridCord[currentNode].visited = true;
+      this.length1 += 1;
 
       if(closedList.includes(currentNode)){
         continue;
@@ -134,11 +134,12 @@ export class Dijkstra {
             gridCord[node].isPath = true;
             this.paths.push(node);
             node = gridCord[node].parent;
-            
+
            }
           this.paths.push(start);
           this.paths = this.paths.reverse();
           this.time =  (milli2-milli).toFixed(3);
+          this.length1 = this.paths.length;
           break;
       }
 
@@ -164,7 +165,7 @@ export class Dijkstra {
 
           else{ //seeing the node for first time
             gridCord[Coord].g = gridCord[currentNode].g + ng;
-            gridCord[Coord].parent = currentNode;    
+            gridCord[Coord].parent = currentNode;
             gridCord[Coord].open = true;
             openList.push(Coord);
           }
