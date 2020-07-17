@@ -8,11 +8,12 @@
   </div>
 -->
   <!-- menu -->
-  <nav mat-tab-nav-bar [backgroundColor]="background" animationDuration="500ms">
-    <a mat-tab-link *ngFor="let link of links"
+  <nav mat-tab-nav-bar style="background-color:navy" [backgroundColor]="background" animationDuration="500ms">
+    <a mat-tab-link style="color: oldlace;" *ngFor="let link of links"
        (click)="activeLink = link.router"
        [active]="activeLink == link.router" [routerLink] = "link.router"> {{link.view}} </a>
-    <!-- <a mat-tab-link disabled>Disabled Link</a> -->
+    <a mat-tab-link style="position: absolute; color:white; opacity: 100%; font-size: large;vertical-align: center;text-align: right; right: 5%;">
+      Team MicroMARS 42</a>
   </nav>
 
   <div [@routeAnimations]="prepareRoute(outlet)">

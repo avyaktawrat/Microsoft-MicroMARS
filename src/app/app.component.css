@@ -73,3 +73,6 @@
     min-width: 100px !important;
     border: 1px solid #7e7e7e;
 } */
+.mat-tab-label .mat-tab-label-active{
+  width: 20%;
+}

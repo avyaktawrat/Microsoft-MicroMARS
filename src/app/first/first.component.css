@@ -136,4 +136,5 @@ form mat-form-field {
   min-width: 0!important;
   padding: 3px!important;
   margin: 3px!important;
+  overflow: hidden !important;
  }

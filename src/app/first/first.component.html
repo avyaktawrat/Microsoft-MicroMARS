@@ -10,10 +10,10 @@
 	</svg>
 	<div id = "menu-bar">
 		<!-- Choosing problem statement -->
-		<mat-tab-group [(selectedIndex)]="PS_index" (selectedIndexChange)="selectedPS = PS_index ? 'TSP':'PS_1';reset()">
+		<mat-tab-group
+		[(selectedIndex)]="PS_index" (selectedIndexChange)="selectedPS = PS_index ? 'TSP':'PS_1';reset()">
 			<mat-tab *ngFor="let ps of Problem_statement">
-			  <ng-template mat-tab-label >{{ps.viewValue}}</ng-template>
-			  {{selectedPS}}
+			  <ng-template mat-tab-label style="background-color: orange;">{{ps.viewValue}}</ng-template>
 			
 		<form>
     	<mat-form-field appearance="fill">
