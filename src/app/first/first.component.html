@@ -188,10 +188,11 @@
 			<!-- Slider Config ends-->
 			<!-- <button (click)="inc_step()" style="margin: 10px;">step inc</button> -->
 			<!-- <button (click)="search_A()" style="margin: 10px;">A*</button> -->
-			<button class = "button" (click)="reset()">Reset All</button>
-	        <button class = "button" (click)="Search()">Start Search</button>
-			<button class = "button" (click)="clearWall()">Clear Walls</button>
-			<button class = "button" (click)="clearPath()">Clear Path</button>
+			<mat-divider></mat-divider>
+			<button mat-raised-button color="primary"class = "button" (click)="Search()" style="margin: 3%">Start Search</button>
+			<button mat-raised-button color="primary"class = "button" (click)="reset()" style="margin: 3%">Reset All</button>
+      <button mat-raised-button color="primary"class = "button" (click)="clearWall()"style="margin: 3%">Clear Walls</button>
+			<button mat-raised-button color="primary"class = "button" (click)="clearPath()"style="margin: 3%">Clear Path</button>
 			<mat-divider></mat-divider>
 			<div class= "info">
 				<h2>Info </h2>
