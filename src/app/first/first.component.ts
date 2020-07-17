@@ -498,6 +498,7 @@ export class FirstComponent implements OnInit {
         this.updateAlgoList();
         if(this.end ==null){
           alert("Click on end grid cell");
+          this.selectedMaze = null;
           return;
         }
         this.cov_x = 25;
@@ -512,6 +513,7 @@ export class FirstComponent implements OnInit {
         this.updateAlgoList();
         if(this.start ==null){
           alert("Click on start grid cell");
+          this.selectedMaze = null;
           return;
         }
         this.cov_x = 25;
@@ -526,6 +528,7 @@ export class FirstComponent implements OnInit {
         this.updateAlgoList();
         if(this.start ==null || this.end ==null){
           alert("Click on start/end grid cell");
+          this.selectedMaze = null;
           return;
         }
         var x1 = Math.round(this.start/hGrid);
@@ -543,6 +546,7 @@ export class FirstComponent implements OnInit {
         // code...
         break;
     }
+    this.selectedMaze = null;
     this.updateUI();
   }
   updateUI(): void{
