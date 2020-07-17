@@ -271,7 +271,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].isPath = false;
       this.gridCord[u].isTerrain = false;
       this.gridCord[u].value = 0;
-      this.lengthS = 0;
+      this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
     }
@@ -309,7 +309,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
-      this.lengthS = 0;
+      this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
 
