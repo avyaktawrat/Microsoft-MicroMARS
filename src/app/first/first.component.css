@@ -1,20 +1,24 @@
 .main-page{
 	width: 100%;
-  height: fit-content;
+  height: 100%;
   position: relative;
+  top: 0px;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 .svg{
 /*	padding-top: 200px;
 	padding-left: 1200px;*/
-  padding-top: 20px;
+  padding-top: 10px;
   padding-left: 20px;
+  padding-bottom: 0px;
+  margin:0px;
 
     height: 100%;
     width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
-    position: center;
+    position: relative;
     background-color: #ee4c2c;
     border-width: 0px;
     border-inline-style: solid;
