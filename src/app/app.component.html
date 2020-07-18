@@ -8,6 +8,7 @@
   </div>
 -->
   <!-- menu -->
+<div class="navbar-menu">
   <nav mat-tab-nav-bar style="background-color:navy" [backgroundColor]="background" animationDuration="500ms">
     <a mat-tab-link style="color: oldlace;" *ngFor="let link of links"
        (click)="activeLink = link.router"
@@ -19,7 +20,8 @@
   <div [@routeAnimations]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <!-- <div class="navbar-menu">
+</div>
+  <!-- 
     <div class="navbar-start">
       <a class="navbar-item" routerLink='/my-team' routerLinkActive="active-link">Contact</a>
       <a class="navbar-item" routerLink='/home' routerLinkActive="active-link">Home</a>
