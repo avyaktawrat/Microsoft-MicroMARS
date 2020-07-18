@@ -55,7 +55,7 @@ export class SecondComponent {
 
       {text: 'Ipsit', cols: 2, rows: 2, color: 'linear-gradient( #84bcf1,#5299eb)',
       content: 'Howdy! I am Ipsit from Electrical Engineering Department of IIT Bombay. Nice that you are seeing our project :P',
-        photoId:'',email:'mmkipsit@gmail.com',git:'https://github.com/Ipsit1234'},
+        photoId:'https://drive.google.com/thumbnail?id=1xck_3blWnhI3TblKLcILwugrAy3iquhd',email:'mmkipsit@gmail.com',git:'https://github.com/Ipsit1234'},
 
      {text: 'Nayan', cols: 2, rows: 2, color: 'linear-gradient( #84c9f1,#52abeb)',
      content: 'Hey There! I am Nayan from Electrical Engineering Department of IIT-Bombay.',
