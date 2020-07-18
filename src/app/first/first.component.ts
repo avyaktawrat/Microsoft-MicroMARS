@@ -299,15 +299,9 @@ export class FirstComponent implements OnInit {
     this.length = 0;
     this.steps = 0;
     this.time = '0';
-    // this.isPref = true;
-    // this.prefToggle(this.isPref);
-    if(this.selectedPS == 'PS_1'){
-      this.updateAlgoList();
-    }else{
-      this.prefToggle(this.isPref);
-    }
+    this.updateAlgoList();
     this.updateUI();
-     this.req_step = 0;
+    this.req_step = 0;
   }
 
   clearPath(): void{
@@ -388,18 +382,22 @@ export class FirstComponent implements OnInit {
   }
 
   updateAlgoList(){
-    console.log(this.isTerrain);
-    if(this.isTerrain){
-      this.Algorithms = [
-      {value: 'Astar', viewValue: 'A*'},
-      {value: 'Dijkstra', viewValue: 'Dijkstra'}];
-      this.selectedValue = 'Astar';
+    if(this.selectedPS=="PS_1"){
+      if(this.isTerrain){
+        this.Algorithms = [
+        {value: 'Astar', viewValue: 'A*'},
+        {value: 'Dijkstra', viewValue: 'Dijkstra'}];
+        this.selectedValue = 'Astar';
+      }else{
+        this.Algorithms = [
+        {value: 'bfs', viewValue: 'Breadth First Search'},
+        {value: 'Astar', viewValue: 'A*'},
+        {value: 'Dijkstra', viewValue: 'Dijkstra'},
+        {value: 'BestFirst', viewValue: 'Best First Search'}];
+        this.selectedValue = 'bfs';
+      }
     }else{
-      this.Algorithms = [
-      {value: 'bfs', viewValue: 'Breadth First Search'},
-      {value: 'Astar', viewValue: 'A*'},
-      {value: 'Dijkstra', viewValue: 'Dijkstra'},
-      {value: 'BestFirst', viewValue: 'Best First Search'}];
+      this.prefToggle(this.isPref);
     }
   }
 
@@ -412,7 +410,7 @@ export class FirstComponent implements OnInit {
   }
   changeMaze(){
     this.clearWall();
-    this.selectedValue = 'bfs';
+    // this.selectedValue = 'bfs';
     this.isTerrain = false;
     this.isGaussian = false;
     this.updateAlgoList();
