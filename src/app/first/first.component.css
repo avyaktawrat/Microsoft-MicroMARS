@@ -46,6 +46,7 @@
     overflow: hidden;
 }
 form{
+    overflow: hidden;
     text-emphasis: black;
     display: block;
     margin:0px;
