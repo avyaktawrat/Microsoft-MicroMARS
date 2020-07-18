@@ -151,6 +151,14 @@ form mat-form-field {
   opacity: 100%;
 
  }
+.mat-tab-link:hover,
+::ng-deep .mat-tab-label:hover{
+  margin: 2px 1px 1px 1px;
+  border-color: navy;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 8px;
+}
  /* ::ng-deep .mat-select-panel,::ng-deep .mat-select-content {
   background: red;
 } */
