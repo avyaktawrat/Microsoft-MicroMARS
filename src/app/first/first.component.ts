@@ -572,8 +572,11 @@ export class FirstComponent implements OnInit {
         element.style.fill = "pink";
       }
       else if (rect.isTerrain){
-        element.style.fill = "grey";
-        element.style.fillOpacity = (rect.value / 100).toString();
+        // element.style.fill = "grey";
+        // element.style.fillOpacity = (rect.value / 100).toString();
+        let a = (Math.floor(256-(rect.value*128 / 100))).toString();
+        element.style.fill = "rgb("+a+","+a+","+a+")";
+        element.style.fillOpacity = "1"; 
       }
       else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);
