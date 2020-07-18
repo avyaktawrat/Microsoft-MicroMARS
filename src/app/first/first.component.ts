@@ -413,6 +413,8 @@ export class FirstComponent implements OnInit {
     // this.selectedValue = 'bfs';
     this.isTerrain = false;
     this.isGaussian = false;
+    this.bidirection = false;
+    this.notCrossCorner = false;
     this.updateAlgoList();
     switch (this.selectedMaze) {
       case "hori":
