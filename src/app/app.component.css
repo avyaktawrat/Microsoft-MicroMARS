@@ -64,15 +64,28 @@
     color: whitesmoke;
     border: 1px solid #6B7F7F;
     font-weight: bold;
-}
-
-.mat-tab-link,
-.mat-tab-label {
-    line-height: 30px !important;
-    height: 30px !important;
-    min-width: 100px !important;
-    border: 1px solid #7e7e7e;
 } */
-.mat-tab-label .mat-tab-label-active{
+
+.mat-tab-link, .mat-tab-label, 
+.mat-tab-link-active, .mat-tab-label-active {
+    line-height: 40px !important;
+    height: 40px !important;
+    min-width: 100px !important;
+    /* border: 1px solid #7e7e7e; */
+}
+/* .mat-tab-label .mat-tab-label-active{
   width: 20%;
+} */
+::ng-deep .mat-tab-link:hover,
+/* ::ng-deep .mat-tab-label:hover{
+  border-color: white;
+  border-width: 0.5px;
+} */
+.mat-tab-link:hover,
+.mat-tab-label:hover{
+  margin: 2px 1px 1px 1px;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 8px;
 }
