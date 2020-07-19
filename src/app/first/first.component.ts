@@ -102,6 +102,7 @@ export class FirstComponent implements OnInit {
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
     {value: 'stair', viewValue:'Stair Case'},
+    {value: 'binaryTree', viewValue: 'Binary Tree'},
     {value: 'mountE', viewValue: 'Mountain on End'},
     {value: 'mountS', viewValue: 'Mountain on Start'},
     {value: 'mountB', viewValue: 'Mountain between start and end'}
@@ -466,7 +467,8 @@ export class FirstComponent implements OnInit {
         break;
       case "rand":
         for (var i = 0; i < totalGrid; ++i) {
-          if(Math.random()>0.7){
+          let n = Utils.direction8_vector(i,this.gridCord,false,false);
+          if(Math.random()>0.65 && n.length >= 2){
             this.gridCord[i].isTerrain = true;
             this.gridCord[i].value = 100;
           }else{
@@ -493,6 +495,10 @@ export class FirstComponent implements OnInit {
           this.gridCord[i+j*(hGrid+1)].value = 100;         // code...
         }
         break;
+      case "binaryTree":
+        
+
+      break;
       case "mountE":
         this.selectedPS = 'PS_1';
         this.selectedValue = 'Astar';
