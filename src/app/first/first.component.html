@@ -7,6 +7,15 @@
    		<!-- <text  *ngFor="let i of gridCord" [attr.x]=i.x+3 [attr.y]=i.y+27 font-size= "11"> {{i.g}} </text>
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+16 [attr.y]=i.y+27 font-size= "11"> {{i.h}} </text>
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.f}} </text> -->
+   		<ng-container *ngIf = "selectedPS == 'TSP' && isPref  ">
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.isEndPoint}} </text>
+   		</ng-container>
+
+			<ng-container *ngIf = "selectedPS == 'TSP' && !isPref  ">
+   		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.destOrder}} </text>
+   		</ng-container>
+
+
 	</svg>
 	<div id = "menu-bar">
 		<!-- Choosing problem statement -->

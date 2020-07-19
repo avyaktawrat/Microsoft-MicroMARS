@@ -76,7 +76,7 @@ export class Dijkstra {
 
     // rects[s].style.fill = 'green';
     // rects[t].style.fill = 'red';
-    gridCoords[end].isEndPoint = true;
+    // gridCoords[end].isEndPoint = true;
     path.push(start);
     // this.paths.push(start);
     this.length1 = path.length - 1;

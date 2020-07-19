@@ -4,6 +4,7 @@ import { GridCoords } from './GridCoords';
 export class FloydWarshall {
   steps: number = 0; // total number of recursive steps
   length1: number = 0; // total path length
+  destOrder: number[] = new Array();
   d: number[][] = new Array<Array<number>>(); // all pairs shortest distance matrix
   // p: number[][] = new Array<Array<number>>(); // predecessors matrix, p[i][j] denotes the prefecessor of j in the shortest path from i to j
   search(adjM: Array<Array<number>>) {
@@ -54,6 +55,7 @@ export class FloydWarshall {
       //   gridCoords[path[start][min_idx][idx]].parent = path[start][min_idx][idx - 1];
       //   // console.log(path[start][min_idx][idx - 1]);
       // }
+      this.destOrder.push(min_idx-1);
       for (let idx of path[start][min_idx]) {
         this.length1 += 1;
         gridCoords[idx].isPath = true;

@@ -65,6 +65,12 @@ export class TravSalesMan {
         //   this.linePath(this.start, dest, gridCoords);
         //   this.start = dest;
         // }
+        let i =1;
+        for(let u of algo.destOrder){
+          gridCoords[this.destinations[u]].destOrder = i;
+          // console.log(gridCoords[this.destinations[u]].destOrder);
+          i++;  
+        }
         this.time = (performance.now() - then);
         this.length = algo.length1;
         this.steps += algo.steps;

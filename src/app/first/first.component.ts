@@ -132,10 +132,10 @@ export class FirstComponent implements OnInit {
                                         f: null, g: null, h: null,
                                         parent: null,
                                         value : 0,
-                                        isEndPoint : false,
+                                        isEndPoint : null,
                                         visited: false,
                                         open : false,
-                                        debug : false};
+                                        debug : false,destOrder:null};
 
       }
     }
@@ -184,10 +184,10 @@ export class FirstComponent implements OnInit {
     if(this.selectedPS === "PS_1"){
       if (coord === this.start){
         this.start = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if (coord === this.end){
         this.end = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if (rect.isTerrain){
         if(!this.isTerrain){
           rect.isTerrain = false;
@@ -195,10 +195,10 @@ export class FirstComponent implements OnInit {
         }else{
           if(this.start == null){
             this.start = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 0;
           }else if(this.end == null){
             this.end = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 1;
           }
           else if(!this.isGaussian){
             rect.isTerrain = true;
@@ -211,10 +211,10 @@ export class FirstComponent implements OnInit {
       }else{ // clicking on non (red green grey ) square
         if (this.start == null){
           this.start = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = 0;
         }else if (this.end == null){
             this.end = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 1;
         }else if (!rect.isTerrain ){
           rect.isTerrain = true;
           if(!this.isGaussian){
@@ -229,24 +229,24 @@ export class FirstComponent implements OnInit {
     }else if(this.selectedPS === "TSP"){
       if(coord == this.start){
         this.start = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if(this.Dest.includes(coord)){
         let a = this.Dest.indexOf(coord);
         this.Dest[a] = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if(rect.isTerrain){
         rect.isTerrain = false;
       }else{
         if(this.start == null){
           this.start = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = 0;
         }else if(this.Dest.length < this.selectedDest){
           this.Dest.push(coord);
-          rect.isEndPoint = true;
+          rect.isEndPoint = this.Dest.length;
         }else if(this.Dest.includes(null)){
           let a = this.Dest.indexOf(null);
           this.Dest[a] = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = a+1;
         }else if (!rect.isTerrain ){
           rect.isTerrain = true;
           rect.value = 100;
@@ -281,6 +281,8 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].isPath = false;
       this.gridCord[u].isTerrain = false;
       this.gridCord[u].value = 0;
+      this.gridCord[u].isEndPoint = null;
+      this.gridCord[u].destOrder = null;
       this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
@@ -313,6 +315,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
+      this.gridCord[u].destOrder = null;
       this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
@@ -559,11 +562,11 @@ export class FirstComponent implements OnInit {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
 
-     if (u == this.start && rect.isEndPoint){
+     if (u == this.start && rect.isEndPoint==0){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
-      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint){
+      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint>0){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }else if(rect.isPath && this.showPath){
