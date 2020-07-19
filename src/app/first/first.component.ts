@@ -19,7 +19,7 @@ import { BestFirst } from './BestFirst'
 
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid} from './constants';
-
+import {maze} from './maze'
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
 }
@@ -422,85 +422,30 @@ export class FirstComponent implements OnInit {
     this.bidirection = false;
     this.notCrossCorner = false;
     this.updateAlgoList();
+
+    let Maze:maze = new maze();
     switch (this.selectedMaze) {
       case "hori":
-          for (let i = 0; i < hGrid; i+=2) {
-            for (let j = 0; j < vGrid; ++j) {
-              if(Math.random()>0.3){
-                this.gridCord[j*hGrid+i].isTerrain = true;
-                this.gridCord[j*hGrid+i].value = 100;
-              }
-            }
-          }
-          for (let i = 0; i < totalGrid; ++i) {
-            if(this.gridCord[i].isTerrain){
-              continue;
-            }
-            if(Math.random()>0.9){
-              this.gridCord[i].isTerrain = true;
-              this.gridCord[i].value = 100;
-            }else{
-              this.gridCord[i].isTerrain = false;
-              this.gridCord[i].value = 0;
-            }
-          }
+        Maze.hori(this.gridCord);
         break;
       case "vert":
-          for (let i = 0; i < hGrid; i++) {
-            for (let j = 0; j < vGrid; j+=2) {
-              if(Math.random()>0.3){
-                this.gridCord[j*hGrid+i].isTerrain = true;
-                this.gridCord[j*hGrid+i].value = 100;
-              }
-            }
-          }
-          for (let i = 0; i < totalGrid; ++i) {
-            if(this.gridCord[i].isTerrain){
-              continue;
-            }
-            if(Math.random()>0.9){
-              this.gridCord[i].isTerrain = true;
-              this.gridCord[i].value = 100;
-            }else{
-              this.gridCord[i].isTerrain = false;
-              this.gridCord[i].value = 0;
-            }
-          }
+        Maze.vert(this.gridCord);
         break;
       case "rand":
-        for (let i = 0; i < totalGrid; ++i) {
-          let n = Utils.direction8_vector(i,this.gridCord,false,false);
-          if(Math.random()>0.65 && n.length >= 2){
-            this.gridCord[i].isTerrain = true;
-            this.gridCord[i].value = 100;
-          }else{
-            this.gridCord[i].isTerrain = false;
-            this.gridCord[i].value = 0;
-          }
-        }
+        Maze.rand(this.gridCord);
         break;
       case "stair":
-        let i = 0;
-        for ( i = 0; i <= 22*(hGrid+1); i=i+hGrid+1) {
-          this.gridCord[i].isTerrain = true;
-          this.gridCord[i].value = 100;
-        }
-        for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
-          this.gridCord[i].isTerrain = true;
-          this.gridCord[i].value = 100;         // code...
-        }
-          this.gridCord[i].isTerrain = false;
-          this.gridCord[i].value = 0;
-          i+=2;
-        for(let j=0; j<5;j++){
-          this.gridCord[i+j*(hGrid+1)].isTerrain = true;
-          this.gridCord[i+j*(hGrid+1)].value = 100;         // code...
-        }
+        Maze.stair(this.gridCord)
         break;
       case "binaryTree":
-        
-
+        Maze.binary(this.gridCord);             
       break;
+      case "dfsMaze":
+        Maze.dfsMaze(this.gridCord);
+        break;
+      case "Prim's":
+        Maze.primMaze(this.gridCord);
+        break;
       case "mountE":
         this.selectedPS = 'PS_1';
         this.selectedValue = 'Astar';
@@ -553,51 +498,7 @@ export class FirstComponent implements OnInit {
 
         this.gaussianFill(midx*hGrid + midy);
       break;
-      case "dfsMaze":
-        for (let p = 0; p < totalGrid * 0.2; p++) {
-          let j = Math.round(Math.random() * totalGrid);
-          let s = Array();
-          s.push(j);
-          while (s.length !== 0) {
-            let v = s.pop();
-            this.gridCord[v].isTerrain = true;
-            this.gridCord[v].value = 100;
-            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
-            for (let u of arr) {
-              if (Math.random() > 0.8) {
-                this.gridCord[u].isTerrain = true;
-                this.gridCord[u].value = 100;
-                s.push(u);
-              }
-            }
-          }
-        }
-        break;
-      case "Prim's":
-        for (let p = 0; p < totalGrid * 0.05; p++) {
-          let j = Math.round(Math.random() * totalGrid);
-          let s = Array();
-          s.push(j);
-          while (s.length !== 0) {
-            let v = s.pop();
-            this.gridCord[v].isTerrain = true;
-            this.gridCord[v].value = 100;
-            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
-            let c = arr[Math.round(Math.random() * arr.length)];
-            if (c === undefined) {
-              break;
-            }
-            this.gridCord[c].isTerrain = true;
-            this.gridCord[c].value = 100;
-            for (let u of arr) {
-              if (u !== c) {
-                console.log(u,c);
-                s.push(u);
-              }
-            }
-          }
-        }
-        break;
+
       default:
         // code...
         break;
