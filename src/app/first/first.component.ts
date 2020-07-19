@@ -498,7 +498,7 @@ export class FirstComponent implements OnInit {
         }
         break;
       case "binaryTree":
-        
+
 
       break;
       case "mountE":
@@ -554,27 +554,10 @@ export class FirstComponent implements OnInit {
         this.gaussianFill(midx*hGrid + midy);
       break;
       case "dfsMaze":
-        for (let p = 0; p < totalGrid * 0.2; p++) {
-          let j = Math.round(Math.random() * totalGrid);
-          let s = Array();
-          s.push(j);
-          while (s.length !== 0) {
-            let v = s.pop();
-            this.gridCord[v].isTerrain = true;
-            this.gridCord[v].value = 100;
-            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
-            for (let u of arr) {
-              if (Math.random() > 0.8) {
-                this.gridCord[u].isTerrain = true;
-                this.gridCord[u].value = 100;
-                s.push(u);
-              }
-            }
-          }
-        }
+        console.log("dfsMaze");
         break;
       case "Prim's":
-        for (let p = 0; p < totalGrid * 0.05; p++) {
+        for (let p = 0; p < 5; p++) {
           let j = Math.round(Math.random() * totalGrid);
           let s = Array();
           s.push(j);
@@ -582,9 +565,11 @@ export class FirstComponent implements OnInit {
             let v = s.pop();
             this.gridCord[v].isTerrain = true;
             this.gridCord[v].value = 100;
-            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
-            let c = arr[Math.round(Math.random() * arr.length)];
+            let arr = Utils.direction8_maze(v, this.gridCord, this.allowDiag, this.notCrossCorner);
+            let idx = Math.round(Math.random() * arr.length)
+            let c = arr[idx];
             if (c === undefined) {
+              c = arr[idx - 1];
               break;
             }
             this.gridCord[c].isTerrain = true;
