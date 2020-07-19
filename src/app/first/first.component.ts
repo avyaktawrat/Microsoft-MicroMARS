@@ -102,6 +102,7 @@ export class FirstComponent implements OnInit {
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
     {value: 'dfsMaze', viewValue: 'DFS'},
+    {value: "Prim's", viewValue: "Prim's"},
     {value: 'stair', viewValue:'Stair Case'},
     {value: 'mountE', viewValue: 'Mountain on End'},
     {value: 'mountS', viewValue: 'Mountain on Start'},
@@ -560,6 +561,31 @@ export class FirstComponent implements OnInit {
               if (Math.random() > 0.8) {
                 this.gridCord[u].isTerrain = true;
                 this.gridCord[u].value = 100;
+                s.push(u);
+              }
+            }
+          }
+        }
+        break;
+      case "Prim's":
+        for (let p = 0; p < totalGrid * 0.05; p++) {
+          let j = Math.round(Math.random() * totalGrid);
+          let s = Array();
+          s.push(j);
+          while (s.length !== 0) {
+            let v = s.pop();
+            this.gridCord[v].isTerrain = true;
+            this.gridCord[v].value = 100;
+            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
+            let c = arr[Math.round(Math.random() * arr.length)];
+            if (c === undefined) {
+              break;
+            }
+            this.gridCord[c].isTerrain = true;
+            this.gridCord[c].value = 100;
+            for (let u of arr) {
+              if (u !== c) {
+                console.log(u,c);
                 s.push(u);
               }
             }
