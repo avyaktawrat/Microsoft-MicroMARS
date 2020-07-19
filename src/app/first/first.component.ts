@@ -101,6 +101,8 @@ export class FirstComponent implements OnInit {
     {value: 'hori', viewValue: 'Horizontal '},
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
+    {value: 'dfsMaze', viewValue: 'DFS'},
+    {value: "Prim's", viewValue: "Prim's"},
     {value: 'stair', viewValue:'Stair Case'},
     {value: 'binaryTree', viewValue: 'Binary Tree'},
     {value: 'mountE', viewValue: 'Mountain on End'},
@@ -422,15 +424,15 @@ export class FirstComponent implements OnInit {
     this.updateAlgoList();
     switch (this.selectedMaze) {
       case "hori":
-          for (var i = 0; i < hGrid; i+=2) {
-            for (var j = 0; j < vGrid; ++j) {
+          for (let i = 0; i < hGrid; i+=2) {
+            for (let j = 0; j < vGrid; ++j) {
               if(Math.random()>0.3){
                 this.gridCord[j*hGrid+i].isTerrain = true;
                 this.gridCord[j*hGrid+i].value = 100;
               }
             }
           }
-          for (var i = 0; i < totalGrid; ++i) {
+          for (let i = 0; i < totalGrid; ++i) {
             if(this.gridCord[i].isTerrain){
               continue;
             }
@@ -444,15 +446,15 @@ export class FirstComponent implements OnInit {
           }
         break;
       case "vert":
-          for (var i = 0; i < hGrid; i++) {
-            for (var j = 0; j < vGrid; j+=2) {
+          for (let i = 0; i < hGrid; i++) {
+            for (let j = 0; j < vGrid; j+=2) {
               if(Math.random()>0.3){
                 this.gridCord[j*hGrid+i].isTerrain = true;
                 this.gridCord[j*hGrid+i].value = 100;
               }
             }
           }
-          for (var i = 0; i < totalGrid; ++i) {
+          for (let i = 0; i < totalGrid; ++i) {
             if(this.gridCord[i].isTerrain){
               continue;
             }
@@ -466,7 +468,7 @@ export class FirstComponent implements OnInit {
           }
         break;
       case "rand":
-        for (var i = 0; i < totalGrid; ++i) {
+        for (let i = 0; i < totalGrid; ++i) {
           let n = Utils.direction8_vector(i,this.gridCord,false,false);
           if(Math.random()>0.65 && n.length >= 2){
             this.gridCord[i].isTerrain = true;
@@ -478,7 +480,7 @@ export class FirstComponent implements OnInit {
         }
         break;
       case "stair":
-        var  i = 0;
+        let i = 0;
         for ( i = 0; i <= 22*(hGrid+1); i=i+hGrid+1) {
           this.gridCord[i].isTerrain = true;
           this.gridCord[i].value = 100;
@@ -490,7 +492,7 @@ export class FirstComponent implements OnInit {
           this.gridCord[i].isTerrain = false;
           this.gridCord[i].value = 0;
           i+=2;
-        for(var j=0; j<5;j++){
+        for(let j=0; j<5;j++){
           this.gridCord[i+j*(hGrid+1)].isTerrain = true;
           this.gridCord[i+j*(hGrid+1)].value = 100;         // code...
         }
@@ -551,6 +553,51 @@ export class FirstComponent implements OnInit {
 
         this.gaussianFill(midx*hGrid + midy);
       break;
+      case "dfsMaze":
+        for (let p = 0; p < totalGrid * 0.2; p++) {
+          let j = Math.round(Math.random() * totalGrid);
+          let s = Array();
+          s.push(j);
+          while (s.length !== 0) {
+            let v = s.pop();
+            this.gridCord[v].isTerrain = true;
+            this.gridCord[v].value = 100;
+            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
+            for (let u of arr) {
+              if (Math.random() > 0.8) {
+                this.gridCord[u].isTerrain = true;
+                this.gridCord[u].value = 100;
+                s.push(u);
+              }
+            }
+          }
+        }
+        break;
+      case "Prim's":
+        for (let p = 0; p < totalGrid * 0.05; p++) {
+          let j = Math.round(Math.random() * totalGrid);
+          let s = Array();
+          s.push(j);
+          while (s.length !== 0) {
+            let v = s.pop();
+            this.gridCord[v].isTerrain = true;
+            this.gridCord[v].value = 100;
+            let arr = Utils.direction8_vector(v, this.gridCord, this.allowDiag, this.notCrossCorner);
+            let c = arr[Math.round(Math.random() * arr.length)];
+            if (c === undefined) {
+              break;
+            }
+            this.gridCord[c].isTerrain = true;
+            this.gridCord[c].value = 100;
+            for (let u of arr) {
+              if (u !== c) {
+                console.log(u,c);
+                s.push(u);
+              }
+            }
+          }
+        }
+        break;
       default:
         // code...
         break;
@@ -587,7 +634,7 @@ export class FirstComponent implements OnInit {
         // element.style.fillOpacity = (rect.value / 100).toString();
         let a = (Math.floor(256-(rect.value*128 / 100))).toString();
         element.style.fill = "rgb("+a+","+a+","+a+")";
-        element.style.fillOpacity = "1"; 
+        element.style.fillOpacity = "1";
       }
       else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);
@@ -677,7 +724,7 @@ export class FirstComponent implements OnInit {
       else{
         window.alert("Sorry, no Path Exists :(");
       }
-    
+
   }
 
   req_step :number = 0;
