@@ -41,13 +41,61 @@ export class utils{
     if((a+1)%	hGrid !=0 && a-hGrid >= 0 && a+1 < totalGrid && (!gridCord[a-hGrid].isTerrain  || !gridCord[a+1].isTerrain) && !gridCord[a+1-hGrid].isTerrain && allowDiag){ //down left
       if(!(notCrossCorner && (gridCord[a-hGrid].isTerrain || gridCord[a+1].isTerrain))){
         arr.push(a+1-hGrid);
-      } 
+      }
     }
 
     if(a-hGrid >= 0 && (a)%hGrid !=0 && a-1>=0 && (!gridCord[a-hGrid].isTerrain || !gridCord[a-1].isTerrain) && !gridCord[a-hGrid-1].isTerrain && allowDiag){ //left up
       if(!(notCrossCorner && (gridCord[a-hGrid].isTerrain || gridCord[a-1].isTerrain))){
         arr.push(a-hGrid-1);
-      } 
+      }
+    }
+
+    return arr;
+  }
+
+  public  direction8_maze(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean ): number[]{
+    var arr = new Array();
+    //console.log(a)
+
+    if((a)%hGrid !=0 && a-1>=0){ //up
+      arr.push(a-1);
+    }
+
+    if ( a+hGrid < totalGrid ){  //right
+      arr.push(a+hGrid);
+    }
+
+    if((a+1)%hGrid !=0 && a+1 < totalGrid){ //down
+      arr.push(a+1);
+    }
+
+    if(a-hGrid >= 0){ //left
+      arr.push(a-hGrid);
+    }
+
+
+    if((a)%hGrid !=0 && a-1>=0 && a+hGrid < totalGrid){ //right up
+      if(!(notCrossCorner)){
+        arr.push(a-1+hGrid);
+      }
+    }
+
+    if ( a+hGrid < totalGrid && (a+1)%hGrid !=0 && a+1 < totalGrid && allowDiag){  //right down
+      if(!(notCrossCorner)){
+        arr.push(a+hGrid+1);
+      }
+    }
+
+    if((a+1)%	hGrid !=0 && a-hGrid >= 0 && a+1 < totalGrid && allowDiag){ //down left
+      if(!(notCrossCorner)){
+        arr.push(a+1-hGrid);
+      }
+    }
+
+    if(a-hGrid >= 0 && (a)%hGrid !=0 && a-1>=0 && allowDiag){ //left up
+      if(!(notCrossCorner)){
+        arr.push(a-hGrid-1);
+      }
     }
 
     return arr;
@@ -94,5 +142,5 @@ export class utils{
     let dist = Math.max(Math.abs(x1-x2) , Math.abs(y1-y2));
     return dist;
   }
-  
+
 }
