@@ -215,9 +215,7 @@ form mat-form-field {
     opacity: 0.95;
     color: white;
     border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: black;
+
   }
 
   .info h2{
