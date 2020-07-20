@@ -432,6 +432,7 @@ export class FirstComponent implements OnInit {
       this.bidirection = false;
       this.notCrossCorner = false;
       this.isGaussian = false;
+      this.updateAlgoList();
   }
   changeMaze(){
     this.clearWall();
