@@ -1,25 +1,37 @@
-.main-page{
-	width: 100%;
-  height: 100%;
-  position: relative;
+/* .wrapper{
+  position: absolute;
   top: 0px;
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+  background-color: transparent;
+  
+} */
+
+#main-page{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  position: relative;
+  /* top: 40px; */
   overflow-x: hidden;
   overflow-y: hidden;
+  background-color: #ee4c2c;
 }
 .svg{
 /*	padding-top: 200px;
 	padding-left: 1200px;*/
   padding-top: 10px;
-  padding-left: 20px;
-  padding-bottom: 0px;
-  margin:0px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin:0px; 
+  height: 100%;
 
-    height: 100%;
     width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
     position: relative;
-    background-color: #ee4c2c;
+    background-color: transparent;
     border-width: 0px;
     border-inline-style: solid;
 }
@@ -40,20 +52,30 @@
     text-decoration-color: blanchedalmond;
     position: absolute;
     float: right;
-    top: 60px;
+    top: 10px;
+    bottom: 10px;
     right: 1%;
     border-radius: 8px;
-    width: 250px;
-    height: fit-content;
+    width: 260px;
+    /* height: 100%; */
     border-width:  0.5px;
     border-style: solid;
-    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 form{
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* position: relative; */
+    /* height: inherit; */
+    padding-top: 2px;
     text-emphasis: black;
     display: block;
-    margin:0px;
+    margin:0px 0px 0px 0px;
+    /* border-bottom: black;
+    border-style: solid;
+    border-width: 1px; */
+    /* background-color: yellowgreen; */
 }
 form mat-label h4{
 	text-shadow: 1px 1px rgba(16,16,16,0.2);
@@ -61,11 +83,11 @@ form mat-label h4{
   color:blue;
   opacity: 0.9;
   padding: 0px 0px 5px 0px;
-  margin: 0px 0px 5px 0px;
+  margin: 0px 0px 0px 0px;
 }
 form mat-form-field {
   display: block;
-  padding: 10px 10px 0px 10px;
+  padding: 0px 10px 0px 10px;
   margin: 0px;
 }
 /*Styling for Terrain height */
@@ -89,9 +111,29 @@ form mat-form-field {
   margin: 3%;
 }*/
 /* slider */
+.button-cover{
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  background-color: tomato;
+  /* right: 5%; */
+  bottom: 1%;
+  right: 1%;
+  width: 260px;
+  position: fixed;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  align-items: center;
+}
+
 .button{
   color: white;
   font-weight: none;
+  width: 110px;
+  text-align: center;
+  align-self: center;
+  margin: 1.5% 3% 1% 4%;
 }
 .button:hover{
   border-width: 1px;
@@ -103,11 +145,21 @@ form mat-form-field {
   }
 
   .example-margin {
-    margin: 3%;
-    display: block;
+    margin: 0px 0px 0px 3%;
+    display: inline-block;
     width: 100%;
     text-align: left;
   }
+.gaussian{
+  width: 100%;
+  display: block;
+  margin: none;
+}
+.gaussian .gaussian-margin{
+  margin: none;
+  padding: none;
+  display: inline-flex;
+}
 
   .mat-slider-horizontal {
     display: inline-flex;
@@ -120,10 +172,19 @@ form mat-form-field {
     padding: 0px;
   }
   .slider-labels-start{
-    display: flex;
+    display: inline-flex;
     float: inline-start;
     margin-right: 0px;
-    padding-left: 10px;
+    padding-right: 10px;
+    padding-left: 20px;
+    margin-bottom: 0px;
+  }
+  .slider-labels-end{
+    display: inline-flex;
+    float: inline-end;
+    margin-left: 80px;
+    padding-right: 10px;
+    margin-bottom: 0px;
   }
   .slider-labels{
     display: inline-flex;
@@ -143,14 +204,26 @@ form mat-form-field {
     width: 100%;
     height: fit-content;
   }
+  .info{
+    display: inline-block;
+    position: absolute;
+    width: 120px;
+    left: 20px;
+    top: 5%;
+    background-color: black;
+    opacity: 0.8;
+    color: white;
+  }
 
   .info h2{
-  margin-left: 20px;
- 	margin-top: 15px;
+  width: 50px;
+  margin-left: 5%;
+ 	margin-top: 3%;
 
   }
  .info h4{
- 	margin-left: 5%;
+   display: inline;
+ 	  margin-left: 5%;
  }
  ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
   min-width: 0!important;
@@ -169,8 +242,39 @@ form mat-form-field {
   border-radius: 8px;
 }
  /* ::ng-deep .mat-select-panel,::ng-deep .mat-select-content {
-  background: red;
+  padding: 0px; 
+  border-style: solid;
+  border-width: 10px;
+  border-color: yellow;
 } */
+.mat-select{
+  margin-bottom: none;
+}
 .mat-divider {
   border-top-color: white;
+}
+/* width */
+/* Not SUPPORTED BY IE */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: yellowgreen; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
+.transform-active{
+  scale: 1.2;
 }

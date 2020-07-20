@@ -60,11 +60,13 @@ export class TravSalesMan {
         let then = performance.now();
         algo.search(this.newGraph);
         algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
+        // let start_copy = this.start;
         // for (let dest of this.destinations) {
-        //   console.log(this.start, dest);
-        //   this.linePath(this.start, dest, gridCoords);
-        //   this.start = dest;
+          // console.log(start_copy, dest);
+          // this.linePath(dest,start_copy,gridCoords);
+          // start_copy = dest;
         // }
+        this.pathCord = algo.pathCord;
         this.time = (performance.now() - then);
         this.length = algo.length1;
         this.steps += algo.steps;
@@ -84,7 +86,11 @@ export class TravSalesMan {
 
   linePath(start:number,end :number,gridCord:GridCoords[]){
     let node :number = end;
+    // console.log(end);
+    let i = 0;
     while(node!=start){
+          i++
+          // console.log(node);
           let node_next = gridCord[node].parent;
           let x1 = Math.floor(node/hGrid)*30+15;
           let x2 = Math.floor(node_next/hGrid)*30+15;
@@ -92,6 +98,11 @@ export class TravSalesMan {
           let y2 = (node_next%hGrid)*30+15;
           this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
           node = node_next;
+          if(i==1000){
+            console.log("exceeded limit");
+            break
+          }
+          // break;
         }
 
   }

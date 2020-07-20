@@ -15,7 +15,7 @@
     line-height: 40px !important;
     height: 40px !important;
     min-width: 100px !important;
-    color: white;
+    color: white !important;
     /* border: 1px solid #7e7e7e; */
 }
 /* .mat-tab-label .mat-tab-label-active{

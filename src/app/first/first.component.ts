@@ -18,7 +18,7 @@ import {BiBFS} from './BiBFS';
 import { BestFirst } from './BestFirst'
 
 import {utils } from './utils';
-import {hGrid, vGrid, totalGrid} from './constants';
+import {hGrid, vGrid, totalGrid, height} from './constants';
 
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
@@ -39,11 +39,14 @@ interface DropDownSelect {
 
 export class FirstComponent implements OnInit {
   constructor() {
+    let menu = document.getElementsByClassName("button-cover") 
   }
-  height = screen.availHeight;
-  width = screen.availWidth;
+  height = window.innerHeight;
+  width = window.innerWidth;
 
-  // height = window.innerHeight;
+  height_svg = 30*hGrid + 30;
+  height_menu = this.height_svg - 110;
+  
   // width = screen.width;
 
   gridCord: GridCoords[] = new Array(totalGrid);
@@ -62,8 +65,8 @@ export class FirstComponent implements OnInit {
   pathCord: lineCord[] = new Array();
 
   terrain: boolean = true;
-  cov_x: number = 2;
-  cov_y: number = 2;
+  cov_x: number = 10;
+  cov_y: number = 10;
   showPath: boolean = true;
   // Slider for Obstacle
   max = 100;
@@ -79,6 +82,7 @@ export class FirstComponent implements OnInit {
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
   selectedValue: string = 'bfs';
   notCrossCorner = false;
+  show_infoResult: boolean = false;
 
   selectedPS: string = 'PS_1';
   PS_index: number = 0;
@@ -302,6 +306,8 @@ export class FirstComponent implements OnInit {
     this.updateAlgoList();
     this.updateUI();
     this.req_step = 0;
+    // this.changeMaze = null;
+    this.show_infoResult = false;
   }
 
   clearPath(): void{
@@ -316,7 +322,7 @@ export class FirstComponent implements OnInit {
       this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
-
+      this.show_infoResult = false;
     }
 
     let element = document.getElementsByTagName("line")
@@ -336,6 +342,7 @@ export class FirstComponent implements OnInit {
      this.gridCord[u].value = 0;
     }
    this.updateUI();
+   this.show_infoResult = false;
   }
 
   resetGridParams():void{
@@ -719,7 +726,7 @@ export class FirstComponent implements OnInit {
         alert('Insert start and end');
         return;
     }
-    console.log(this.selectedValue);
+    // console.log(this.selectedValue);
     if(this.selectedPS === "PS_1"){
       switch (this.selectedValue) {
         case 'bfs':
@@ -854,6 +861,8 @@ export class FirstComponent implements OnInit {
             this.time = tsp.time.toFixed(3);
             this.steps = tsp.steps;
             this.length = tsp.length;
+            this.pathCord = tsp.pathCord;
+            // console.log(this.pathCord);
           }
           break;
         default:
@@ -864,6 +873,8 @@ export class FirstComponent implements OnInit {
 
     this.updateUI(); //for tracing the line
       // console.log(this.gridCord)
+    this.show_infoResult=true;
+    // console.log(this.end);
   }
 }
 

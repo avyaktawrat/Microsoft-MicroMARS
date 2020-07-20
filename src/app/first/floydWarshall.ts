@@ -1,11 +1,15 @@
 import { DPair } from './adj';
 import { GridCoords } from './GridCoords';
+import { hGrid } from './constants';
+import { lineCord } from './lineCoord';
 
 export class FloydWarshall {
   steps: number = 0; // total number of recursive steps
   length1: number = 0; // total path length
   d: number[][] = new Array<Array<number>>(); // all pairs shortest distance matrix
   // p: number[][] = new Array<Array<number>>(); // predecessors matrix, p[i][j] denotes the prefecessor of j in the shortest path from i to j
+  pathCord: lineCord[] = new Array();
+  static pathCord: lineCord[];
   search(adjM: Array<Array<number>>) {
     this.d = adjM;
     let n = adjM.length;
@@ -38,6 +42,7 @@ export class FloydWarshall {
     let min_idx = -1;
     let seen = [];
     // console.log(this.p);
+    let alert_once = true;
     while (i < dests.length) {
       let min = 1000000000;
       for (let j = 0; j < this.d[start].length; j++) {
@@ -46,14 +51,34 @@ export class FloydWarshall {
           min = this.d[start][j];
         }
       }
-      // gridCoords[path[start][min_idx][0]].isPath = true;
+      // console.log()
+      
+      if(gridCoords[path[start][min_idx][0]]!=null){
+        gridCoords[path[start][min_idx][0]].isPath = true;
+      }
+      else if(alert_once){
+        window.alert("All Destinations cannot be reached!")
+        alert_once = false;
+      }
       // gridCoords[path[start][min_idx][0]].parent = path[start][min_idx][0];
-      // for (let idx = 1; idx < path[start][min_idx].length; idx++) {
-      //   this.length1 += 1;
-      //   gridCoords[path[start][min_idx][idx]].isPath = true;
-      //   gridCoords[path[start][min_idx][idx]].parent = path[start][min_idx][idx - 1];
-      //   // console.log(path[start][min_idx][idx - 1]);
-      // }
+      for (let idx = 1; idx < path[start][min_idx].length; idx++) {
+        this.length1 += 1;
+        gridCoords[path[start][min_idx][idx]].isPath = true;
+        // gridCoords[path[start][min_idx][idx]].parent = path[start][min_idx][idx - 1];
+        // console.log([path[start][min_idx][idx]],path[start][min_idx][idx - 1]);
+        let node = path[start][min_idx][idx];
+        let node_next = path[start][min_idx][idx - 1];
+        let x1 = Math.floor(node/hGrid)*30+15;
+        let x2 = Math.floor(node_next/hGrid)*30+15;
+        let y1 = (node%hGrid)*30+15;
+        let y2 = (node_next%hGrid)*30+15;
+        this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+        if(i==10000){
+          console.log("exceeded limit");
+          break
+        }
+      }
+      
       for (let idx of path[start][min_idx]) {
         this.length1 += 1;
         gridCoords[idx].isPath = true;
