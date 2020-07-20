@@ -98,7 +98,7 @@ export class FirstComponent implements OnInit {
     {value: 'TSP', viewValue: 'Intermediate Stops'}
   ];
   maze : DropDownSelect[] = [
-    {value: 'hori', viewValue: 'Horizontal '},
+    {value: 'sidewinder', viewValue: 'Sidewinder Algorithm'},
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
     {value: 'dfsMaze', viewValue: 'DFS'},
@@ -425,8 +425,8 @@ export class FirstComponent implements OnInit {
 
     let Maze:maze = new maze();
     switch (this.selectedMaze) {
-      case "hori":
-        Maze.hori(this.gridCord);
+      case "sidewinder":
+        Maze.sidewinder(this.gridCord);
         break;
       case "vert":
         Maze.vert(this.gridCord);
