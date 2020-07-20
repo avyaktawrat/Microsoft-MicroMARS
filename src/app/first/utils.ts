@@ -55,7 +55,6 @@ export class utils{
 
   public  direction8_maze(a: number, gridCord: GridCoords[] ): number[]{
     var arr = new Array();
-    //console.log(a)
     var x = Math.floor(a/hGrid);
     var y = a%hGrid;
     if(y>=2 && gridCord[a-2].isTerrain){ //up

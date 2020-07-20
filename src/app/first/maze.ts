@@ -7,8 +7,8 @@ let Utils: utils = new utils();
 export class maze  {
 	constructor() {}
 
-	
-	
+
+
 	hori(gridCoord : GridCoords[]):void{
 		for (let i = 0; i < hGrid; i+=2) {
       for (let j = 0; j < vGrid; ++j) {
@@ -95,12 +95,12 @@ export class maze  {
     }
 		for (let j = 0; j < hGrid; j++) {
       gridCoord[j].isTerrain = false;
-      gridCoord[j].value = 0;    
-    } 
+      gridCoord[j].value = 0;
+    }
     for (let j = 0; j < vGrid; j++) {
       gridCoord[j*hGrid].isTerrain = false;
-      gridCoord[j*hGrid].value = 0;    
-    }            
+      gridCoord[j*hGrid].value = 0;
+    }
     for (let j = 2; j < hGrid; j+=2) {
       for (let i = 2; i < vGrid; i+=2) {
         if(Math.random()>0.5){ //north
@@ -108,7 +108,7 @@ export class maze  {
           gridCoord[i*hGrid+j].value = 0;
           gridCoord[i*hGrid+j-1].isTerrain = false;
           gridCoord[i*hGrid+j-1].value = 0;
-          
+
         }else{  //west
           gridCoord[i*hGrid+j].isTerrain = false;
           gridCoord[i*hGrid+j].value = 0;
@@ -127,7 +127,7 @@ export class maze  {
               array.splice(index, 1);
           }
       }
-      
+
 			for (var i = 0; i < totalGrid; ++i) {
 	    	gridCoord[i].isTerrain = true;
 	      gridCoord[i].value = 100;
@@ -139,7 +139,7 @@ export class maze  {
       	step++;
         let v = s.pop();
         // gridCoord[v].debug = true;
-        
+
         gridCoord[v].isTerrain = false;
         gridCoord[v].value = 0;
         let arr1 = new Array;
@@ -162,34 +162,55 @@ export class maze  {
       	}
       // if(step == 5) break;
         }
-      
-    
+
+
 	}
 
 	primMaze(gridCoord : GridCoords[]){
-		for (let p = 0; p < totalGrid * 0.05; p++) {
-      let j = Math.round(Math.random() * totalGrid);
-      let s = Array();
-      s.push(j);
-      while (s.length !== 0) {
-        let v = s.pop();
-        gridCoord[v].isTerrain = true;
-        gridCoord[v].value = 100;
-        let arr = Utils.direction8_vector(v, gridCoord, false, false);
-        let c = arr[Math.round(Math.random() * arr.length)];
-        if (c === undefined) {
-          break;
+    for (var i = 0; i < totalGrid; ++i) {
+      gridCoord[i].isTerrain = true;
+      gridCoord[i].value = 100;
+    }
+	  let start = Math.floor(Math.random() * totalGrid);
+    if (start === 0) {
+      start++;
+    }
+	  let pathSet = [start];
+	  console.log(pathSet);
+	  while (pathSet.length !== 0) {
+	    let cell = pathSet.pop();
+	    let arr = Utils.direction8_maze(cell, gridCoord);
+	    if (arr.length !== 0) {
+	      let randIdx = Math.floor(Math.random() * arr.length);
+	      while (!gridCoord[randIdx].isTerrain) {
+	        randIdx = Math.floor(Math.random() * arr.length);
         }
-        gridCoord[c].isTerrain = true;
-        gridCoord[c].value = 100;
-        for (let u of arr) {
-          if (u !== c) {
-            console.log(u,c);
-            s.push(u);
+	      console.log(randIdx);
+	      gridCoord[cell].isTerrain = false;
+	      gridCoord[cell].value = 0;
+	      // gridCoord[arr[randIdx]].isTerrain = false;
+	      // gridCoord[arr[randIdx]].value = 0;
+	      for (let x of arr) {
+	        if (x !== randIdx) {
+	          gridCoord[(x + cell)/2].isTerrain = false;
+	          gridCoord[(x + cell)/2].value = 0;
+	          gridCoord[x].isTerrain = false;
+	          gridCoord[x].value = 0;
           }
         }
       }
+	    pathSet.push(...arr);
     }
+    // for (let v = 0; v < totalGrid; v++) {
+    //   if (gridCoord[v].isTerrain) {
+    //     gridCoord[v].isTerrain = false;
+    //     gridCoord[v].value = 0;
+    //   }
+    //   else {
+    //     gridCoord[v].isTerrain = true;
+    //     gridCoord[v].value = 100;
+    //   }
+    // }
 	}
 
 	sidewinder(gridCoord : GridCoords[]):void{
@@ -202,7 +223,7 @@ export class maze  {
     }
     for (let j = 0; j < vGrid; j++) {
       gridCoord[j*hGrid].isTerrain = false;
-      gridCoord[j*hGrid].value = 0;    
+      gridCoord[j*hGrid].value = 0;
     }
     for (let j = 2; j < hGrid; j+=2) {
       for (let i = 0; i+1 < vGrid; i++) {
@@ -218,7 +239,7 @@ export class maze  {
           currPath.push(i);
           i++;
           currPath.push(i);
-          
+
         }else{  //no path
           var x = currPath[Math.floor(Math.random() * currPath.length)];
           while(gridCoord[x*hGrid+j-2].isTerrain){
