@@ -56,17 +56,17 @@ export class utils{
   public  direction8_maze(a: number, gridCord: GridCoords[] ): number[]{
     var arr = new Array();
     //console.log(a)
-    var x = Math.round(a/hGrid);
+    var x = Math.floor(a/hGrid);
     var y = a%hGrid;
     if(y>=2 && gridCord[a-2].isTerrain){ //up
       arr.push(a-2);
     }
 
-    if ( x+2<=vGrid && gridCord[a+2*hGrid].isTerrain ){  //right
+    if ( x+2<vGrid && gridCord[a+2*hGrid].isTerrain ){  //right
       arr.push(a+2*hGrid);
     }
 
-    if(y+2<=hGrid && gridCord[a+2].isTerrain){ //down
+    if(y+2<hGrid && gridCord[a+2].isTerrain){ //down
       arr.push(a+2);
     }
 
