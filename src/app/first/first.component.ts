@@ -564,6 +564,7 @@ export class FirstComponent implements OnInit {
       else if (rect.open && !this.isTerrain && this.selectedPS == 'PS_1'){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
+        // element.transform = "scale(1.5)";
       }
       else{
         element.style.fill = 'white';

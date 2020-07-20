@@ -16,6 +16,7 @@ export class TravSalesMan {
   steps: number = 0;
   pathCord: lineCord[] = new Array();
   path: number[][][] = new Array<Array<Array<number>>>(); // for floyd-warshall only
+  alert_once: boolean = false; // non-floydwarshall algos
   prepareNewGraph(gridCoords: GridCoords[], allowDiag: boolean, adj: Array<Array<DPair>>) {   // function to make a new graph
     this.newNodes = [this.start, ...this.destinations];
     this.newGraph.length = this.newNodes.length;
@@ -45,11 +46,22 @@ export class TravSalesMan {
           for (let dest of this.destinations) {
             this.resetGrid(gridCoords);
             algo.search(this.start, dest, gridCoords, allowDiag, false);
-            this.linePath(this.start,dest,gridCoords);
+            // console.log(dest, gridCoords[dest].parent)
+            if(gridCoords[dest].parent!=null){
+              this.linePath(this.start,dest,gridCoords);
+            }
+            else{
+              this.alert_once = true;
+              break;
+            }
             this.start = dest;
             this.length += algo.length1;
             this.time += algo.time;
             this.steps += algo.steps;
+          }
+          if(this.alert_once){
+            window.alert("No Path Exists");
+            this.alert_once = false;
           }
         }
     }
@@ -68,12 +80,12 @@ export class TravSalesMan {
         // }
         this.pathCord = algo.pathCord;
         console.log(algo.destOrder)
-        // let i =1;
-        // for(let u of algo.destOrder){
-        //   gridCoords[this.destinations[u]].destOrder = i;
-        //   // console.log(gridCoords[this.destinations[u]].destOrder);
-        //   i++;  
-        // }
+        let i =1;
+        for(let u of algo.destOrder){
+          gridCoords[this.destinations[u]].destOrder = i;
+          // console.log(gridCoords[this.destinations[u]].destOrder);
+          i++;  
+        }
         this.time = (performance.now() - then);
         this.length = algo.length1;
         this.steps += algo.steps;
@@ -94,9 +106,10 @@ export class TravSalesMan {
   linePath(start:number,end :number,gridCord:GridCoords[]){
     let node :number = end;
     // console.log(end);
-    console.log(gridCord[node],gridCord[node].parent)
+    let i =0;
+    
     while(node!=start){
-          // console.log(node);
+          i++
           let node_next = gridCord[node].parent;
           let x1 = Math.floor(node/hGrid)*30+15;
           let x2 = Math.floor(node_next/hGrid)*30+15;
@@ -105,6 +118,10 @@ export class TravSalesMan {
           this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
           node = node_next;
           // break;
+          if(i==1000){
+            console.log("exceeded limit");
+            break;
+          }
         }
 
   }

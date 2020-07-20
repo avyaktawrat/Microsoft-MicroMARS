@@ -28,8 +28,6 @@ export class BFS{
       gridCoords[s].visited= true;
       var arr = Utils.direction8_vector(s,gridCoords,allowDiag, notCrossCorner);
       for(let u of arr){
-
-
         if (!gridCoords[u].open  && ! stop){
 
           gridCoords[u].open= true;
