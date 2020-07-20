@@ -229,7 +229,8 @@
 		</div>
 		
 	</div>
-	<div class= "info" *ngIf="show_infoResult" cdkDragBoundary="#main-page" cdkDrag>
+	<div class= "info" cdkDragBoundary="#main-page" cdkDrag>
+		<div *ngIf = "show_infoResult">
 		<h2>Results</h2>
 		<mat-divider></mat-divider>
 		<h4> Steps : {{steps}}</h4>
@@ -237,6 +238,7 @@
 		<h4> Time : {{time}}ms</h4>
 		<mat-divider></mat-divider>
 		<h4> Length : {{lengthS}}</h4>
+		</div>	
 	</div>
 
 	<!-- <div>
