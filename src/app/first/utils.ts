@@ -53,49 +53,25 @@ export class utils{
     return arr;
   }
 
-  public  direction8_maze(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean ): number[]{
+  public  direction8_maze(a: number, gridCord: GridCoords[] ): number[]{
     var arr = new Array();
     //console.log(a)
-
-    if((a)%hGrid !=0 && a-1>=0){ //up
-      arr.push(a-1);
+    var x = Math.round(a/hGrid);
+    var y = a%hGrid;
+    if(y>=2 && gridCord[a-2].isTerrain){ //up
+      arr.push(a-2);
     }
 
-    if ( a+hGrid < totalGrid ){  //right
-      arr.push(a+hGrid);
+    if ( x+2<=vGrid && gridCord[a+2*hGrid].isTerrain ){  //right
+      arr.push(a+2*hGrid);
     }
 
-    if((a+1)%hGrid !=0 && a+1 < totalGrid){ //down
-      arr.push(a+1);
+    if(y+2<=hGrid && gridCord[a+2].isTerrain){ //down
+      arr.push(a+2);
     }
 
-    if(a-hGrid >= 0){ //left
-      arr.push(a-hGrid);
-    }
-
-
-    if((a)%hGrid !=0 && a-1>=0 && a+hGrid < totalGrid){ //right up
-      if(!(notCrossCorner)){
-        arr.push(a-1+hGrid);
-      }
-    }
-
-    if ( a+hGrid < totalGrid && (a+1)%hGrid !=0 && a+1 < totalGrid && allowDiag){  //right down
-      if(!(notCrossCorner)){
-        arr.push(a+hGrid+1);
-      }
-    }
-
-    if((a+1)%	hGrid !=0 && a-hGrid >= 0 && a+1 < totalGrid && allowDiag){ //down left
-      if(!(notCrossCorner)){
-        arr.push(a+1-hGrid);
-      }
-    }
-
-    if(a-hGrid >= 0 && (a)%hGrid !=0 && a-1>=0 && allowDiag){ //left up
-      if(!(notCrossCorner)){
-        arr.push(a-hGrid-1);
-      }
+    if(x>=2 && gridCord[a-2*hGrid].isTerrain){ //left
+      arr.push(a-2*hGrid);
     }
 
     return arr;

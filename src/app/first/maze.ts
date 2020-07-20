@@ -88,27 +88,32 @@ export class maze  {
 	}
 
 	binary(gridCoord : GridCoords[]):void{
+		for (var i = 0; i < totalGrid; ++i) {
+    	gridCoord[i].isTerrain = true;
+      gridCoord[i].value = 100;
+
+    }
 		for (let j = 0; j < hGrid; j++) {
-      gridCoord[j].isTerrain = true;
-      gridCoord[j].value = 100;    
+      gridCoord[j].isTerrain = false;
+      gridCoord[j].value = 0;    
     } 
     for (let j = 0; j < vGrid; j++) {
-      gridCoord[j*hGrid].isTerrain = true;
-      gridCoord[j*hGrid].value = 100;    
+      gridCoord[j*hGrid].isTerrain = false;
+      gridCoord[j*hGrid].value = 0;    
     }            
     for (let j = 2; j < hGrid; j+=2) {
       for (let i = 2; i < vGrid; i+=2) {
         if(Math.random()>0.5){ //north
-          gridCoord[i*hGrid+j].isTerrain = true;
-          gridCoord[i*hGrid+j].value = 100;
-          gridCoord[i*hGrid+j-1].isTerrain = true;
-          gridCoord[i*hGrid+j-1].value = 100;
+          gridCoord[i*hGrid+j].isTerrain = false;
+          gridCoord[i*hGrid+j].value = 0;
+          gridCoord[i*hGrid+j-1].isTerrain = false;
+          gridCoord[i*hGrid+j-1].value = 0;
           
         }else{  //west
-          gridCoord[i*hGrid+j].isTerrain = true;
-          gridCoord[i*hGrid+j].value = 100;
-          gridCoord[(i-1)*hGrid+j].isTerrain = true;
-          gridCoord[(i-1)*hGrid+j].value = 100;
+          gridCoord[i*hGrid+j].isTerrain = false;
+          gridCoord[i*hGrid+j].value = 0;
+          gridCoord[(i-1)*hGrid+j].isTerrain = false;
+          gridCoord[(i-1)*hGrid+j].value = 0;
         }
 
       }
@@ -116,24 +121,49 @@ export class maze  {
 	}
 
 	dfsMaze(gridCoord : GridCoords[]):void{
-		for (let p = 0; p < totalGrid * 0.2; p++) {
-      let j = Math.round(Math.random() * totalGrid);
-      let s = Array();
-      s.push(j);
-      while (s.length !== 0) {
-        let v = s.pop();
-        gridCoord[v].isTerrain = true;
-        gridCoord[v].value = 100;
-        let arr = Utils.direction8_vector(v, gridCoord, false, false);
-        for (let u of arr) {
-          if (Math.random() > 0.8) {
-            gridCoord[u].isTerrain = true;
-            gridCoord[u].value = 100;
-            s.push(u);
+			function removeElement(array, elem) {
+          var index = array.indexOf(elem);
+          if (index > -1) {
+              array.splice(index, 1);
           }
-        }
       }
-    }
+      
+			for (var i = 0; i < totalGrid; ++i) {
+	    	gridCoord[i].isTerrain = true;
+	      gridCoord[i].value = 100;
+    	}
+      let s = Array();
+      s.push(0);
+      let step = 0;
+      while (s.length !== 0) {
+      	step++;
+        let v = s.pop();
+        // gridCoord[v].debug = true;
+        
+        gridCoord[v].isTerrain = false;
+        gridCoord[v].value = 0;
+        let arr1 = new Array;
+        let arr = Utils.direction8_maze(v, gridCoord);
+
+        console.log(arr);
+        if(arr.length==0){
+        	continue;
+        }
+        arr1.length = arr.length;
+        arr1 = arr;
+        while(arr.length!=0){
+        	let u = arr[Math.floor(Math.random()*arr.length)]; //add to list in random order
+					removeElement(arr, u);
+	        gridCoord[(u+v)/2].isTerrain = false;
+       	 	gridCoord[(u+v)/2].value = 0;
+       	 	gridCoord[u].isTerrain = false;
+        	gridCoord[u].value = 0;
+        	s.push(u);
+      	}
+      // if(step == 5) break;
+        }
+      
+    
 	}
 
 	primMaze(gridCoord : GridCoords[]){
@@ -162,5 +192,47 @@ export class maze  {
     }
 	}
 
+	sidewinder(gridCoord : GridCoords[]):void{
+		console.log(hGrid,vGrid);
+    let currPath = new Array();
+    for (var i = 0; i < totalGrid; ++i) {
+    	gridCoord[i].isTerrain = true;
+      gridCoord[i].value = 100;
+
+    }
+    for (let j = 0; j < vGrid; j++) {
+      gridCoord[j*hGrid].isTerrain = false;
+      gridCoord[j*hGrid].value = 0;    
+    }
+    for (let j = 2; j < hGrid; j+=2) {
+      for (let i = 0; i+1 < vGrid; i++) {
+      	// if(i ){
+      	// 	gridCoord[i*hGrid+j].isTerrain = false;
+       //    gridCoord[i*hGrid+j].value = 0;
+      	// }
+        if(Math.random()>0.7 || currPath.length==0){ //path
+          gridCoord[i*hGrid+j].isTerrain = false;
+          gridCoord[i*hGrid+j].value = 0;
+          gridCoord[(i+1)*hGrid+j].isTerrain = false;
+          gridCoord[(i+1)*hGrid+j].value = 0;
+          currPath.push(i);
+          i++;
+          currPath.push(i);
+          
+        }else{  //no path
+          var x = currPath[Math.floor(Math.random() * currPath.length)];
+          while(gridCoord[x*hGrid+j-2].isTerrain){
+          	x = currPath[Math.floor(Math.random() * currPath.length)];
+          }
+          console.log(x,j);
+          // gridCoord[x*hGrid+j-1].debug= true;
+          gridCoord[x*hGrid+j-1].isTerrain = false;
+          gridCoord[x*hGrid+j-1].value = 0;
+        	currPath = [];
+        }
+
+      }
+    }
+	}
 
 }
