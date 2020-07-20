@@ -48,7 +48,6 @@ export class FirstComponent implements OnInit {
   height_svg = 30*hGrid + 30;
   height_menu = this.height_svg - 110;
   
-  // width = screen.width;
 
   gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<DPair>>;
@@ -277,6 +276,18 @@ export class FirstComponent implements OnInit {
       this.color = 1;
     }
   }
+//Drag and drop of Results/info
+  // drag(ev): void{
+  //   ev.dataTransfer.setData("text", ev.target.id);
+  // }
+  // allowDrop(ev):void {
+  //   ev.preventDefault();
+  // }
+  // drop(ev) {
+  //   ev.preventDefault();
+  //   var data = ev.dataTransfer.getData("text");
+  //   ev.target.appendChild(document.getElementById(data));
+  // }
 
   reset(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {

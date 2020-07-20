@@ -229,7 +229,7 @@
 		</div>
 		
 	</div>
-	<div class= "info" *ngIf="show_infoResult" draggable="true">
+	<div class= "info" *ngIf="show_infoResult" cdkDragBoundary="#main-page" cdkDrag>
 		<h2>Results</h2>
 		<mat-divider></mat-divider>
 		<h4> Steps : {{steps}}</h4>

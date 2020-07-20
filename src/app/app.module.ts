@@ -25,6 +25,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { RouterModule } from '@angular/router';
     MatRadioModule,
     MatDialogModule,
     MatPaginatorModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ],
   exports: [
     MatTabsModule,
