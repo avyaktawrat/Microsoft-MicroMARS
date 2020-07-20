@@ -190,6 +190,7 @@ export class maze  {
 	      gridCoord[cell].value = 0;
 	      // gridCoord[arr[randIdx]].isTerrain = false;
 	      // gridCoord[arr[randIdx]].value = 0;
+        arr.sort(() => Math.random() - 0.5);
 	      for (let x of arr) {
 	        if (x !== randIdx) {
 	          gridCoord[(x + cell)/2].isTerrain = false;
