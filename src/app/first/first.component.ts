@@ -20,6 +20,7 @@ import { BestFirst } from './BestFirst'
 import {utils } from './utils';
 import {hGrid, vGrid, totalGrid, height} from './constants';
 
+import {maze} from './maze'
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
 }
@@ -102,10 +103,13 @@ export class FirstComponent implements OnInit {
     {value: 'TSP', viewValue: 'Intermediate Stops'}
   ];
   maze : DropDownSelect[] = [
-    {value: 'hori', viewValue: 'Horizontal '},
+    {value: 'sidewinder', viewValue: 'Sidewinder Algorithm'},
     {value: 'vert', viewValue: 'Vertical'},
     {value: 'rand', viewValue: 'Random'},
+    {value: 'dfsMaze', viewValue: 'DFS'},
+    {value: "Prim's", viewValue: "Prim's"},
     {value: 'stair', viewValue:'Stair Case'},
+    {value: 'binaryTree', viewValue: 'Binary Tree'},
     {value: 'mountE', viewValue: 'Mountain on End'},
     {value: 'mountS', viewValue: 'Mountain on Start'},
     {value: 'mountB', viewValue: 'Mountain between start and end'}
@@ -136,10 +140,10 @@ export class FirstComponent implements OnInit {
                                         f: null, g: null, h: null,
                                         parent: null,
                                         value : 0,
-                                        isEndPoint : false,
+                                        isEndPoint : null,
                                         visited: false,
                                         open : false,
-                                        debug : false};
+                                        debug : false,destOrder:null};
 
       }
     }
@@ -188,10 +192,10 @@ export class FirstComponent implements OnInit {
     if(this.selectedPS === "PS_1"){
       if (coord === this.start){
         this.start = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if (coord === this.end){
         this.end = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if (rect.isTerrain){
         if(!this.isTerrain){
           rect.isTerrain = false;
@@ -199,10 +203,10 @@ export class FirstComponent implements OnInit {
         }else{
           if(this.start == null){
             this.start = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 0;
           }else if(this.end == null){
             this.end = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 1;
           }
           else if(!this.isGaussian){
             rect.isTerrain = true;
@@ -215,10 +219,10 @@ export class FirstComponent implements OnInit {
       }else{ // clicking on non (red green grey ) square
         if (this.start == null){
           this.start = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = 0;
         }else if (this.end == null){
             this.end = coord;
-            rect.isEndPoint = true;
+            rect.isEndPoint = 1;
         }else if (!rect.isTerrain ){
           rect.isTerrain = true;
           if(!this.isGaussian){
@@ -233,24 +237,24 @@ export class FirstComponent implements OnInit {
     }else if(this.selectedPS === "TSP"){
       if(coord == this.start){
         this.start = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if(this.Dest.includes(coord)){
         let a = this.Dest.indexOf(coord);
         this.Dest[a] = null;
-        rect.isEndPoint = false;
+        rect.isEndPoint = null;
       }else if(rect.isTerrain){
         rect.isTerrain = false;
       }else{
         if(this.start == null){
           this.start = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = 0;
         }else if(this.Dest.length < this.selectedDest){
           this.Dest.push(coord);
-          rect.isEndPoint = true;
+          rect.isEndPoint = this.Dest.length;
         }else if(this.Dest.includes(null)){
           let a = this.Dest.indexOf(null);
           this.Dest[a] = coord;
-          rect.isEndPoint = true;
+          rect.isEndPoint = a+1;
         }else if (!rect.isTerrain ){
           rect.isTerrain = true;
           rect.value = 100;
@@ -285,6 +289,8 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].isPath = false;
       this.gridCord[u].isTerrain = false;
       this.gridCord[u].value = 0;
+      this.gridCord[u].isEndPoint = null;
+      this.gridCord[u].destOrder = null;
       this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
@@ -319,6 +325,7 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
+      this.gridCord[u].destOrder = null;
       this.lengthS = "0";
       this.steps = 0;
       this.time = '0';
@@ -423,79 +430,29 @@ export class FirstComponent implements OnInit {
     this.bidirection = false;
     this.notCrossCorner = false;
     this.updateAlgoList();
+
+    let Maze:maze = new maze();
     switch (this.selectedMaze) {
-      case "hori":
-          for (var i = 0; i < hGrid; i+=2) {
-            for (var j = 0; j < vGrid; ++j) {
-              if(Math.random()>0.3){
-                this.gridCord[j*hGrid+i].isTerrain = true;
-                this.gridCord[j*hGrid+i].value = 100;
-              }
-            }
-          }
-          for (var i = 0; i < totalGrid; ++i) {
-            if(this.gridCord[i].isTerrain){
-              continue;
-            }
-            if(Math.random()>0.9){
-              this.gridCord[i].isTerrain = true;
-              this.gridCord[i].value = 100;
-            }else{
-              this.gridCord[i].isTerrain = false;
-              this.gridCord[i].value = 0;
-            }
-          }
+      case "sidewinder":
+        Maze.sidewinder(this.gridCord);
         break;
       case "vert":
-          for (var i = 0; i < hGrid; i++) {
-            for (var j = 0; j < vGrid; j+=2) {
-              if(Math.random()>0.3){
-                this.gridCord[j*hGrid+i].isTerrain = true;
-                this.gridCord[j*hGrid+i].value = 100;
-              }
-            }
-          }
-          for (var i = 0; i < totalGrid; ++i) {
-            if(this.gridCord[i].isTerrain){
-              continue;
-            }
-            if(Math.random()>0.9){
-              this.gridCord[i].isTerrain = true;
-              this.gridCord[i].value = 100;
-            }else{
-              this.gridCord[i].isTerrain = false;
-              this.gridCord[i].value = 0;
-            }
-          }
+        Maze.vert(this.gridCord);
         break;
       case "rand":
-        for (var i = 0; i < totalGrid; ++i) {
-          if(Math.random()>0.7){
-            this.gridCord[i].isTerrain = true;
-            this.gridCord[i].value = 100;
-          }else{
-            this.gridCord[i].isTerrain = false;
-            this.gridCord[i].value = 0;
-          }
-        }
+        Maze.rand(this.gridCord);
         break;
       case "stair":
-        var  i = 0;
-        for ( i = 0; i <= 22*(hGrid+1); i=i+hGrid+1) {
-          this.gridCord[i].isTerrain = true;
-          this.gridCord[i].value = 100;
-        }
-        for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
-          this.gridCord[i].isTerrain = true;
-          this.gridCord[i].value = 100;         // code...
-        }
-          this.gridCord[i].isTerrain = false;
-          this.gridCord[i].value = 0;
-          i+=2;
-        for(var j=0; j<5;j++){
-          this.gridCord[i+j*(hGrid+1)].isTerrain = true;
-          this.gridCord[i+j*(hGrid+1)].value = 100;         // code...
-        }
+        Maze.stair(this.gridCord)
+        break;
+      case "binaryTree":
+        Maze.binary(this.gridCord);
+      break;
+      case "dfsMaze":
+        Maze.dfsMaze(this.gridCord);
+        break;
+      case "Prim's":
+        Maze.primMaze(this.gridCord);
         break;
       case "mountE":
         this.selectedPS = 'PS_1';
@@ -549,6 +506,7 @@ export class FirstComponent implements OnInit {
 
         this.gaussianFill(midx*hGrid + midy);
       break;
+
       default:
         // code...
         break;
@@ -566,11 +524,11 @@ export class FirstComponent implements OnInit {
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
 
-     if (u == this.start && rect.isEndPoint){
+     if (u == this.start && rect.isEndPoint==0){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
-      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint){
+      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint>0){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }else if(rect.isPath && this.showPath){
@@ -585,7 +543,7 @@ export class FirstComponent implements OnInit {
         // element.style.fillOpacity = (rect.value / 100).toString();
         let a = (Math.floor(256-(rect.value*128 / 100))).toString();
         element.style.fill = "rgb("+a+","+a+","+a+")";
-        element.style.fillOpacity = "1"; 
+        element.style.fillOpacity = "1";
       }
       else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);
@@ -675,7 +633,7 @@ export class FirstComponent implements OnInit {
       else{
         window.alert("Sorry, no Path Exists :(");
       }
-    
+
   }
 
   req_step :number = 0;
