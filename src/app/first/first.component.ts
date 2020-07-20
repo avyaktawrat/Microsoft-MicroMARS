@@ -432,7 +432,23 @@ export class FirstComponent implements OnInit {
       this.bidirection = false;
       this.notCrossCorner = false;
       this.isGaussian = false;
-      this.updateAlgoList();
+      this.clearWall();
+      // this.updateAlgoList();
+  }
+  changeAlgo(){
+    if(this.selectedValue == 'bfs' || this.selectedValue=='BestFirst'){
+      this.isTerrain = false;
+      this.isGaussian = false;
+    }else if(this.selectedValue == 'Floyd–Warshall'){
+      this.isTerrain = false;
+      this.isGaussian = false;
+      this.bidirection = false;
+      this.notCrossCorner = false;
+    }
+    else{
+      this.bidirection = false;
+      this.notCrossCorner = false;
+    }
   }
   changeMaze(){
     this.clearWall();
@@ -527,6 +543,7 @@ export class FirstComponent implements OnInit {
     this.updateUI();
   }
   updateUI(): void{
+        // this.selectedMaze = null;
     // console.log(this.Dest);
     for (let u = totalGrid - 1; u >= 0; u--) {
       (async () => {
@@ -553,9 +570,14 @@ export class FirstComponent implements OnInit {
       else if (rect.isTerrain){
         // element.style.fill = "grey";
         // element.style.fillOpacity = (rect.value / 100).toString();
-        let a = (Math.floor(256-(rect.value*128 / 100))).toString();
-        element.style.fill = "rgb("+a+","+a+","+a+")";
-        element.style.fillOpacity = "1";
+        if(this.isTerrain){
+          let a = (Math.floor(256-(rect.value*128 / 100))).toString();
+          element.style.fill = "rgb("+a+","+a+","+a+")";
+          element.style.fillOpacity = "1";
+        }else{
+          element.style.fill = "#4f4f4f";
+        }
+
       }
       else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
         //await delay(10000);

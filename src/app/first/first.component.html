@@ -62,7 +62,7 @@
 
     	<mat-form-field appearance="fill" >
         	<mat-label><h4>Algorithms</h4></mat-label>
-        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}">
+        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeAlgo()">
 		        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
 	        	    {{algo.viewValue}}
 		        </mat-option>
@@ -126,7 +126,7 @@
 			</section>
 			<div class = "example-margin" *ngIf = "selectedPS == 'PS_1' && !isTerrain">
 				<mat-divider *ngIf = "selectedValue!='bfs'"></mat-divider>
-				<h4 *ngIf = "selectedValue!='bfs'"><em>Options Not applicable with Terrain distribution</em></h4>
+				<!-- <h4 *ngIf = "selectedValue!='bfs' && selectedValue!='BestFirst'"><em>Options Not applicable with Terrain distribution</em></h4> -->
 				<mat-checkbox color = "primary" [(ngModel)]="notCrossCorner" [ngModelOptions]="{standalone: true}">Do not cross corners</mat-checkbox>
 				<mat-checkbox color = "primary" [(ngModel)]="bidirection" [ngModelOptions]="{standalone: true}" >Bi-Directional</mat-checkbox>
 			</div>
@@ -176,8 +176,8 @@
 				<div class="gaussian-margin">
 					<mat-slider *ngIf = "isGaussian"  
 						color=warn
-						[max]=14
-						[min]=10
+						[max]=20
+						[min]=7
 						[step]=0.5
 						[thumbLabel]=true
 						[value]="cov_x"
@@ -187,8 +187,8 @@
 				
 					<mat-slider	*ngIf = "isGaussian"
 					color = warn
-					[max]=14
-					[min]=10
+					[max]=20
+					[min]=7
 					[step]=0.5
 					[thumbLabel]=true
 					[value]="cov_y"
@@ -224,7 +224,7 @@
 		<!-- <button (click)="search_A()" style="margin: 10px;">A*</button> -->
 		<button mat-raised-button color="primary"class = "button" (click)="Search()" >Start Search</button>
 		<button mat-raised-button color="primary"class = "button" (click)="reset()" >Reset All</button>
-  <button mat-raised-button color="primary"class = "button" (click)="clearWall()">Clear Walls</button>
+  <button mat-raised-button color="primary"class = "button" (click)="clearWall()">Clear Grid</button>
 		<button mat-raised-button color="primary"class = "button" (click)="clearPath()">Clear Path</button>
 		</div>
 		
