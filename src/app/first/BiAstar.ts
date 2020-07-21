@@ -7,7 +7,6 @@ let Utils: utils = new utils();
 
 export class BiAstar{
   public steps :number = 0;
-  public length1 :number= 0;
   public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
@@ -204,7 +203,7 @@ export class BiAstar{
 
 			
     }
-    console.log(this.bidirecNodeE,this.bidirecNodeS);
+    // console.log(this.bidirecNodeE,this.bidirecNodeS);
 	}
 
 }

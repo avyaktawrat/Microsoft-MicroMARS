@@ -13,7 +13,7 @@ interface Pair {
 export class Astar{
 
   public steps :number = 0;
-  public length1 :number= 0;
+  // public length1 :number= 0;
   public time :number = 0;
 
   public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>,heuristic?):void {
@@ -123,7 +123,7 @@ export class Astar{
     if(heuristic == null){
       heuristic = Utils.Manhattan;
     }
-    console.log(heuristic(5,10));
+    // console.log(heuristic(5,10));
     openList.push(start);
 
     gridCoords[start].h = heuristic(start , end); 

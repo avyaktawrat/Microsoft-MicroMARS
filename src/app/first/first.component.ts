@@ -403,7 +403,7 @@ export class FirstComponent implements OnInit {
       this.Algorithms = [{value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}];
       this.selectedValue = 'Floyd–Warshall';
     }
-    console.log(this.Algorithms);
+    // console.log(this.Algorithms);
   }
 
   updateAlgoList(){
@@ -745,7 +745,7 @@ export class FirstComponent implements OnInit {
           }else if (this.bidirection){
             biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = biastar.steps;
-            this.length = biastar.length1;
+            // this.length = biastar.length1;
             this.time = biastar.time.toFixed(3);
             this.bidirecNodeS = biastar.bidirecNodeS;
             this.bidirecNodeE = biastar.bidirecNodeE;
@@ -754,7 +754,7 @@ export class FirstComponent implements OnInit {
           }else{
             astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.steps = astar.steps;
-            this.length = astar.length1;
+            // this.length = astar.length1;
             this.time = astar.time.toFixed(3);
           }
           break;
@@ -764,13 +764,13 @@ export class FirstComponent implements OnInit {
             dij.Wsearch(this.start, this.end, this.gridCord ,this.allowDiag,this.adjList);
             this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
-            this.length = dij.length1;
+            // this.length = dij.length1;
 
           }else if (this.bidirection){
             bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
             this.time = bidjk.time.toFixed(3);
             this.steps = bidjk.steps;
-            this.length = bidjk.length1;
+            // this.length = bidjk.length1;
             this.bidirecNodeS = bidjk.bidirecNodeS;
             this.bidirecNodeE = bidjk.bidirecNodeE;
 
@@ -778,17 +778,17 @@ export class FirstComponent implements OnInit {
             dij.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
             this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
-            this.length = dij.length1;
+            // this.length = dij.length1;
 
           }
           break;
          case 'BestFirst':
-          console.log(this.bidirection);
+          // console.log(this.bidirection);
           if(this.bidirection){
             best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.time = best.time.toFixed(3);
             this.steps = best.steps;
-            this.length = best.length1;
+            // this.length = best.length1;
             this.bidirecNodeS = best.bidirecNodeS;
             this.bidirecNodeE = best.bidirecNodeE;
 
@@ -796,7 +796,7 @@ export class FirstComponent implements OnInit {
             best.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
             this.time = best.time.toFixed(3);
             this.steps = best.steps;
-            this.length = best.length1;
+            // this.lengthS = best.length1.t;
           }
           break;
         default:
@@ -812,7 +812,7 @@ export class FirstComponent implements OnInit {
             tsp.start = this.start;
             tsp.destinations = this.Dest;
             tsp.search(bfs, this.isPref, this.gridCord, this.allowDiag, this.adjList);
-            this.length = tsp.length;
+            this.lengthS = tsp.length.toFixed(2);
             this.steps = tsp.steps;
             this.time = tsp.time.toFixed(3);
             this.pathCord = tsp.pathCord;
@@ -824,7 +824,7 @@ export class FirstComponent implements OnInit {
             tsp.start = this.start;
             tsp.destinations = this.Dest;
             tsp.search(astar, this.isPref, this.gridCord, this.allowDiag, this.adjList);
-            this.length = tsp.length;
+            this.lengthS = tsp.length.toFixed(2);
             this.steps = tsp.steps;
             this.time = tsp.time.toFixed(3);
             this.pathCord = tsp.pathCord;
@@ -836,7 +836,7 @@ export class FirstComponent implements OnInit {
             tsp.start = this.start;
             tsp.destinations = this.Dest;
             tsp.search(dij, this.isPref, this.gridCord, this.allowDiag, this.adjList);
-            this.length = tsp.length;
+            this.lengthS = tsp.length.toFixed(2);
             this.steps = tsp.steps;
             this.time = tsp.time.toFixed(3);
             this.pathCord = tsp.pathCord;
@@ -850,10 +850,10 @@ export class FirstComponent implements OnInit {
             tsp.destinations = this.Dest;
             tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
             tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
-            console.log('Flyod Warshall');
+            // console.log('Flyod Warshall');
             this.time = tsp.time.toFixed(3);
             this.steps = tsp.steps;
-            this.length = tsp.length;
+            this.lengthS = tsp.length.toFixed(2);
             this.pathCord = tsp.pathCord;
             // console.log(this.pathCord);
           }

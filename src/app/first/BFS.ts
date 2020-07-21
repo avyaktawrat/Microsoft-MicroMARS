@@ -8,7 +8,6 @@ let Utils: utils = new utils();
 export class BFS{
 
   public steps: number = 0;
-  public length1: number = 0;
   public time: number = 0;
 
   // public search(gridCord: GridCoords[] ,start:number, end:number,allowDiag:boolean,notCrossCorner:boolean):void {
@@ -40,11 +39,9 @@ export class BFS{
             while(node!=start){
               gridCoords[node].isPath = true;
               node = gridCoords[node].parent;
-              this.length1 ++;
             }
             let milli2 = performance.now();
             this.time = (milli2-milli);
-            this.length1 ++;
             stop = true;
             break;
           }

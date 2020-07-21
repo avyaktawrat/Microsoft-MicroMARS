@@ -21,7 +21,7 @@ export class BestFirst{
 
  		astar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);
     this.steps = astar.steps;
-    this.length1 = astar.length1;
+    // this.length1 = astar.length1;
     this.time = astar.time;
 
 	}
@@ -31,10 +31,10 @@ export class BestFirst{
  		function HeurBestFirst(a:number, b:number){
  			return heuristic(a,b)*1000000;	
  		}
- 		console.log("bi best");
+ 		// console.log("bi best");
  		biastar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);
     this.steps = biastar.steps;
-    this.length1 = biastar.length1;
+    // this.length1 = biastar.length1;
     this.time = biastar.time;
     this.bidirecNodeS = biastar.bidirecNodeS;
     this.bidirecNodeE = biastar.bidirecNodeE;

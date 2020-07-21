@@ -7,7 +7,6 @@ let Utils: utils = new utils();
 
 export class BiDjk{
   public steps :number = 0;
-  public length1 :number= 0;
   public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
@@ -36,8 +35,8 @@ export class BiDjk{
   	gridCord[end].g = 0;
     
   	let currentNode :number;
-  	console.log(startOpenList);
-  	console.log(gridCord);
+  	// console.log(startOpenList);
+  	// console.log(gridCord);
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
   		
   	// 	if(this.steps == req_step){

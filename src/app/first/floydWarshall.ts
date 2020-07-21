@@ -63,7 +63,7 @@ export class FloydWarshall {
       }
       // gridCoords[path[start][min_idx][0]].parent = path[start][min_idx][0];
       for (let idx = 1; idx < path[start][min_idx].length; idx++) {
-        this.length1 += 1;
+        // this.length1 += 1;
         gridCoords[path[start][min_idx][idx]].isPath = true;
         // gridCoords[path[start][min_idx][idx]].parent = path[start][min_idx][idx - 1];
         // console.log([path[start][min_idx][idx]],path[start][min_idx][idx - 1]);
@@ -74,6 +74,7 @@ export class FloydWarshall {
         let y1 = (node%hGrid)*30+15;
         let y2 = (node_next%hGrid)*30+15;
         this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
+        this.length1 = this.length1 + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
         if(i==10000){
           console.log("exceeded limit");
           break
@@ -82,7 +83,7 @@ export class FloydWarshall {
       
       this.destOrder.push(min_idx-1);
       for (let idx of path[start][min_idx]) {
-        this.length1 += 1;
+        // this.length1 += 1;
         gridCoords[idx].isPath = true;
       }
       seen.push(start);
@@ -96,6 +97,6 @@ export class FloydWarshall {
     //   }
     //   start = v;
     // }
-    this.length1 += 2;
+    // this.length1 += 2;
   }
 }

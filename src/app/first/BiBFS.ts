@@ -8,7 +8,6 @@ let Utils: utils = new utils();
 export class BiBFS{
 
   public steps: number = 0;
-  public length: number = 0;
   public time: number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
@@ -46,7 +45,7 @@ export class BiBFS{
 					
 						if((u == end || openBy[u]===byEnd)){	
 							this.time = performance.now()-milli;
-							console.log(gridCord[u]);
+							// console.log(gridCord[u]);
 							let node:number;					
 							node = u;
 							while(node!=end){
@@ -62,7 +61,7 @@ export class BiBFS{
 							stop= true;
 							this.bidirecNodeE=u;
 						  	this.bidirecNodeS=currentNodeS;
-							console.log(currentNodeS, gridCord[currentNodeS].parent, quE.shift());
+							// console.log(currentNodeS, gridCord[currentNodeS].parent, quE.shift());
 							break;
 						}
 						openBy[u] = byStart;

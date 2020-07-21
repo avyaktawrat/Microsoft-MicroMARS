@@ -55,7 +55,7 @@ export class TravSalesMan {
               break;
             }
             this.start = dest;
-            this.length += algo.length1;
+            // this.length += algo.length1;
             this.time += algo.time;
             this.steps += algo.steps;
           }
@@ -79,7 +79,7 @@ export class TravSalesMan {
           // start_copy = dest;
         // }
         this.pathCord = algo.pathCord;
-        console.log(algo.destOrder)
+        // console.log(algo.destOrder)
         let i =1;
         for(let u of algo.destOrder){
           gridCoords[this.destinations[u]].destOrder = i;
@@ -117,12 +117,15 @@ export class TravSalesMan {
           let y2 = (node_next%hGrid)*30+15;
           this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
           node = node_next;
+          this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
           // break;
           if(i==1000){
             console.log("exceeded limit");
             break;
           }
         }
+
+        
 
   }
 }
