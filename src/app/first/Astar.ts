@@ -278,7 +278,7 @@ direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Arra
   }
   calWeight(gridCoords: GridCoords[],a:number , b:number) : number{
     // console.log(a);
-    let weight = 0.1*Math.abs(gridCoords[a].value - gridCoords[b].value) ;
+    let weight = 0.05*Math.abs(gridCoords[a].value - gridCoords[b].value*0) ;
     return  weight;
   }
 
