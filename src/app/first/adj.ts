@@ -13,31 +13,31 @@ export function get_adjacency_list(width: number, height: number, diag: boolean)
     for (let pos of possibilities) {
       let pair: DPair = {first: pos, second: null};
       if (i % height === 0 && i !== 0 && i !== (width - 1) * height && pos !== i - 1) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if ((i + 1) % (height) === 0 && i !== height - 1 && i !== width * height - 1 && pos !== i + 1 && i !== 0) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i < height - 1 && i > 0 && pos !== i - height ) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i < width * height - 1 && i > (width - 1) * height && pos !== i + height) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i === 0 && pos !== i - height && pos !== i - 1) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i === height - 1 && pos !== i - height && pos !== i + 1) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i === (width - 1) * height && pos !== i + height && pos !== i - 1) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i === width * height - 1 && pos !== i + 1 && pos !== i + height) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else if (i >= height + 1 && (i + 1) % height !== 0 && i % height !== 0 && i <= width * height - 1 - height) {
-        pair.second = 0.2 * parseFloat(rects[pos].id.split(',')[0]) + 0.2;
+        pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1;
       }
       else {
         continue;
@@ -49,31 +49,31 @@ export function get_adjacency_list(width: number, height: number, diag: boolean)
       for (let pos of morePossibilities) {
         let pair: DPair = {first: pos, second: null};
         if (i % height === 0 && i !== 0 && i !== (width - 1) * height && pos !== i - height - 1 && pos !== i + height - 1) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.4242;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if ((i + 1) % (height) === 0 && i !== height - 1 && i !== width * height - 1 && pos !== i - height + 1 && pos !== i + height + 1 && i !== 0) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.4242;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i < height - 1 && i > 0 && pos !== i + 1 - height && pos !== i - 1 - height) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.4242;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i < width * height - 1 && i > (width - 1) * height && pos !== i + height + 1 && pos !== i + height - 1) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i === 0 && pos === i + height + 1) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i === height - 1 && pos === i + height - 1) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i === (width - 1) * height && pos === i - height + 1) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i === width * height - 1 && pos === i - height - 1 ) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else if (i >= height + 1 && (i + 1) % height !== 0 && i % height !== 0 && i <= width * height - 1 - height) {
-          pair.second = parseFloat(rects[pos].id.split(',')[0]) * 2 + 0.2;
+          pair.second = 0.05 * parseFloat(rects[pos].id.split(',')[0]) + 1.4;
         }
         else {
           continue;
