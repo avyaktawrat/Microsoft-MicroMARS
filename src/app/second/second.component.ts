@@ -46,10 +46,11 @@ export class SecondComponent {
       I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms.
       Reading (especially psychological stuff) is something I have started liking recently.`,
       photoId: 'https://drive.google.com/thumbnail?id=1mcHXapKVgjpvWn_zfq7I6Da-bgATSh5r',
-      email:'',git:''},
+      email:'mailto:anjaliyadavay3008@gmail.com',git:'https://www.github.com/anjaliyadav3008'},
 
       {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)',
-      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.`,
+      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay. 
+      I love exploring around and finding solutions to challenging problems! I enjoy music and books :)`,
       photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
       email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},
 

@@ -236,7 +236,7 @@ form mat-form-field {
   opacity: 100%;
   color: black;
  }
- .mat-tab-link:hover,
+::ng-deep .mat-tab-link:hover,
 ::ng-deep .mat-tab-label:hover{
   margin: 2px 1px 1px 1px;
   border-color: navy;
@@ -270,7 +270,7 @@ form mat-form-field {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: yellowgreen; 
+  background: lightblue; 
   border-radius: 10px;
 }
 
