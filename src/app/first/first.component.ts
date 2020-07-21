@@ -103,12 +103,12 @@ export class FirstComponent implements OnInit {
   ];
   maze : DropDownSelect[] = [
     {value: 'sidewinder', viewValue: 'Sidewinder Algorithm'},
-    {value: 'vert', viewValue: 'Vertical'},
-    {value: 'rand', viewValue: 'Random'},
+    // {value: 'vert', viewValue: 'Vertical'},
     {value: 'dfsMaze', viewValue: 'DFS'},
-    {value: "Prim's", viewValue: "Prim's"},
-    {value: 'stair', viewValue:'Stair Case'},
+    {value: "Prim's", viewValue: "Prim's Maze"},
     {value: 'binaryTree', viewValue: 'Binary Tree'},
+    {value: 'rand', viewValue: 'Random'},
+    {value: 'stair', viewValue:'Stair Case'},
     {value: 'mountE', viewValue: 'Mountain on End'},
     {value: 'mountS', viewValue: 'Mountain on Start'},
     {value: 'mountB', viewValue: 'Mountain between start and end'}
@@ -463,9 +463,6 @@ export class FirstComponent implements OnInit {
     switch (this.selectedMaze) {
       case "sidewinder":
         Maze.sidewinder(this.gridCord);
-        break;
-      case "vert":
-        Maze.vert(this.gridCord);
         break;
       case "rand":
         Maze.rand(this.gridCord);

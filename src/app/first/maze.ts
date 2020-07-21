@@ -7,54 +7,6 @@ let Utils: utils = new utils();
 export class maze  {
 	constructor() {}
 
-
-
-	hori(gridCoord : GridCoords[]):void{
-		for (let i = 0; i < hGrid; i+=2) {
-      for (let j = 0; j < vGrid; ++j) {
-        if(Math.random()>0.3){
-          gridCoord[j*hGrid+i].isTerrain = true;
-          gridCoord[j*hGrid+i].value = 100;
-        }
-      }
-    }
-    for (let i = 0; i < totalGrid; ++i) {
-      if(gridCoord[i].isTerrain){
-        continue;
-      }
-      if(Math.random()>0.9){
-        gridCoord[i].isTerrain = true;
-        gridCoord[i].value = 100;
-      }else{
-        gridCoord[i].isTerrain = false;
-        gridCoord[i].value = 0;
-      }
-    }
-	}
-
-	vert(gridCoord : GridCoords[]):void{
-		for (let i = 0; i < hGrid; i++) {
-      for (let j = 0; j < vGrid; j+=2) {
-        if(Math.random()>0.3){
-          gridCoord[j*hGrid+i].isTerrain = true;
-          gridCoord[j*hGrid+i].value = 100;
-        }
-      }
-    }
-    for (let i = 0; i < totalGrid; ++i) {
-      if(gridCoord[i].isTerrain){
-        continue;
-      }
-      if(Math.random()>0.9){
-        gridCoord[i].isTerrain = true;
-        gridCoord[i].value = 100;
-      }else{
-        gridCoord[i].isTerrain = false;
-        gridCoord[i].value = 0;
-      }
-    }
-	}
-
 	rand(gridCoord : GridCoords[]):void{
 		for (let i = 0; i < totalGrid; ++i) {
       let n = Utils.direction8_vector(i,gridCoord,false,false);
