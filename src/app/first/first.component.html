@@ -21,10 +21,10 @@
 	<div id = "menu-bar" [style.height.px]="height_menu">
 		<!-- Choosing problem statement -->
 		<!-- <div class="ps"> -->
-		<mat-tab-group		
+		<mat-tab-group	style="color: black;"	
 		[(selectedIndex)]="PS_index" (selectedIndexChange)="selectedPS = PS_index ? 'TSP':'PS_1';reset()">
 			<mat-tab *ngFor="let ps of Problem_statement">
-			  <ng-template mat-tab-label style="color: white;">{{ps.viewValue}}</ng-template>
+			  <ng-template mat-tab-label style="color: black;">{{ps.viewValue}}</ng-template>
 
 		<form>
     	<mat-form-field appearance="fill">
