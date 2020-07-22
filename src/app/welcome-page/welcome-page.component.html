@@ -1,25 +1,50 @@
 <mat-tab-group dynamicHeight>
   <mat-tab label="Intro tab">
-    <div class="example-small-box mat-elevation-z4">
-      <h1>Team MicroMARS 42</h1>
-      <p>We are here to present our project, part of Mars Colonization Programme (Engage 2020).</p>
-    </div>
-    <div class="example-small-box mat-elevation-z4">
-      <h1>Meet our Team</h1>
-      <p>Click here to know about them xya abe def hjh jjh just one more line</p>
-    </div>
-    <div class="example-small-box mat-elevation-z4">
-      <h1>Problem Statement</h1>
-      <p>abra ka dabra</p>
-    </div>
-    <div class="example-small-box mat-elevation-z4">
-      <h1>Achievements</h1>
-      <p>LOL</p>
+    <div class="tab-wrapper">
+      <div class="example-small-box mat-elevation-z4">
+        <h1>Team MicroMARS 42</h1>
+        <p>We are here to present our project, part of The Mars Colonization Programme (Microsoft Engage 2020).</p>
+        <p> To directly jump to our project, kindly go to <a routerLink = "/home"><em>PlayGround Tab</em></a> </p>
+        <p>It's preferred to view in a laptop or a tablet, not recommended for phones due to low gridsize</p>
+      </div>
+      <!-- <div class="example-small-box mat-elevation-z4">
+        <h1>Meet our Team</h1>
+        <p>Click here to know about them xya abe def hjh jjh just one more line</p>
+      </div> -->
+      <div class="example-large-box mat-elevation-z4">
+        <h1>Problem Statements</h1>
+        <p> There are two problem statements we have worked on:</p>
+        <div class = "prob-stats" style="display: flex;">
+          <div class = "example-small-box mat-elevation-z4">
+            <h2>One-Way Trip!</h2>
+            <ul>
+            <li>Shortest path traversal from one source to one destination while 
+              <ol>
+                <li>avoiding absolute obstacles that cannot be crossed</li>
+                <li>crossing uneven surfaces that add weights to the graph, can be accessed by using the terrain option in the menu bar</li>
+              </ol></li>
+            </ul>
+          </div>
+          <div class = "example-small-box mat-elevation-z4">
+            <h2>Intermediate Stops!</h2>
+            <ul>
+              <li>Travelling multiple destinations chosen by the user having
+                <ol>
+                  <li>Unordered destinations, for the programme to decide the optimum path</li>
+                  <li>Ordered destinations, decided as per user preference</li>
+                </ol></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="example-small-box mat-elevation-z4">
+        <h1>Click Here To Get Started!</h1>
+      </div> -->
     </div>
   </mat-tab>
-  <mat-tab label="Tutorial tab">
+  <mat-tab label="Demo Tab">
     <div class="example-large-box mat-elevation-z4">
-      Large content
+      It's still to be updated!
     </div>
   </mat-tab>
 </mat-tab-group>

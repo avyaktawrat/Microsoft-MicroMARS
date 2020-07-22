@@ -10,7 +10,7 @@
 		  [rowspan]="tile.rows"
 		  [style.background]="tile.color">
 		  <div class = "inside-tile">
-		  	<div class = "name">{{tile.text}}</div>
+		  	<!-- {{tile.text}} -->
 		    <h4>{{tile.content}}</h4>
 		    <div class="flip-card" >
 		      <div class="flip-card-inner" style="background-image: url({{tile.photoId}}); width:100%;">
@@ -22,7 +22,8 @@
 		            <li><a href={{tile.email}} target="_blank"><i
 		              class="fa fa-google fa-3x mb-3" ></i></a></li>
 		            <li><a href={{tile.git}} target="_blank"><i
-		              class="fa fa-github fa-3x mb-3" ></i></a></li>
+					  class="fa fa-github fa-3x mb-3" ></i></a></li>
+					<li>{{tile.text}}</li>
 		          </div>
 		        </div>
 		      </div>
