@@ -11,7 +11,7 @@
 <div class="navbar-menu">
   <nav mat-tab-nav-bar style="background-color:navy" [backgroundColor]="background" animationDuration="500ms">
     <a mat-tab-link style="color: white;" *ngFor="let link of links"
-       (click)="activeLink = link.router"
+       (click)="activeLink == link.router"
        [active]="activeLink == link.router" [routerLink] = "link.router"> {{link.view}} </a>
     <a mat-tab-link [disabled]="true" style="position: absolute; color:white; opacity: 100%; font-size: large;vertical-align: center;text-align: right; right: 3%; border-style: hidden;">
       Team MicroMARS 42</a>
@@ -21,7 +21,7 @@
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
 </div>
-  <!-- 
+  <!--
     <div class="navbar-start">
       <a class="navbar-item" routerLink='/my-team' routerLinkActive="active-link">Contact</a>
       <a class="navbar-item" routerLink='/home' routerLinkActive="active-link">Home</a>

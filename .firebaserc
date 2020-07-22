@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "micromars-58b54"
+  },
+  "targets": {
+    "micromars-58b54": {
+      "hosting": {
+        "MicroMARS": [
+          "micromars-58b54"
+        ]
+      }
+    }
+  }
+}
