@@ -4,7 +4,7 @@ import { Dijkstra } from './dijkstra';
 import { GridCoords } from './GridCoords';
 import { DPair } from './adj';
 import { FloydWarshall } from './floydWarshall';
-import {hGrid, vGrid, totalGrid} from './constants';
+import {hGrid, totalGrid} from './constants';
 import { lineCord} from './lineCoord'
 export class TravSalesMan {
   start: number;
@@ -46,7 +46,6 @@ export class TravSalesMan {
           for (let dest of this.destinations) {
             this.resetGrid(gridCoords);
             algo.search(this.start, dest, gridCoords, allowDiag, false);
-            // console.log(dest, gridCoords[dest].parent)
             if(gridCoords[dest].parent!=null){
               this.linePath(this.start,dest,gridCoords);
             }
@@ -55,7 +54,6 @@ export class TravSalesMan {
               break;
             }
             this.start = dest;
-            // this.length += algo.length1;
             this.time += algo.time;
             this.steps += algo.steps;
           }
@@ -72,19 +70,11 @@ export class TravSalesMan {
         let then = performance.now();
         algo.search(this.newGraph);
         algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
-        // let start_copy = this.start;
-        // for (let dest of this.destinations) {
-          // console.log(start_copy, dest);
-          // this.linePath(dest,start_copy,gridCoords);
-          // start_copy = dest;
-        // }
         this.pathCord = algo.pathCord;
-        // console.log(algo.destOrder)
         let i =1;
         for(let u of algo.destOrder){
           gridCoords[this.destinations[u]].destOrder = i;
-          // console.log(gridCoords[this.destinations[u]].destOrder);
-          i++;  
+          i++;
         }
         this.time = (performance.now() - then);
         this.length = algo.length1;
@@ -93,7 +83,7 @@ export class TravSalesMan {
     }
   }
   resetGrid(gridCoords:GridCoords[]) {
-    for (var i = 0; i < totalGrid; ++i) {
+    for (let i = 0; i < totalGrid; ++i) {
       gridCoords[i].visited = false;
       gridCoords[i].open = false;
       gridCoords[i].debug = false;
@@ -104,11 +94,10 @@ export class TravSalesMan {
   }
 
   linePath(start:number,end :number,gridCord:GridCoords[]){
-    let node :number = end;
-    // console.log(end);
+    let node: number = end;
     let i =0;
-    
-    while(node!=start){
+
+    while(node !== start){
           i++
           let node_next = gridCord[node].parent;
           let x1 = Math.floor(node/hGrid)*30+15;
@@ -118,14 +107,12 @@ export class TravSalesMan {
           this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
           node = node_next;
           this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
-          // break;
-          if(i==1000){
-            console.log("exceeded limit");
+          if(i === 1000){
             break;
           }
         }
 
-        
+
 
   }
 }

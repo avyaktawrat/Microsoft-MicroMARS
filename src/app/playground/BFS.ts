@@ -1,6 +1,5 @@
 import {utils } from './utils';
 import { GridCoords } from './GridCoords';
-import {hGrid, vGrid, totalGrid} from './constants';
 import {DPair} from './adj';
 
 let Utils: utils = new utils();
@@ -34,7 +33,7 @@ export class BFS{
           gridCoords[u].parent = s;
 
           if (u == end){
-            let node:number;  
+            let node:number;
             node = s;//parent[u]
             while(node!=start){
               gridCoords[node].isPath = true;

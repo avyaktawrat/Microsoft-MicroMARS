@@ -3,13 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FirstComponent } from './first/first.component';
-import { SecondComponent } from './second/second.component';
+import { PlaygroundComponent } from './playground/playground.component';
+import { TeamComponent } from './team/team.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { ClickableDirective } from './clickable.directive';
 import { MatTabsModule } from '@angular/material/tabs';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { IntroComponent } from './intro/intro.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -30,10 +29,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
-    FirstComponent,
-    SecondComponent,
-    ClickableDirective,
-    WelcomePageComponent
+    PlaygroundComponent,
+    TeamComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,

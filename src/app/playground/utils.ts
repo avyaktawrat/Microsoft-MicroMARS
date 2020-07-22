@@ -1,4 +1,3 @@
-import { FirstComponent } from './first.component';
 import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
@@ -6,8 +5,7 @@ import {hGrid, vGrid, totalGrid} from './constants'
 export class utils{
 
   public  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean ): number[]{
-    var arr = new Array();
-    //console.log(a)
+    let arr = new Array();
 
     if((a)%hGrid !=0 && a-1>=0 && !gridCord[a-1].isTerrain){ //up
       arr.push(a-1);
@@ -54,9 +52,9 @@ export class utils{
   }
 
   public  direction8_maze(a: number, gridCord: GridCoords[] ): number[]{
-    var arr = new Array();
-    var x = Math.floor(a/hGrid);
-    var y = a%hGrid;
+    let arr = new Array();
+    let x = Math.floor(a/hGrid);
+    let y = a%hGrid;
     if(y>=2 && gridCord[a-2].isTerrain){ //up
       arr.push(a-2);
     }
@@ -77,27 +75,27 @@ export class utils{
   }
 
   Manhattan(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
+    let x1 = Math.round(a/hGrid);
+    let y1 = a%hGrid;
+    let x2 = Math.round(b/hGrid);
+    let y2 = b%hGrid;
     let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
     return dist;
   }
   Euclidean(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
+    let x1 = Math.round(a/hGrid);
+    let y1 = a%hGrid;
+    let x2 = Math.round(b/hGrid);
+    let y2 = b%hGrid;
     let dist = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     return dist;
   }
   Octile(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
-    var F = Math.SQRT2 - 1;
+    let x1 = Math.round(a/hGrid);
+    let y1 = a%hGrid;
+    let x2 = Math.round(b/hGrid);
+    let y2 = b%hGrid;
+    let F = Math.SQRT2 - 1;
     let dist;
     let dx = Math.abs(x1-x2);
     let dy = Math.abs(y1-y2)
@@ -110,10 +108,10 @@ export class utils{
     return dist;
   }
   Chebyshev(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
+    let x1 = Math.round(a/hGrid);
+    let y1 = a%hGrid;
+    let x2 = Math.round(b/hGrid);
+    let y2 = b%hGrid;
     let dist = Math.max(Math.abs(x1-x2) , Math.abs(y1-y2));
     return dist;
   }

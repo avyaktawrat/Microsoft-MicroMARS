@@ -1,15 +1,14 @@
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import { SecondComponent } from './second/second.component';
-import { FirstComponent } from './first/first.component';
-import { NgModule, Component } from '@angular/core';
+import { IntroComponent } from './intro/intro.component';
+import { TeamComponent } from './team/team.component';
+import { PlaygroundComponent } from './playground/playground.component';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { from } from 'rxjs';
 
 
 const routes: Routes = [
-  { path: '', component: WelcomePageComponent, data:{animation: 'TutPage'}},
-  { path: 'home', component: FirstComponent, data: {animation: 'PlaygroundPage'} },
-  { path: 'my-team', component: SecondComponent, data: {animation: 'TeamPage'} }
+  { path: '', component: IntroComponent, data:{animation: 'TutPage'}},
+  { path: 'home', component: PlaygroundComponent, data: {animation: 'PlaygroundPage'} },
+  { path: 'my-team', component: TeamComponent, data: {animation: 'TeamPage'} }
 ];
 
 @NgModule({

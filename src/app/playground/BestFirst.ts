@@ -1,6 +1,4 @@
-import {utils } from './utils';
 import { GridCoords } from './GridCoords';
-import {hGrid, vGrid, totalGrid} from './constants';
 import { Astar } from './Astar' ;
 import { BiAstar } from './BiAstar' ;
 
@@ -12,11 +10,11 @@ export class BestFirst{
   public length1 :number= 0;
   public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
-  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing 
+  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing
  	public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/,heuristic? ):void {
- 	
+
  		function HeurBestFirst(a:number, b:number){
- 			return heuristic(a,b)*1000000;	
+ 			return heuristic(a,b)*1000000;
  		}
 
  		astar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);
@@ -29,7 +27,7 @@ export class BestFirst{
 	public biSearch(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/,heuristic? ): void{
 
  		function HeurBestFirst(a:number, b:number){
- 			return heuristic(a,b)*1000000;	
+ 			return heuristic(a,b)*1000000;
  		}
  		// console.log("bi best");
  		biastar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);

@@ -21,9 +21,6 @@ import {utils } from './utils';
 import {hGrid, vGrid, totalGrid, height} from './constants';
 
 import {maze} from './maze'
-function delay(ms: number) {
-  return new Promise( resolve => setTimeout(resolve, ms) );
-}
 
 const Utils: utils = new utils();
 
@@ -34,20 +31,20 @@ interface DropDownSelect {
 
 @Component({
   selector: 'app-first-component',
-  templateUrl: './first.component.html',
-  styleUrls: ['./first.component.css']
+  templateUrl: './playground.component.html',
+  styleUrls: ['./playground.component.css']
 })
 
-export class FirstComponent implements OnInit {
+export class PlaygroundComponent implements OnInit {
   constructor() {
-    let menu = document.getElementsByClassName("button-cover") 
+    let menu = document.getElementsByClassName("button-cover")
   }
-  height = window.innerHeight;
+  // height = window.innerHeight;
   width = window.innerWidth;
 
   height_svg = 30*hGrid + 30;
   height_menu = this.height_svg - 110;
-  
+
 
   gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<DPair>>;
@@ -74,8 +71,8 @@ export class FirstComponent implements OnInit {
   step = 1;
   // thumbLabel = false;
   choose = 100;
-  vertical = false;
-  tickInterval = 1;  //check
+  // vertical = false;
+  // tickInterval = 1;  //check
   allowDiag = false;
   bidirection = false;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
@@ -142,7 +139,7 @@ export class FirstComponent implements OnInit {
                                         isEndPoint : null,
                                         visited: false,
                                         open : false,
-                                        debug : false,destOrder:null};
+                                        debug : false, destOrder:null};
 
       }
     }
@@ -153,7 +150,7 @@ export class FirstComponent implements OnInit {
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.choose;
       if (!this.isGaussian ){
-        if(this.color == 1){
+        if(this.color === 1){
           this.gridCord[coord].isTerrain = true;
           this.gridCord[coord].value = height;
         }else{
@@ -170,7 +167,6 @@ export class FirstComponent implements OnInit {
 
   gaussianFill (coord : number):void{
     let height = this.choose;
-    // console.log(this.gridCord);
       for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
         for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
           if(coord+i*hGrid+j >= 0 && coord+i*hGrid+j<totalGrid  &&i <= hGrid && j <= vGrid){
@@ -185,9 +181,8 @@ export class FirstComponent implements OnInit {
   }
 
   fillColor (a :number , b:number): void{
-    let coord :number = Math.floor(a/30)*hGrid+Math.floor(b/30);
+    let coord :number = Math.floor(a / 30) * hGrid + Math.floor(b / 30);
     let rect :GridCoords = this.gridCord[coord];
-    // console.log("hello");
     if(this.selectedPS === "PS_1"){
       if (coord === this.start){
         this.start = null;
@@ -200,10 +195,10 @@ export class FirstComponent implements OnInit {
           rect.isTerrain = false;
           rect.value = 0;
         }else{
-          if(this.start == null){
+          if(this.start === null){
             this.start = coord;
             rect.isEndPoint = 0;
-          }else if(this.end == null){
+          }else if(this.end === null){
             this.end = coord;
             rect.isEndPoint = 1;
           }
@@ -216,10 +211,10 @@ export class FirstComponent implements OnInit {
         }
 
       }else{ // clicking on non (red green grey ) square
-        if (this.start == null){
+        if (this.start === null){
           this.start = coord;
           rect.isEndPoint = 0;
-        }else if (this.end == null){
+        }else if (this.end === null){
             this.end = coord;
             rect.isEndPoint = 1;
         }else if (!rect.isTerrain ){
@@ -234,7 +229,7 @@ export class FirstComponent implements OnInit {
         }
       }
     }else if(this.selectedPS === "TSP"){
-      if(coord == this.start){
+      if(coord === this.start){
         this.start = null;
         rect.isEndPoint = null;
       }else if(this.Dest.includes(coord)){
@@ -244,7 +239,7 @@ export class FirstComponent implements OnInit {
       }else if(rect.isTerrain){
         rect.isTerrain = false;
       }else{
-        if(this.start == null){
+        if(this.start === null){
           this.start = coord;
           rect.isEndPoint = 0;
         }else if(this.Dest.length < this.selectedDest){
@@ -261,7 +256,7 @@ export class FirstComponent implements OnInit {
       }
 
     }
-    this.updateUI();    // console.log(rect);
+    this.updateUI();
 
   }
 
@@ -276,18 +271,6 @@ export class FirstComponent implements OnInit {
       this.color = 1;
     }
   }
-//Drag and drop of Results/info
-  // drag(ev): void{
-  //   ev.dataTransfer.setData("text", ev.target.id);
-  // }
-  // allowDrop(ev):void {
-  //   ev.preventDefault();
-  // }
-  // drop(ev) {
-  //   ev.preventDefault();
-  //   var data = ev.dataTransfer.getData("text");
-  //   ev.target.appendChild(document.getElementById(data));
-  // }
 
   reset(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
@@ -323,7 +306,6 @@ export class FirstComponent implements OnInit {
     this.updateAlgoList();
     this.updateUI();
     this.req_step = 0;
-    // this.changeMaze = null;
     this.show_infoResult = false;
   }
 
@@ -371,8 +353,6 @@ export class FirstComponent implements OnInit {
       this.gridCord[u].parent = null;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
-
-      // this.gridCord[u].debug = false;
      }
   }
 
@@ -403,11 +383,10 @@ export class FirstComponent implements OnInit {
       this.Algorithms = [{value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}];
       this.selectedValue = 'Floyd–Warshall';
     }
-    // console.log(this.Algorithms);
   }
 
   updateAlgoList(){
-    if(this.selectedPS=="PS_1"){
+    if(this.selectedPS==="PS_1"){
       if(this.isTerrain){
         this.Algorithms = [
         {value: 'Astar', viewValue: 'A*'},
@@ -427,19 +406,16 @@ export class FirstComponent implements OnInit {
   }
 
   terrainToggle(isT: boolean){
-    //console.log('This is emitted as the thumb slides');
-    //console.log(event.value);
       this.bidirection = false;
       this.notCrossCorner = false;
       this.isGaussian = false;
       this.clearWall();
-      // this.updateAlgoList();
   }
   changeAlgo(){
-    if(this.selectedValue == 'bfs' || this.selectedValue=='BestFirst'){
+    if(this.selectedValue === 'bfs' || this.selectedValue==='BestFirst'){
       this.isTerrain = false;
       this.isGaussian = false;
-    }else if(this.selectedValue == 'Floyd–Warshall'){
+    }else if(this.selectedValue === 'Floyd–Warshall'){
       this.isTerrain = false;
       this.isGaussian = false;
       this.bidirection = false;
@@ -452,7 +428,6 @@ export class FirstComponent implements OnInit {
   }
   changeMaze(){
     this.clearWall();
-    // this.selectedValue = 'bfs';
     this.isTerrain = false;
     this.isGaussian = false;
     this.bidirection = false;
@@ -485,7 +460,7 @@ export class FirstComponent implements OnInit {
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
-        if(this.end ==null){
+        if(this.end ===null){
           alert("Click on end grid cell");
           this.selectedMaze = null;
           return;
@@ -500,7 +475,7 @@ export class FirstComponent implements OnInit {
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
-        if(this.start ==null){
+        if(this.start ===null){
           alert("Click on start grid cell");
           this.selectedMaze = null;
           return;
@@ -515,7 +490,7 @@ export class FirstComponent implements OnInit {
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
-        if(this.start ==null || this.end ==null){
+        if(this.start ===null || this.end ===null){
           alert("Click on start/end grid cell");
           this.selectedMaze = null;
           return;
@@ -540,21 +515,18 @@ export class FirstComponent implements OnInit {
     this.updateUI();
   }
   updateUI(): void{
-        // this.selectedMaze = null;
-    // console.log(this.Dest);
     for (let u = totalGrid - 1; u >= 0; u--) {
       (async () => {
         // Do something before delay
-        //console.log('before delay')
 
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
 
-     if (u == this.start && rect.isEndPoint==0){
+     if (u === this.start && rect.isEndPoint===0){
         element.style.fill = "green";
         element.style.fillOpacity = "1";
       }
-      else if ((u == this.end  || this.Dest.includes(u))&& rect.isEndPoint>0){
+      else if ((u === this.end  || this.Dest.includes(u))&& rect.isEndPoint>0){
         element.style.fill = "red";
         element.style.fillOpacity = "1";
       }else if(rect.isPath && this.showPath){
@@ -565,8 +537,6 @@ export class FirstComponent implements OnInit {
         element.style.fill = "pink";
       }
       else if (rect.isTerrain){
-        // element.style.fill = "grey";
-        // element.style.fillOpacity = (rect.value / 100).toString();
         if(this.isTerrain){
           let a = (Math.floor(256-(rect.value*128 / 100))).toString();
           element.style.fill = "rgb("+a+","+a+","+a+")";
@@ -576,41 +546,27 @@ export class FirstComponent implements OnInit {
         }
 
       }
-      else if (rect.visited && !this.isTerrain && this.selectedPS == 'PS_1'){
-        //await delay(10000);
+      else if (rect.visited && !this.isTerrain && this.selectedPS  ===  'PS_1'){
         element.style.fill = "lightblue";
         element.style.fillOpacity = "1";
       }
-      else if (rect.open && !this.isTerrain && this.selectedPS == 'PS_1'){
+      else if (rect.open && !this.isTerrain && this.selectedPS  ===  'PS_1'){
         element.style.fill = "lightgreen";
         element.style.fillOpacity = "1";
-        // element.transform = "scale(1.5)";
       }
       else{
         element.style.fill = 'white';
         element.style.fillOpacity = '1';
 
       }
-          //console.log('after delay')
       })();
     }
 
   }
   pathLine(start:number, end:number): void{
-    // else if(this.selectedValue == 'Dijkstra'){
-    //   for(let p=0;p< this.path.length-1;p++){
-    //     let loc = this.path[p];
-    //     let loc_next = this.path[p+1];
-    //     console.log(loc, Math.floor(loc/hGrid)+15, (loc%hGrid)+15);
-    //     this.pathCord.push({x1: Math.floor(loc/hGrid)*30+15,y1: (loc%hGrid)*30+15,
-    //                       x2: Math.floor(loc_next/hGrid)*30+15,y2: (loc_next%hGrid)*30+15 })
 
-    //   }
-    // }
     let node = end;
-    // console.log(this.bidirecNodeE, this.bidirecNodeS)
-    // if(this.selectedPS == 'PS_1'){
-      if(this.bidirection && (this.bidirecNodeE!=-1 || this.bidirecNodeS!=-1)){
+      if(this.bidirection && (this.bidirecNodeE !== -1 || this.bidirecNodeS !== -1)){
         let node1 = this.bidirecNodeS; let node2 = this.bidirecNodeE;
         this.length = 0;
 
@@ -621,7 +577,7 @@ export class FirstComponent implements OnInit {
         this.pathCord.push({ x1: x1, y1: y1, x2: x2, y2: y2 })
         this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
 
-        while(node1!=start){
+        while(node1 !== start){
           let node_next = this.gridCord[node1].parent;
           let x1 = Math.floor(node1/hGrid)*30+15;
           let x2 = Math.floor(node_next/hGrid)*30+15;
@@ -631,7 +587,7 @@ export class FirstComponent implements OnInit {
           node1 = node_next;
           this.length = this.length + Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2))/30;
         }
-        while(node2!=this.end){
+        while(node2 !== this.end){
           let node_next = this.gridCord[node2].parent;
           let x1 = Math.floor(node2/hGrid)*30+15;
           let x2 = Math.floor(node_next/hGrid)*30+15;
@@ -643,10 +599,9 @@ export class FirstComponent implements OnInit {
         }
         this.lengthS = this.length.toFixed(2);
       }
-      else if(!this.bidirection && this.gridCord[node].parent!=null){
-        //console.log(this.gridCord[node].parent);
+      else if(!this.bidirection && this.gridCord[node].parent !== null){
         this.length = 0;
-        while(node!=start){
+        while(node !== start){
           let node_next = this.gridCord[node].parent;
           let x1 = Math.floor(node/hGrid)*30+15;
           let x2 = Math.floor(node_next/hGrid)*30+15;
@@ -659,7 +614,7 @@ export class FirstComponent implements OnInit {
         this.lengthS = this.length.toFixed(2);
       }
 
-      else if (this.selectedValue!='bfs' && this.selectedPS=='PS_1' && !this.isTerrain){
+      else if (this.selectedValue !== 'bfs' && this.selectedPS === 'PS_1' && !this.isTerrain){
         window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
       }
       else{
@@ -669,12 +624,6 @@ export class FirstComponent implements OnInit {
   }
 
   req_step :number = 0;
-  // inc_step(){
-  //   this.req_step ++;
-  //   console.log(this.req_step);
-  //   this.Search();
-  //   // let element = document.getElementsByTagName('rect')[u];
-  // }
 
   Search(){
     const astar: Astar = new Astar();
@@ -712,11 +661,10 @@ export class FirstComponent implements OnInit {
     this.resetGridParams();
 
     this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-    if ( this.start == null || (this.end == null && this.Dest.length < this.selectedDest) ){
+    if ( this.start  ===  null || (this.end  ===  null && this.Dest.length < this.selectedDest) ){
         alert('Insert start and end');
         return;
     }
-    // console.log(this.selectedValue);
     if(this.selectedPS === "PS_1"){
       switch (this.selectedValue) {
         case 'bfs':
@@ -736,22 +684,19 @@ export class FirstComponent implements OnInit {
           break;
         case 'Astar':
           if(this.isTerrain){
-            astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,false,this.adjList,heur/*,this.req_step*/);
+            astar.Wsearch( this.start,this.end,this.gridCord,this.allowDiag,false,this.adjList,heur);
             this.steps = astar.steps;
             this.time = astar.time.toFixed(3);
           }else if (this.bidirection){
-            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            biastar.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner,heur);
             this.steps = biastar.steps;
-            // this.length = biastar.length1;
             this.time = biastar.time.toFixed(3);
             this.bidirecNodeS = biastar.bidirecNodeS;
             this.bidirecNodeE = biastar.bidirecNodeE;
-            // console.log(this.bidirecNodeE,this.bidirecNodeS);
 
           }else{
-            astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            astar.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner,heur);
             this.steps = astar.steps;
-            // this.length = astar.length1;
             this.time = astar.time.toFixed(3);
           }
           break;
@@ -761,39 +706,32 @@ export class FirstComponent implements OnInit {
             dij.Wsearch(this.start, this.end, this.gridCord ,this.allowDiag,this.adjList);
             this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
-            // this.length = dij.length1;
 
           }else if (this.bidirection){
-            bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
+            bidjk.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner);
             this.time = bidjk.time.toFixed(3);
             this.steps = bidjk.steps;
-            // this.length = bidjk.length1;
             this.bidirecNodeS = bidjk.bidirecNodeS;
             this.bidirecNodeE = bidjk.bidirecNodeE;
 
           }else{
-            dij.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner/*,this.req_step*/);
+            dij.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner);
             this.time = dij.time.toFixed(3);
             this.steps = dij.steps;
-            // this.length = dij.length1;
-
           }
           break;
          case 'BestFirst':
-          // console.log(this.bidirection);
           if(this.bidirection){
-            best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            best.biSearch( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner,heur);
             this.time = best.time.toFixed(3);
             this.steps = best.steps;
-            // this.length = best.length1;
             this.bidirecNodeS = best.bidirecNodeS;
             this.bidirecNodeE = best.bidirecNodeE;
 
           }else{
-            best.search( this.start,this.end,this.gridCord,this.allowDiag,this.notCrossCorner/*,this.req_step*/,heur);
+            best.search(this.start, this.end, this.gridCord, this.allowDiag, this.notCrossCorner, heur);
             this.time = best.time.toFixed(3);
             this.steps = best.steps;
-            // this.lengthS = best.length1.t;
           }
           break;
         default:
@@ -804,7 +742,7 @@ export class FirstComponent implements OnInit {
     }else{
       switch (this.selectedValue) {
         case 'bfs':
-          if(this.selectedPS == "TSP"){
+          if(this.selectedPS  ===  "TSP"){
             const tsp = new TravSalesMan();
             tsp.start = this.start;
             tsp.destinations = this.Dest;
@@ -816,7 +754,7 @@ export class FirstComponent implements OnInit {
           }
           break;
         case 'Astar':
-          if(this.selectedPS == "TSP"){
+          if(this.selectedPS  ===  "TSP"){
             const tsp = new TravSalesMan();
             tsp.start = this.start;
             tsp.destinations = this.Dest;
@@ -828,7 +766,7 @@ export class FirstComponent implements OnInit {
           }
           break;
         case 'Dijkstra':
-          if(this.selectedPS == "TSP"){
+          if(this.selectedPS  ===  "TSP"){
             const tsp = new TravSalesMan();
             tsp.start = this.start;
             tsp.destinations = this.Dest;
@@ -841,7 +779,7 @@ export class FirstComponent implements OnInit {
           }
           break;
         case 'Floyd–Warshall':
-          if(this.selectedPS == "TSP"){
+          if(this.selectedPS  ===  "TSP"){
             const tsp = new TravSalesMan();
             tsp.start = this.start;
             tsp.destinations = this.Dest;
@@ -862,9 +800,7 @@ export class FirstComponent implements OnInit {
     }
 
     this.updateUI(); //for tracing the line
-      // console.log(this.gridCord)
     this.show_infoResult=true;
-    // console.log(this.end);
   }
 }
 

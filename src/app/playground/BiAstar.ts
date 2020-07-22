@@ -1,19 +1,23 @@
 import {utils } from './utils';
 import { GridCoords } from './GridCoords';
-import {hGrid, vGrid, totalGrid} from './constants'
+import {hGrid, totalGrid} from './constants'
 
 let Utils: utils = new utils();
 
 
-export class BiDjk{
+export class BiAstar{
   public steps :number = 0;
   public time :number = 0;
   bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
   bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
 
-  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*, req_step:number*/):void {
+  public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag?:boolean,notCrossCorner?:boolean/*, req_step:number*/,heuristic?):void {
+
   	var startOpenList : number[] = new Array();
   	var endOpenList : number[] = new Array();
+  	    if(heuristic == null){
+      heuristic = Utils.Manhattan;
+    }
   	// var startClosedList : number[] = new Array();
   	// var endClosedList : number[] = new Array();
   	var closedList : number[] = new Array();
@@ -28,17 +32,18 @@ export class BiDjk{
     }
 
   	startOpenList.push(start);
-  	gridCord[start].g = 0;
-    
+  	gridCord[start].h = heuristic(start , end);
+    gridCord[start].g = 0;
+    gridCord[start].f = gridCord[start].h;
 
   	endOpenList.push(end);
-  	gridCord[end].g = 0;
-    
+  	gridCord[end].h = heuristic(start , end);
+    gridCord[end].g = 0;
+    gridCord[end].f = gridCord[end].h;
+
   	let currentNode :number;
-  	// console.log(startOpenList);
-  	// console.log(gridCord);
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
-  		
+  		this.steps ++;
   	// 	if(this.steps == req_step){
 			// 	// break;
 			// }
@@ -53,10 +58,10 @@ export class BiDjk{
           }
       }
       if(startOpenList.length != 0 && !stop) {
-	      this.steps ++;
+
       	var lowInd : number = 0;
 	      for(var i=0; i<startOpenList.length; i++) {
-	        if(gridCord[startOpenList[i]].g < gridCord[startOpenList[lowInd]].g) {
+	        if(gridCord[startOpenList[i]].f < gridCord[startOpenList[lowInd]].f) {
 	           lowInd = i;
 	        }
 	      }
@@ -64,7 +69,7 @@ export class BiDjk{
 	      removeElement(startOpenList,currentNode);
 	      gridCord[currentNode].visited = true;
 	      // console.log(currentNode);
-	      
+
 	      closedList.push(currentNode);
 
 	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
@@ -90,30 +95,32 @@ export class BiDjk{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-			  stop = true;
-			  this.bidirecNodeE=Coord;
-			  this.bidirecNodeS=currentNode;
+					  stop = true;
+					  this.bidirecNodeE=Coord;
+					  this.bidirecNodeS=currentNode;
 	          this.time =  (milli2-milli);
 	      		break;
 	      	}
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
 	      	// let ng = 1;
-	        
+
 
 	        if(openBy[Coord]==byStart  ){
 	            // let a = startOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
-	              
+	              gridCord[Coord].h = heuristic(Coord,end);
+	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byStart;
 	            }
 	          }
 
-	          else{ //seeing the node for first time
+	          else{ //seeing the node for playground time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            
-	          	gridCord[Coord].parent = currentNode;    
+	            gridCord[Coord].h = heuristic(Coord,end);
+	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+	            gridCord[Coord].parent = currentNode;
 	            gridCord[Coord].open = true;
 	            startOpenList.push(Coord);
 	            openBy[Coord] = byStart;
@@ -125,8 +132,8 @@ export class BiDjk{
 	      // currentNode = endOpenList.pop();
 	      gridCord[currentNode].visited = true;
 	      var lowInd : number = 0;
-	      for(var i=0; i<endOpenList.length; i++) {
-	        if(gridCord[endOpenList[i]].g < gridCord[endOpenList[lowInd]].g) {
+	      for(let i=0; i<endOpenList.length; i++) {
+	        if(gridCord[endOpenList[i]].f < gridCord[endOpenList[lowInd]].f) {
 	           lowInd = i;
 	        }
 	      }
@@ -135,10 +142,10 @@ export class BiDjk{
 	      removeElement(endOpenList, currentNode);
 	      closedList.push(currentNode);
 
-	      
+
 	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
 	      for(let Coord of neighbors){
-	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
+	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid)) === 0)? 1 : 1.4);
 	      	// let ng = 1;
 	        if(closedList.includes(Coord) ){//already visited
 	          continue;
@@ -162,11 +169,11 @@ export class BiDjk{
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-			stop = true;
-			this.bidirecNodeS=Coord;
-			this.bidirecNodeE=currentNode;
-	        this.time =  (milli2-milli);
-	      	break;
+						stop = true;
+						this.bidirecNodeS=Coord;
+						this.bidirecNodeE=currentNode;
+		        this.time =  (milli2-milli);
+		      	break;
 	      }
 
 
@@ -174,32 +181,29 @@ export class BiDjk{
 	            // let a = endOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
+	              gridCord[Coord].h = heuristic(Coord,start);
+	              gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
 	              gridCord[Coord].parent = currentNode;
 	              openBy[Coord] = byEnd;
 	            }
 	          }
 
-	          else{ //seeing the node for first time
+	          else{ //seeing the node for playground time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].parent = currentNode;    
+	            gridCord[Coord].h = heuristic(Coord,start);
+	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+	            gridCord[Coord].parent = currentNode;
 	            gridCord[Coord].open = true;
 	            endOpenList.push(Coord);
 	            openBy[Coord] = byEnd;
-	            
+
 	          }
 	      }
 			}
 
-			
+
     }
+    // console.log(this.bidirecNodeE,this.bidirecNodeS);
 	}
 
-  distance(a: number, b:number ): number {
-    var x1 = Math.round(a/hGrid);
-    var y1 = a%hGrid;
-    var x2 = Math.round(b/hGrid);
-    var y2 = b%hGrid;
-    let dist = Math.abs(x1-x2) + Math.abs(y1-y2);
-    return dist;
-  }
 }

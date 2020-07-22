@@ -1,17 +1,17 @@
 /* .wrapper{
   position: absolute;
-  top: 0px;
+  top: 0;
   height: 100%;
   width: 100%;
   overflow-y: hidden;
   background-color: transparent;
-  
+
 } */
 
 #main-page{
   width: 100%;
   height: 100%;
-  margin: 0px;
+  margin: 0;
   position: relative;
   /* top: 40px; */
   overflow-x: hidden;
@@ -24,7 +24,7 @@
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 10px;
-  margin:0px; 
+  margin:0;
   height: 100%;
 
     width: 100%;
@@ -32,7 +32,7 @@
     overflow-x: hidden;
     position: relative;
     background-color: transparent;
-    border-width: 0px;
+    border-width: 0;
     border-inline-style: solid;
 }
 .svg rect{
@@ -71,7 +71,7 @@ form{
     padding-top: 2px;
     text-emphasis: black;
     display: block;
-    margin:0px 0px 0px 0px;
+    margin:0 0 0 0;
     /* border-bottom: black;
     border-style: solid;
     border-width: 1px; */
@@ -82,23 +82,23 @@ form mat-label h4{
   text-align: left;
   color:blue;
   opacity: 0.9;
-  padding: 0px 0px 5px 0px;
-  margin: 0px 0px 0px 0px;
+  padding: 0 0 5px 0;
+  margin: 0 0 0 0;
 }
 form mat-form-field {
   display: block;
-  padding: 0px 10px 0px 10px;
-  margin: 0px;
+  padding: 0 10px 0 10px;
+  margin: 0;
 }
 /*Styling for Terrain height */
 .example-section mat-form-field{
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
   width: 20%;
 }
 .example-section mat-form-field input{
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
   width: fit-content;
 }
 /*
@@ -112,8 +112,8 @@ form mat-form-field {
 }*/
 /* slider */
 .button-cover{
-  margin: 0px 0px 0px 0px;
-  padding: 0px;
+  margin: 0 0 0 0;
+  padding: 0;
   background-color: tomato;
   /* right: 5%; */
   bottom: 1%;
@@ -145,7 +145,7 @@ form mat-form-field {
   }
 
   .example-margin {
-    margin: 0px 0px 0px 3%;
+    margin: 0 0 0 3%;
     display: inline-block;
     width: 100%;
     text-align: left;
@@ -153,11 +153,11 @@ form mat-form-field {
 .gaussian{
   width: 100%;
   display: block;
-  margin: none;
+  margin: 0;
 }
 .gaussian .gaussian-margin{
-  margin: none;
-  padding: none;
+  margin: 0;
+  padding:  0;
   display: inline-flex;
 }
 
@@ -166,33 +166,33 @@ form mat-form-field {
   	align-content: center;
     width: 60%;
     color: black;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 0px;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
   }
   .slider-labels-start{
     display: inline-flex;
     float: inline-start;
-    margin-right: 0px;
+    margin-right: 0;
     padding-right: 10px;
     padding-left: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
   .slider-labels-end{
     display: inline-flex;
     float: inline-end;
     margin-left: 80px;
     padding-right: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
   .slider-labels{
     display: inline-flex;
     float: inline-end;
     color: rgb(4, 0, 255);
-    margin: 0px;
-    padding: 0px;
-  }  
+    margin: 0;
+    padding: 0;
+  }
 /* */
   .example-result-card h2 {
     margin: 0 8px;
@@ -239,7 +239,7 @@ form mat-form-field {
 ::ng-deep .mat-tab-link:hover,
 ::ng-deep .mat-tab-label:hover{
   margin: 2px 1px 1px 1px;
-  
+
   border-width: 2px;
   border-style: solid;
   border-radius: 8px;
@@ -250,13 +250,13 @@ form mat-form-field {
 }
 
  /* ::ng-deep .mat-select-panel,::ng-deep .mat-select-content {
-  padding: 0px; 
+  padding: 0;
   border-style: solid;
   border-width: 10px;
   border-color: yellow;
 } */
 .mat-select{
-  margin-bottom: none;
+  margin-bottom: 0;
 }
 .mat-divider {
   border-top-color: white;
@@ -269,19 +269,19 @@ form mat-form-field {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: lightblue; 
+  background: lightblue;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #b30000; 
+  background: #b30000;
 }
 .transform-active{
   scale: 1.2;

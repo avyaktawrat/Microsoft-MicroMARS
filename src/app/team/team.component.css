@@ -1,9 +1,9 @@
 h1{
-	padding: 15px 0px;
+	padding: 15px 0;
 	text-align: center;
 	background-color: #2FF;
 	text-shadow: 2px 2px rgba(16,16,16,0.2);
-	margin-bottom: 0px;
+	margin-bottom: 0;
 	line-height: 15%;
 	position: relative;
 }
@@ -26,7 +26,7 @@ h3{
 	height :fit-content;
 	text-align: center;
 	font-size: 25px;
-	padding: 0px 12px;
+	padding: 0 12px;
 }
 h4{
 	margin-left: 350px;
@@ -35,7 +35,7 @@ h4{
 	margin-top: 100px;
 	text-align: justify;
 
-	padding: none;
+	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
 }
 body {
@@ -56,9 +56,9 @@ body {
 	height: 400px;
 
 	perspective: 1000px;
-	
+
 }
-  
+
 .flip-card-inner {
 	background-position: center;
 	background-repeat: no-repeat;
@@ -70,12 +70,12 @@ body {
 	transform-style: preserve-3d;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
-  
+
 .flip-card:hover .flip-card-inner {
 	background-color: rgba(0, 0, 0, 0.6);
 	transform: rotateY(180deg);
 }
-  
+
 .flip-card-front, .flip-card-back {
 	position: absolute;
 	width: 100%;
@@ -83,11 +83,11 @@ body {
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
-  
+
 .flip-card-front {
 	background-color:transparent;
 }
-  
+
 .flip-card-back {
 	background-color: rgba(0, 0, 0, 0.6);
 	transform: rotateY(180deg);

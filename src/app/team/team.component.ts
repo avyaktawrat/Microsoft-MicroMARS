@@ -1,16 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import * as $ from 'jquery';// import Jquery here
 
-
-
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  // ...
-} from '@angular/animations';
 
 export interface Tile {
     color: string;
@@ -25,19 +14,11 @@ export interface Tile {
 
 @Component({
   selector: 'app-second-component',
-  templateUrl: './second.component.html',
-  styleUrls: ['./second.component.css']
-})/*
-export class SecondComponent implements OnInit {
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
+})
 
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
-}*/
-export class SecondComponent {
+export class TeamComponent {
   title = 'Meet our Team!';
   tiles: Tile[] = [
 
@@ -49,7 +30,7 @@ export class SecondComponent {
       email:'mailto:anjaliyadavay3008@gmail.com',git:'https://www.github.com/anjaliyadav3008'},
 
       {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)',
-      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay. 
+      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.
       I love exploring around and finding solutions to challenging problems! I enjoy music and books :)`,
       photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
       email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},

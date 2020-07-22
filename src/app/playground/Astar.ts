@@ -1,6 +1,6 @@
 import {utils } from './utils';
 import { GridCoords } from './GridCoords';
-import {hGrid, vGrid, totalGrid} from './constants';
+import {hGrid, totalGrid} from './constants';
 import { DPair } from './adj';
 
 let Utils: utils = new utils();
@@ -21,7 +21,7 @@ export class Astar{
     let milli = performance.now();
     var openList = new Array();
     var closedList = new Array();
-    
+
     if(heuristic == null){
       heuristic = Utils.Manhattan;
     }
@@ -37,7 +37,7 @@ export class Astar{
     while(openList.length != 0) {
       this.steps ++;
 
-      //select least f 
+      //select least f
       var leastF : number = openList[0];
       for (let node of openList){
         if(gridCoords[node].f < gridCoords[leastF].f ){
@@ -71,7 +71,7 @@ export class Astar{
           node = gridCoords[currentNode].parent;
           while(node!=start){
             gridCoords[node].isPath = true;
-            node = gridCoords[node].parent;            
+            node = gridCoords[node].parent;
           }
           this.time =  (milli2-milli);
           break;
@@ -100,11 +100,11 @@ export class Astar{
             }
           }
 
-          else{ //seeing the node for first time
+          else{ //seeing the node for playground time
             gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
             gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
-            gridCoords[Coord].parent = currentNode;    
+            gridCoords[Coord].parent = currentNode;
             gridCoords[Coord].open = true;
             openList.push(Coord);
           }
@@ -126,16 +126,16 @@ export class Astar{
     // console.log(heuristic(5,10));
     openList.push(start);
 
-    gridCoords[start].h = heuristic(start , end); 
+    gridCoords[start].h = heuristic(start , end);
     gridCoords[start].g = 0;
     gridCoords[start].f = gridCoords[start].h;
-    
+
     let currentNode :number;
 
     while(openList.length != 0) {
       this.steps ++;
 
-      //select least f 
+      //select least f
       var leastF : number = openList[0];
       for (let node of openList){
         if(gridCoords[node].f < gridCoords[leastF].f ){ // "=" for a reason
@@ -169,7 +169,7 @@ export class Astar{
           while(node!=start){
             gridCoords[node].isPath = true;
             node = gridCoords[node].parent;
-            
+
            }
           this.time =  (milli2-milli);
           break;
@@ -197,11 +197,11 @@ export class Astar{
             }
           }
 
-          else{ //seeing the node for first time
+          else{ //seeing the node for playground time
             gridCoords[Coord].g = gridCoords[currentNode].g + ng;
             gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
-            gridCoords[Coord].parent = currentNode;    
+            gridCoords[Coord].parent = currentNode;
             gridCoords[Coord].open = true;
             openList.push(Coord);
           }

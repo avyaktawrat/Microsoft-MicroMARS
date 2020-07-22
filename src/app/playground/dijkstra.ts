@@ -1,7 +1,7 @@
 import { DPair } from './adj';
 import {GridCoords} from './GridCoords';
 import {utils } from './utils';
-import {hGrid, vGrid, totalGrid} from './constants'
+import {hGrid} from './constants'
 
 let Utils: utils = new utils();
 
@@ -86,8 +86,8 @@ export class Dijkstra {
 
   public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/):void {
     let milli = performance.now();
-    var openList = new Array();
-    var closedList = new Array();
+    let openList = new Array();
+    let closedList = new Array();
 
 
     openList.push(start);
@@ -100,7 +100,7 @@ export class Dijkstra {
       this.steps ++;
 
       //select least f
-      var leastG : number = openList[0];
+      let leastG : number = openList[0];
       for (let node of openList){
         if(gridCord[node].g < gridCord[leastG].g ){
           leastG = node;
@@ -117,7 +117,7 @@ export class Dijkstra {
 
       //remove currentNode from openList
       function removeElement(array, elem) {
-          var index = array.indexOf(elem);
+          let index = array.indexOf(elem);
           if (index > -1) {
               array.splice(index, 1);
           }
@@ -150,7 +150,7 @@ export class Dijkstra {
       // let neighbors = new Array<Pair>() ;
       let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
       // console.log(neighbors);
-      for (var Coord of neighbors) {
+      for (let Coord of neighbors) {
 
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
         // let ng :number= 0;
@@ -165,7 +165,7 @@ export class Dijkstra {
             }
           }
 
-          else{ //seeing the node for first time
+          else{ //seeing the node for playground time
             gridCord[Coord].g = gridCord[currentNode].g + ng;
             gridCord[Coord].parent = currentNode;
             gridCord[Coord].open = true;
