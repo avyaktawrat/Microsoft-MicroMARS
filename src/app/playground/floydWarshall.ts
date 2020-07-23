@@ -3,15 +3,17 @@ import { hGrid } from './constants';
 import { lineCord } from './lineCoord';
 
 export class FloydWarshall {
-  steps: number = 0; // total number of recursive steps
-  length1: number = 0; // total path length
+  steps: number = 0;         // total number of recursive steps
+  length1: number = 0;       // total path length
   destOrder: number[] = new Array();
-  d: number[][] = new Array<Array<number>>(); // all pairs shortest distance matrix
+  d: number[][] = new Array<Array<number>>();     // all pairs shortest distance matrix
   pathCord: lineCord[] = new Array();
-  // static pathCord: lineCord[];
   search(adjM: Array<Array<number>>) {
-    this.d = adjM;
+    this.d = adjM;   // initialized with adjacency matrix
     let n = adjM.length;
+
+
+    /*  The main algorithm starts  */
 
     for (let k = 0; k < n; k++) {
       for (let i = 0; i < n; i++) {
@@ -24,16 +26,18 @@ export class FloydWarshall {
       }
     }
   }
+      /*  The main algorithm ends  */
 
-  getPath(start: number, dests: number[], gridCoords: GridCoords[], path: number[][][]) {
+
+  getPath(start: number, dests: number[], gridCoords: GridCoords[], path: number[][][]) {    // function to render path on the grid, it takes the actual all-pairs shortest path indices as an input
     for (let i of gridCoords) {
       i.isPath = false;
     }
     let i = 0;
     let min_idx = -1;
-    let seen = [];
+    let seen = [];   // list of all visited destinations
     let alert_once = true;
-    while (i < dests.length) {
+    while (i < dests.length) {   // visit all destinations once
       let min = 1000000000;
       for (let j = 0; j < this.d[start].length; j++) {
         if (this.d[start][j] < min && j !== start && !seen.includes(j)) {
@@ -45,9 +49,11 @@ export class FloydWarshall {
         gridCoords[path[start][min_idx][0]].isPath = true;
       }
       else if(alert_once){
-        window.alert("All Destinations cannot be reached!")
+        window.alert("All Destinations cannot be reached!")   // tells whether all destinations can be reached
         alert_once = false;
       }
+
+      /*  Iterate in the order of minimum distance,starting from source and then shiting the source to its destination  */
       for (let idx = 1; idx < path[start][min_idx].length; idx++) {
         gridCoords[path[start][min_idx][idx]].isPath = true;
         let node = path[start][min_idx][idx];

@@ -2,8 +2,10 @@ import { GridCoords } from './GridCoords';
 import {hGrid, vGrid, totalGrid} from './constants'
 
 
-export class utils{
+export class utils{  // A simple class containing common utility functions
 
+
+  /*  Method to get neighbors for non-Dijkstra Algorithms */
   public  direction8_vector(a: number, gridCord: GridCoords[], allowDiag: boolean, notCrossCorner: boolean ): number[]{
     let arr = new Array();
 
@@ -51,6 +53,8 @@ export class utils{
     return arr;
   }
 
+
+  /*  method to get the neighbors while making maze */
   public  direction8_maze(a: number, gridCord: GridCoords[] ): number[]{
     let arr = new Array();
     let x = Math.floor(a/hGrid);
@@ -74,6 +78,8 @@ export class utils{
     return arr;
   }
 
+
+  /* The set of methods below implement various heuristics */
   Manhattan(a: number, b:number ): number {
     let x1 = Math.round(a/hGrid);
     let y1 = a%hGrid;

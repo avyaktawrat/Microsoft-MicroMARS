@@ -18,8 +18,7 @@ export interface Tile {
   styleUrls: ['./team.component.css']
 })
 
-export class TeamComponent {
-  title = 'Meet our Team!';
+export class TeamComponent {  // contains the team details
   tiles: Tile[] = [
 
       {text: 'Anjali', cols: 2, rows: 2, color: 'linear-gradient( #ffd48f,#fa9600)',
