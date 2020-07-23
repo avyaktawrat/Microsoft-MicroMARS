@@ -25,6 +25,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatDialogModule,
     MatPaginatorModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
   ],
   exports: [
     MatTabsModule,
