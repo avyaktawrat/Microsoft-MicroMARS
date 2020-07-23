@@ -22,11 +22,11 @@ export class maze  {
 
 	stair(gridCoord : GridCoords[]):void{
 		let i = 0;
-	  for ( i = 0; i <= 17*(hGrid+1); i=i+hGrid+1) {
+	  for ( i = 0; i <= (hGrid-5)*(hGrid+1); i=i+hGrid+1) {
 	    gridCoord[i].isTerrain = true;
 	    gridCoord[i].value = 100;
 	  }
-	  for ( i = 17*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
+	  for ( i = (hGrid-5)*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
 	    gridCoord[i].isTerrain = true;
 	    gridCoord[i].value = 100;      
 	  }
