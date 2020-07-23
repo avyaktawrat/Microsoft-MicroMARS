@@ -429,21 +429,39 @@ export class PlaygroundComponent implements OnInit {
     let Maze:maze = new maze();
     switch (this.selectedMaze) {
       case "sidewinder":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.sidewinder(this.gridCord);
         break;
       case "rand":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.rand(this.gridCord);
         break;
       case "stair":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.stair(this.gridCord)
         break;
       case "binaryTree":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.binary(this.gridCord);
       break;
       case "dfsMaze":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.dfsMaze(this.gridCord);
         break;
       case "Prim's":
+        this.start=null;
+        this.end = null;
+        this.Dest = [];
         Maze.primMaze(this.gridCord);
         break;
       case "mountE":
