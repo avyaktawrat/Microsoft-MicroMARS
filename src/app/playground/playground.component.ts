@@ -1,26 +1,26 @@
 import { Component, OnInit} from '@angular/core';
-import { GridCoords } from './GridCoords';
+import { GridCoords } from './include/GridCoords';
 import { MatSliderChange } from '@angular/material/slider';
 
-import { DPair, get_adjacency_list } from './adj';
-import { Dijkstra } from './dijkstra';
-import { BiDjk } from './BiDijkstra';
+import { DPair, get_adjacency_list } from './include/adj';
+import { Dijkstra } from './finder/dijkstra';
+import { BiDjk } from './finder/BiDijkstra';
 
-import { FloydWarshall } from './floydWarshall';
-import { TravSalesMan } from './travSalesMan';
-import { lineCord} from './lineCoord'
-import { Astar } from './Astar' ;
-import { BiAstar } from './BiAstar' ;
+import { FloydWarshall } from './finder/floydWarshall';
+import { TravSalesMan } from './finder/travSalesMan';
+import { lineCord} from './include/lineCoord'
+import { Astar } from './finder/Astar' ;
+import { BiAstar } from './finder/BiAstar' ;
 
-import {BFS} from './BFS';
-import {BiBFS} from './BiBFS';
+import {BFS} from './finder/BFS';
+import {BiBFS} from './finder/BiBFS';
 
-import { BestFirst } from './BestFirst'
+import { BestFirst } from './finder/BestFirst'
 
-import {utils } from './utils';
-import {hGrid, vGrid, totalGrid, height} from './constants';
+import {utils } from './include/utils';
+import {hGrid, vGrid, totalGrid, height} from './include/constants';
 
-import {maze} from './maze'
+import {maze} from './include/maze'
 
 const Utils: utils = new utils();
 
@@ -49,14 +49,16 @@ export class PlaygroundComponent implements OnInit {
   gridCord: GridCoords[] = new Array(totalGrid);
   adjList: Array<Array<DPair>>;
   mouseDown = false;
-  color = 2; // 0 red 1 green 2 other
-  i = 0;
+  color = -1; //0 is clicked on grey 1 is one white 
+
   start = null;
   end = null;
+
+  //results tab
   steps = 0;
   time = '0';
-  length = 0;
   lengthS = "0";
+  length = 0;  //internal calculation
 
   path: number[] = new Array();
   pathCord: lineCord[] = new Array();
@@ -64,29 +66,38 @@ export class PlaygroundComponent implements OnInit {
   terrain: boolean = true;
   cov_x: number = 10;
   cov_y: number = 10;
-  showPath: boolean = true;
+
+  
   // Slider for Obstacle
   max = 100;
   min = 0;
   step = 1;
-  // thumbLabel = false;
-  choose = 100;
-  // vertical = false;
-  // tickInterval = 1;  //check
-  allowDiag = false;
-  bidirection = false;
-  bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
-  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
-  selectedValue: string = 'bfs';
-  notCrossCorner = false;
+
+  isGaussian: boolean = false;
+  isTerrain = false;
+  terrainValue = 100;
+  
+  allowDiag:boolean = false;
+  bidirection:boolean = false;
+  showPath: boolean = true;
+  notCrossCorner:boolean = false;
   show_infoResult: boolean = false;
 
+  bidirecNodeS:number = -1;  // variable to store node location where forward bidirec ends
+  bidirecNodeE:number = -1;  // node where backward bidrec ends // used in tracing path
+
+  isPref: boolean = false;
+
+  minDest =1;
+  maxDest = 5;
+  selectedDest: number = 2;
+  Dest : number[] = new Array();
+
+  selectedAlgo: string = 'bfs';
   selectedPS: string = 'PS_1';
   PS_index: number = 0;
   selectedMaze: string;
   selectedHeuristic: string = 'l1';
-  minDest =1;
-  maxDest = 5;
 
   Algorithms: DropDownSelect[] = [
     {value: 'bfs', viewValue: 'Breadth First Search'},
@@ -100,7 +111,6 @@ export class PlaygroundComponent implements OnInit {
   ];
   maze : DropDownSelect[] = [
     {value: 'sidewinder', viewValue: 'Sidewinder Algorithm'},
-    // {value: 'vert', viewValue: 'Vertical'},
     {value: 'dfsMaze', viewValue: 'DFS'},
     {value: "Prim's", viewValue: "Prim's Maze"},
     {value: 'binaryTree', viewValue: 'Binary Tree'},
@@ -117,29 +127,10 @@ export class PlaygroundComponent implements OnInit {
     {value: 'cheby', viewValue: 'Chebyshev'}
   ];
 
-
-  // Gaussian Distribution in terrain
-
-  isGaussian: boolean = false;
-  isTerrain = false;
-  isPref: boolean = false;
-  selectedDest: number = 2;
-  Dest : number[] = new Array();
-
   ngOnInit() {
     for (let i = 0; i < vGrid; i++) {
       for (let j = 0; j < hGrid; j++) {
-        this.gridCord[hGrid * i + j] = {x: i * 30,
-                                        y: j * 30,
-                                        isPath: false,
-                                        isTerrain: false,
-                                        f: null, g: null, h: null,
-                                        parent: null,
-                                        value : 0,
-                                        isEndPoint : null,
-                                        visited: false,
-                                        open : false,
-                                        debug : false, destOrder:null};
+        this.gridCord[hGrid * i + j] = {x: i * 30, y: j * 30, isPath: false, isTerrain: false, f: null, g: null, h: null, parent: null, value : 0, isEndPoint : null, visited: false, open : false,/* debug : false,*/ destOrder:null};
 
       }
     }
@@ -148,7 +139,7 @@ export class PlaygroundComponent implements OnInit {
   fillGrey(a: number, b: number): void {
     let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
-      let height = this.choose;
+      let height = this.terrainValue;
       if (!this.isGaussian ){
         if(this.color === 1){
           this.gridCord[coord].isTerrain = true;
@@ -159,18 +150,18 @@ export class PlaygroundComponent implements OnInit {
         }
         this.updateUI();
       }else if(this.isGaussian && this.isTerrain){
-        this.gaussianFill(coord);
+        this.gaussianFill(this.cov_x,this.cov_y,coord);
         this.updateUI();
       }
     }
   }
 
-  gaussianFill (coord : number):void{
-    let height = this.choose;
-      for (let i = -this.cov_x-3; i <= this.cov_x+3; i++) {
-        for (let j = -this.cov_y-3; j <= this.cov_y+3; j++) {
+  gaussianFill (cov_x:number,cov_y:number,coord : number):void{
+    let height = this.terrainValue;
+      for (let i = -cov_x-3; i <= cov_x+3; i++) {
+        for (let j = -cov_y-3; j <= cov_y+3; j++) {
           if(coord+i*hGrid+j >= 0 && coord+i*hGrid+j<totalGrid  &&i <= hGrid && j <= vGrid){
-            this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i*25)/(2*this.cov_x*this.cov_x) + (j*j*25)/(2*this.cov_y*this.cov_y) ) );
+            this.gridCord[coord+i*hGrid+j].value += height * Math.exp(-1 * ((i*i*25)/(2*cov_x*cov_x) + (j*j*25)/(2*cov_y*cov_y) ) );
             this.gridCord[coord+i*hGrid+j].isTerrain = true;
             if(this.gridCord[coord+i*hGrid+j].value > 100){
               this.gridCord[coord+i*hGrid+j].value = 100;
@@ -204,9 +195,9 @@ export class PlaygroundComponent implements OnInit {
           }
           else if(!this.isGaussian){
             rect.isTerrain = true;
-            rect.value = this.choose;
+            rect.value = this.terrainValue;
           }else{
-            this.gaussianFill(coord);
+            this.gaussianFill(this.cov_x,this.cov_y,coord);
           }
         }
 
@@ -221,9 +212,9 @@ export class PlaygroundComponent implements OnInit {
           rect.isTerrain = true;
           if(!this.isGaussian){
             rect.isTerrain = true;
-            rect.value = this.choose;
+            rect.value = this.terrainValue;
           }else{
-            this.gaussianFill(coord);
+            this.gaussianFill(this.cov_x,this.cov_y,coord);
           }
 
         }
@@ -260,10 +251,10 @@ export class PlaygroundComponent implements OnInit {
 
   }
 
-  mouseUp(a: number , b: number): void{
+  mouseUp(): void{
    this.mouseDown = false;
   }
-  mouseDownE(a: number , b: number,isT:boolean): void{
+  mouseDownE(isT:boolean): void{
     this.mouseDown = true;
     if(isT){
        this.color = 0;
@@ -285,18 +276,18 @@ export class PlaygroundComponent implements OnInit {
       this.gridCord[u].value = 0;
       this.gridCord[u].isEndPoint = null;
       this.gridCord[u].destOrder = null;
-      this.lengthS = "0";
-      this.steps = 0;
-      this.time = '0';
     }
-    let element = document.getElementsByTagName("line")
+    let element = document.getElementsByTagName("line");
     let length = element.length
     for (var i = 0; i < length; ++i) {
 
        element[0].parentNode.removeChild(element[0]);
-       element = document.getElementsByTagName("line")
+       element = document.getElementsByTagName("line");
 
     }
+    this.lengthS = "0";
+    this.steps = 0;
+    this.time = '0';
     this.Dest = [];
     this.start = null;
     this.end = null;
@@ -305,8 +296,6 @@ export class PlaygroundComponent implements OnInit {
     this.time = '0';
     this.updateAlgoList();
     this.updateUI();
-    this.req_step = 0;
-    this.show_infoResult = false;
   }
 
   clearPath(): void{
@@ -314,7 +303,7 @@ export class PlaygroundComponent implements OnInit {
       this.gridCord[u].isPath = false;
       this.gridCord[u].visited = false;
       this.gridCord[u].open = false;
-      this.gridCord[u].debug = false;
+      // this.gridCord[u].debug = false;
       this.gridCord[u].f = null;
       this.gridCord[u].g = null;
       this.gridCord[u].h = null;
@@ -325,12 +314,12 @@ export class PlaygroundComponent implements OnInit {
       this.show_infoResult = false;
     }
 
-    let element = document.getElementsByTagName("line")
+    let element = document.getElementsByTagName("line");
     let length = element.length
     for (var i = 0; i < length; ++i) {
 
        element[0].parentNode.removeChild(element[0]);
-       element = document.getElementsByTagName("line")
+       element = document.getElementsByTagName("line");
 
     }
     this.updateUI();
@@ -357,19 +346,19 @@ export class PlaygroundComponent implements OnInit {
   }
 
   checkValue(event: any){
-     this.updateUI();
+    this.updateUI();
   }
 
   onChange(event: MatSliderChange){
-      this.choose = event.value;
-    }
+    this.terrainValue = event.value;
+  }
 
   onChangeDest(event: MatSliderChange){
-      this.selectedDest = event.value;
-    }
+    this.selectedDest = event.value;
+  }
 
   onSearchChange(searchValue: any): void {
-    this.choose = searchValue.target.value;
+    this.terrainValue = searchValue.target.value;
   }
 
   prefToggle(isPref : boolean){
@@ -378,10 +367,10 @@ export class PlaygroundComponent implements OnInit {
       {value: 'bfs', viewValue: 'Breadth First Search'},
       {value: 'Astar', viewValue: 'A*'},
       {value: 'Dijkstra', viewValue: 'Dijkstra'}];
-      this.selectedValue = 'bfs';
+      this.selectedAlgo = 'bfs';
     }else{
       this.Algorithms = [{value: 'Floyd–Warshall', viewValue: 'Floyd–Warshall'}];
-      this.selectedValue = 'Floyd–Warshall';
+      this.selectedAlgo = 'Floyd–Warshall';
     }
   }
 
@@ -391,14 +380,14 @@ export class PlaygroundComponent implements OnInit {
         this.Algorithms = [
         {value: 'Astar', viewValue: 'A*'},
         {value: 'Dijkstra', viewValue: 'Dijkstra'}];
-        this.selectedValue = 'Astar';
+        this.selectedAlgo = 'Astar';
       }else{
         this.Algorithms = [
         {value: 'bfs', viewValue: 'Breadth First Search'},
         {value: 'Astar', viewValue: 'A*'},
         {value: 'Dijkstra', viewValue: 'Dijkstra'},
         {value: 'BestFirst', viewValue: 'Best First Search'}];
-        this.selectedValue = 'bfs';
+        this.selectedAlgo = 'bfs';
       }
     }else{
       this.prefToggle(this.isPref);
@@ -406,16 +395,18 @@ export class PlaygroundComponent implements OnInit {
   }
 
   terrainToggle(isT: boolean){
-      this.bidirection = false;
-      this.notCrossCorner = false;
-      this.isGaussian = false;
-      this.clearWall();
+    this.bidirection = false;
+    this.notCrossCorner = false;
+    this.isGaussian = false;
+    this.updateAlgoList();
+    this.clearWall();
   }
+
   changeAlgo(){
-    if(this.selectedValue === 'bfs' || this.selectedValue==='BestFirst'){
+    if(this.selectedAlgo === 'bfs' || this.selectedAlgo==='BestFirst'){
       this.isTerrain = false;
       this.isGaussian = false;
-    }else if(this.selectedValue === 'Floyd–Warshall'){
+    }else if(this.selectedAlgo === 'Floyd–Warshall'){
       this.isTerrain = false;
       this.isGaussian = false;
       this.bidirection = false;
@@ -426,6 +417,7 @@ export class PlaygroundComponent implements OnInit {
       this.notCrossCorner = false;
     }
   }
+
   changeMaze(){
     this.clearWall();
     this.isTerrain = false;
@@ -456,7 +448,7 @@ export class PlaygroundComponent implements OnInit {
         break;
       case "mountE":
         this.selectedPS = 'PS_1';
-        this.selectedValue = 'Astar';
+        this.selectedAlgo = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
@@ -465,13 +457,11 @@ export class PlaygroundComponent implements OnInit {
           this.selectedMaze = null;
           return;
         }
-        this.cov_x = 25;
-        this.cov_y = 18;
-        this.gaussianFill(this.end);
+        this.gaussianFill(25,18,this.end);
       break;
       case "mountS":
         this.selectedPS = 'PS_1';
-        this.selectedValue = 'Astar';
+        this.selectedAlgo = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
@@ -480,13 +470,11 @@ export class PlaygroundComponent implements OnInit {
           this.selectedMaze = null;
           return;
         }
-        this.cov_x = 25;
-        this.cov_y = 18;
-        this.gaussianFill(this.start);
+        this.gaussianFill(25,18,this.start);
       break;
       case "mountB":
         this.selectedPS = 'PS_1';
-        this.selectedValue = 'Astar';
+        this.selectedAlgo = 'Astar';
         this.isTerrain = true;
         this.isGaussian = true;
         this.updateAlgoList();
@@ -495,16 +483,17 @@ export class PlaygroundComponent implements OnInit {
           this.selectedMaze = null;
           return;
         }
-        var x1 = Math.round(this.start/hGrid);
-        var y1 = this.start%hGrid;
-        var x2 = Math.round(this.end/hGrid);
-        var y2 = this.end%hGrid;
-        this.cov_x = Math.abs(x1-x2-5);
-        this.cov_y = Math.max(Math.abs(y1-y2-5),18);
+        let x1 = Math.round(this.start/hGrid);
+        let y1 = this.start%hGrid;
+        let x2 = Math.round(this.end/hGrid);
+        let y2 = this.end%hGrid;
+        let cov_x = Math.abs(x1-x2-5);
+        let cov_y = Math.max(Math.abs(y1-y2-5),18);
         let midx = Math.round((x1+x2)/2);
         let midy = Math.round((y1+y2)/2);
 
-        this.gaussianFill(midx*hGrid + midy);
+        this.gaussianFill(cov_x,cov_y,midx*hGrid + midy);
+
       break;
 
       default:
@@ -514,11 +503,9 @@ export class PlaygroundComponent implements OnInit {
     this.selectedMaze = null;
     this.updateUI();
   }
+
   updateUI(): void{
     for (let u = totalGrid - 1; u >= 0; u--) {
-      (async () => {
-        // Do something before delay
-
       let rect :GridCoords = this.gridCord[u];
       let element = document.getElementsByTagName('rect')[u];
 
@@ -533,9 +520,9 @@ export class PlaygroundComponent implements OnInit {
         element.style.fill = "orange";
         element.style.fillOpacity = "1";
       }
-      else if (rect.debug){
-        element.style.fill = "pink";
-      }
+      // else if (rect.debug){
+      //   element.style.fill = "pink";
+      // }
       else if (rect.isTerrain){
         if(this.isTerrain){
           let a = (Math.floor(256-(rect.value*128 / 100))).toString();
@@ -559,7 +546,6 @@ export class PlaygroundComponent implements OnInit {
         element.style.fillOpacity = '1';
 
       }
-      })();
     }
 
   }
@@ -614,7 +600,7 @@ export class PlaygroundComponent implements OnInit {
         this.lengthS = this.length.toFixed(2);
       }
 
-      else if (this.selectedValue !== 'bfs' && this.selectedPS === 'PS_1' && !this.isTerrain){
+      else if (this.selectedAlgo !== 'bfs' && this.selectedPS === 'PS_1' && !this.isTerrain){
         window.alert("Sorry, no Path Exists :(, Try giving a finite terrain value");
       }
       else{
@@ -622,8 +608,6 @@ export class PlaygroundComponent implements OnInit {
       }
 
   }
-
-  req_step :number = 0;
 
   Search(){
     const astar: Astar = new Astar();
@@ -666,7 +650,7 @@ export class PlaygroundComponent implements OnInit {
         return;
     }
     if(this.selectedPS === "PS_1"){
-      switch (this.selectedValue) {
+      switch (this.selectedAlgo) {
         case 'bfs':
           if(this.bidirection){
             bibfs.search( this.start, this.end,this.gridCord, this.allowDiag,this.notCrossCorner);
@@ -739,8 +723,8 @@ export class PlaygroundComponent implements OnInit {
         break;
       }
     this.pathLine(this.start,this.end);
-    }else{
-      switch (this.selectedValue) {
+    }else{ //ps == TSP
+      switch (this.selectedAlgo) {
         case 'bfs':
           if(this.selectedPS  ===  "TSP"){
             const tsp = new TravSalesMan();
@@ -785,21 +769,18 @@ export class PlaygroundComponent implements OnInit {
             tsp.destinations = this.Dest;
             tsp.prepareNewGraph(this.gridCord, this.allowDiag, this.adjList);
             tsp.search(flyw, this.isPref, this.gridCord, this.allowDiag, this.adjList);
-            // console.log('Flyod Warshall');
             this.time = tsp.time.toFixed(3);
             this.steps = tsp.steps;
             this.lengthS = tsp.length.toFixed(2);
             this.pathCord = tsp.pathCord;
-            // console.log(this.pathCord);
           }
           break;
         default:
-          alert('Select Algorithms');
+          alert('Select Algorithm');
           break;
       }
     }
-
-    this.updateUI(); //for tracing the line
+    this.updateUI();
     this.show_infoResult=true;
   }
 }

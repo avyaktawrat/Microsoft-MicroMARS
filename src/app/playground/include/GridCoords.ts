@@ -12,5 +12,5 @@ export interface GridCoords {
     parent: number;
     visited: boolean;
     open : boolean;
-    debug : boolean;
+    // debug : boolean;
 }

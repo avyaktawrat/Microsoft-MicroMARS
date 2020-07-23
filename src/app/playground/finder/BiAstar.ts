@@ -1,6 +1,6 @@
-import {utils } from './utils';
-import { GridCoords } from './GridCoords';
-import {hGrid, totalGrid} from './constants'
+import {utils } from '../include/utils';
+import { GridCoords } from '../include/GridCoords';
+import {hGrid, totalGrid} from '../include/constants'
 
 let Utils: utils = new utils();
 
@@ -13,19 +13,18 @@ export class BiAstar{
 
   public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag?:boolean,notCrossCorner?:boolean/*, req_step:number*/,heuristic?):void {
 
-  	var startOpenList : number[] = new Array();
-  	var endOpenList : number[] = new Array();
+  	let startOpenList : number[] = new Array();
+  	let endOpenList : number[] = new Array();
   	    if(heuristic == null){
       heuristic = Utils.Manhattan;
     }
-  	// var startClosedList : number[] = new Array();
-  	// var endClosedList : number[] = new Array();
-  	var closedList : number[] = new Array();
- 		let stop : boolean = false;
-    var openBy : number[] = new Array();
+
+  	let closedList : number[] = new Array();
+	let stop : boolean = false;
+    let openBy : number[] = new Array();
     const byStart : number = 1;
-		const byEnd : number = 2;
-		let milli = performance.now();
+	const byEnd : number = 2;
+	let milli = performance.now();
 
     for (var i = 0; i < totalGrid; ++i) {
     	openBy[i] = 0;
@@ -44,23 +43,18 @@ export class BiAstar{
   	let currentNode :number;
   	while(startOpenList.length != 0 && endOpenList.length!=0) {
   		this.steps ++;
-  	// 	if(this.steps == req_step){
-			// 	// break;
-			// }
-			if(stop){
-				break;
-			}
-    	var lowInd : number = 0;
+		if(stop){
+			break;
+		}
     	function removeElement(array, elem) {
-          var index = array.indexOf(elem);
+          let index = array.indexOf(elem);
           if (index > -1) {
               array.splice(index, 1);
           }
       }
       if(startOpenList.length != 0 && !stop) {
-
-      	var lowInd : number = 0;
-	      for(var i=0; i<startOpenList.length; i++) {
+      	let lowInd : number = 0;
+	      for(let i=0; i<startOpenList.length; i++) {
 	        if(gridCord[startOpenList[i]].f < gridCord[startOpenList[lowInd]].f) {
 	           lowInd = i;
 	        }
@@ -68,7 +62,6 @@ export class BiAstar{
 	      currentNode = startOpenList[lowInd];
 	      removeElement(startOpenList,currentNode);
 	      gridCord[currentNode].visited = true;
-	      // console.log(currentNode);
 
 	      closedList.push(currentNode);
 
@@ -77,36 +70,27 @@ export class BiAstar{
 	      	if(closedList.includes(Coord) ){//already visited
 	          continue;
 	        }
-	      	if(/*Coord == end || */openBy[Coord]===byEnd){
+	      	if(openBy[Coord]===byEnd){
 	      		let milli2 = performance.now();
 		      	let node:number;
-		      	// console.log(Coord);
 	          node = currentNode;
 	          while(node!=start && node!= end){
-	          	// console.log(1);
-	          	// console.log(node);
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
 	          node = Coord
 	          while(node!=end && node!=start){
-	          	// console.log(2);
-	          	// console.log(node);
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
-					  stop = true;
-					  this.bidirecNodeE=Coord;
-					  this.bidirecNodeS=currentNode;
+			  stop = true;
+			  this.bidirecNodeE=Coord;
+			  this.bidirecNodeS=currentNode;
 	          this.time =  (milli2-milli);
 	      		break;
 	      	}
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-	      	// let ng = 1;
-
-
 	        if(openBy[Coord]==byStart  ){
-	            // let a = startOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
 	              gridCord[Coord].h = heuristic(Coord,end);
@@ -116,7 +100,7 @@ export class BiAstar{
 	            }
 	          }
 
-	          else{ //seeing the node for playground time
+	          else{ //seeing the node for first time
 	            gridCord[Coord].g = gridCord[currentNode].g + ng;
 	            gridCord[Coord].h = heuristic(Coord,end);
 	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
@@ -129,9 +113,9 @@ export class BiAstar{
 			}
 
 			if(endOpenList.length != 0 && !stop){
-	      // currentNode = endOpenList.pop();
+
 	      gridCord[currentNode].visited = true;
-	      var lowInd : number = 0;
+	      let lowInd : number = 0;
 	      for(let i=0; i<endOpenList.length; i++) {
 	        if(gridCord[endOpenList[i]].f < gridCord[endOpenList[lowInd]].f) {
 	           lowInd = i;
@@ -142,8 +126,7 @@ export class BiAstar{
 	      removeElement(endOpenList, currentNode);
 	      closedList.push(currentNode);
 
-
-	      var neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
+	      let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
 	      for(let Coord of neighbors){
 	      	let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid)) === 0)? 1 : 1.4);
 	      	// let ng = 1;
@@ -157,15 +140,11 @@ export class BiAstar{
 		      	let node:number;
 	          node = currentNode;
 	          while(node!=end && node!= start){
-	          	// console.log(3);
-	          	// console.log(node);
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
 	          node = Coord
 	          while(node!=start&& node!= end ){
-	          	// console.log(4);
-	          	// console.log(node);
 	            gridCord[node].isPath = true;
 	            node = gridCord[node].parent;
 	          }
@@ -174,11 +153,9 @@ export class BiAstar{
 						this.bidirecNodeE=currentNode;
 		        this.time =  (milli2-milli);
 		      	break;
-	      }
-
-
+	     	  }
+	     	  
 	        if(openBy[Coord]==byEnd){
-	            // let a = endOpenList.indexOf(Coord);
 	            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
 	              gridCord[Coord].g = gridCord[currentNode].g + ng;
 	              gridCord[Coord].h = heuristic(Coord,start);
@@ -188,22 +165,18 @@ export class BiAstar{
 	            }
 	          }
 
-	          else{ //seeing the node for playground time
-	            gridCord[Coord].g = gridCord[currentNode].g + ng;
-	            gridCord[Coord].h = heuristic(Coord,start);
-	            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
-	            gridCord[Coord].parent = currentNode;
-	            gridCord[Coord].open = true;
-	            endOpenList.push(Coord);
-	            openBy[Coord] = byEnd;
+          else{ //seeing the node for first time
+            gridCord[Coord].g = gridCord[currentNode].g + ng;
+            gridCord[Coord].h = heuristic(Coord,start);
+            gridCord[Coord].f = gridCord[Coord].h + gridCord[Coord].g;
+            gridCord[Coord].parent = currentNode;
+            gridCord[Coord].open = true;
+            endOpenList.push(Coord);
+            openBy[Coord] = byEnd;
 
-	          }
+          }
 	      }
 			}
-
-
     }
-    // console.log(this.bidirecNodeE,this.bidirecNodeS);
 	}
-
 }

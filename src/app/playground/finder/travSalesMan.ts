@@ -1,11 +1,12 @@
 import { Astar } from './Astar';
 import { BFS } from './BFS';
 import { Dijkstra } from './dijkstra';
-import { GridCoords } from './GridCoords';
-import { DPair } from './adj';
+import { GridCoords } from '../include/GridCoords';
+import { DPair } from '../include/adj';
 import { FloydWarshall } from './floydWarshall';
-import {hGrid, totalGrid} from './constants';
-import { lineCord} from './lineCoord'
+import {hGrid, totalGrid} from '../include/constants';
+import { lineCord} from '../include/lineCoord'
+
 export class TravSalesMan {
   start: number;
   destinations: number[];
@@ -86,7 +87,6 @@ export class TravSalesMan {
     for (let i = 0; i < totalGrid; ++i) {
       gridCoords[i].visited = false;
       gridCoords[i].open = false;
-      gridCoords[i].debug = false;
       gridCoords[i].f = null;
       gridCoords[i].g = null;
       gridCoords[i].h = null;

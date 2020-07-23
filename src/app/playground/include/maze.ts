@@ -28,14 +28,14 @@ export class maze  {
 	  }
 	  for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
 	    gridCoord[i].isTerrain = true;
-	    gridCoord[i].value = 100;         // code...
+	    gridCoord[i].value = 100;      
 	  }
 	    gridCoord[i].isTerrain = false;
 	    gridCoord[i].value = 0;
 	    i+=2;
 	  for(let j=0; j<5;j++){
 	    gridCoord[i+j*(hGrid+1)].isTerrain = true;
-	    gridCoord[i+j*(hGrid+1)].value = 100;         // code...
+	    gridCoord[i+j*(hGrid+1)].value = 100;   
 	  }
 	}
 
@@ -85,7 +85,7 @@ export class maze  {
 	      gridCoord[i].value = 100;
     	}
       let s = Array();
-      s.push(0);
+      s.push();
       let step = 0;
       while (s.length !== 0) {
       	step++;
@@ -148,7 +148,6 @@ export class maze  {
 	}
 
 	sidewinder(gridCoord : GridCoords[]):void{
-		// console.log(hGrid,vGrid);
     let currPath = new Array();
     for (let i = 0; i < totalGrid; ++i) {
     	gridCoord[i].isTerrain = true;
@@ -180,7 +179,7 @@ export class maze  {
         	currPath = [];
         	continue;
       	}
-        if(Math.random()>0.7 || currPath.length === 0){ //path
+        if(Math.random()>0.7 || currPath.length === 0){
           gridCoord[i*hGrid+j].isTerrain = false;
           gridCoord[i*hGrid+j].value = 0;
           gridCoord[(i+1)*hGrid+j].isTerrain = false;

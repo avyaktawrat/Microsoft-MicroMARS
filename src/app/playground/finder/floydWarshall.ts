@@ -1,6 +1,6 @@
-import { GridCoords } from './GridCoords';
-import { hGrid } from './constants';
-import { lineCord } from './lineCoord';
+import { GridCoords } from '../include/GridCoords';
+import { hGrid } from '../include/constants';
+import { lineCord } from '../include/lineCoord';
 
 export class FloydWarshall {
   steps: number = 0; // total number of recursive steps
@@ -8,7 +8,6 @@ export class FloydWarshall {
   destOrder: number[] = new Array();
   d: number[][] = new Array<Array<number>>(); // all pairs shortest distance matrix
   pathCord: lineCord[] = new Array();
-  // static pathCord: lineCord[];
   search(adjM: Array<Array<number>>) {
     this.d = adjM;
     let n = adjM.length;

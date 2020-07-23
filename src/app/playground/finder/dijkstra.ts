@@ -1,7 +1,7 @@
-import { DPair } from './adj';
-import {GridCoords} from './GridCoords';
-import {utils } from './utils';
-import {hGrid} from './constants'
+import { DPair } from '../include/adj';
+import {GridCoords} from '../include/GridCoords';
+import {utils } from '../include/utils';
+import {hGrid} from '../include/constants'
 
 let Utils: utils = new utils();
 
@@ -16,7 +16,6 @@ export class Dijkstra {
   Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
     const then = performance.now();
     const INF = 1000000000;
-    // let rects = document.getElementsByTagName('rect');
     let n: number = adj.length;
     let d = new Array<number>();
     let p = new Array<number>();
@@ -41,8 +40,6 @@ export class Dijkstra {
       }
       u[v] = true;
       gridCoords[v].visited = true;
-      // rects[v].style.fill = 'lightblue';
-      // gridCoords[v].visited = true;
       for (let edge of adj[v]){
         if (edge.first !== null && edge.second !== null) {
           let to: number = edge.first;
@@ -52,10 +49,6 @@ export class Dijkstra {
             p[to] = v;
           }
         }
-        // if (d[v] + len < d[to]) {
-        //   d[to] = d[v] + len;
-        //   p[to] = v;
-        // }
       }
       if (d[v] === INF || v === end) {
         break;
@@ -64,21 +57,13 @@ export class Dijkstra {
 
     let path: number[] = new Array();
     for (let v = end; v !== start; v = p[v]) {
-      // this.paths.push(v);
       if (v !== end){
-        // rects[v].style.fill = 'orange';
         gridCoords[v].isPath = true;
         this.paths.push(v);
-        // gridCoords[v].isPath = true;
       }
       gridCoords[v].parent = p[v];
     }
-
-    // rects[s].style.fill = 'green';
-    // rects[t].style.fill = 'red';
-    // gridCoords[end].isEndPoint = true;
     path.push(start);
-    // this.paths.push(start);
     this.length1 = path.length - 1;
     this.time = (performance.now() - then);
   }
@@ -91,9 +76,7 @@ export class Dijkstra {
 
 
     openList.push(start);
-
     gridCord[start].g = 0;
-
     let currentNode :number;
 
     while(openList.length != 0) {
@@ -106,7 +89,7 @@ export class Dijkstra {
           leastG = node;
         }
       }
-      // currentNode = openList[lowInd];
+
       currentNode = leastG ;
       gridCord[currentNode].visited = true;
       this.length1 += 1;
@@ -137,7 +120,7 @@ export class Dijkstra {
             this.paths.push(node);
             node = gridCord[node].parent;
 
-           }
+          }
           this.paths.push(start);
           this.paths = this.paths.reverse();
           this.time =  (milli2-milli);
@@ -146,37 +129,27 @@ export class Dijkstra {
       }
 
       //find neighbors
-
-      // let neighbors = new Array<Pair>() ;
       let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
-      // console.log(neighbors);
       for (let Coord of neighbors) {
-
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-        // let ng :number= 0;
         if(closedList.includes(Coord) ){//already visited
           continue;
         }
 
-          if(openList.includes(Coord)){
-            if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
-              gridCord[Coord].g = gridCord[currentNode].g + ng;
-              gridCord[Coord].parent = currentNode;
-            }
-          }
-
-          else{ //seeing the node for playground time
+        if(openList.includes(Coord)){
+          if(gridCord[currentNode].g + ng  < gridCord[Coord].g){
             gridCord[Coord].g = gridCord[currentNode].g + ng;
             gridCord[Coord].parent = currentNode;
-            gridCord[Coord].open = true;
-            openList.push(Coord);
           }
         }
-    // if(this.steps == req_step){
-    //   break;
-    // }
 
+        else{ //seeing the node for first time
+          gridCord[Coord].g = gridCord[currentNode].g + ng;
+          gridCord[Coord].parent = currentNode;
+          gridCord[Coord].open = true;
+          openList.push(Coord);
+        }
+      }
     }
   }
-
 }
