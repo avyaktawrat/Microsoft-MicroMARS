@@ -1,6 +1,6 @@
-import {utils } from './utils';
-import { GridCoords } from './GridCoords';
-import {totalGrid} from './constants'
+import {utils } from '../include/utils';
+import { GridCoords } from '../include/GridCoords';
+import {totalGrid} from '../include/constants'
 
 let Utils: utils = new utils();
 
@@ -13,7 +13,6 @@ export class BiBFS{
 
   public search(start:number, end:number,gridCord: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean):void {
   	let milli = performance.now();
-    // let distance: number[] = new Array();
     let stop :boolean = false;
     let quS = new Array();
     let quE = new Array();
@@ -33,18 +32,14 @@ export class BiBFS{
     while(quS.length!= 0 && quS.length!= 0){
     	this.steps++;
 			if(quS.length!=0){
-				// console.log(quS);
 				let currentNodeS  = quS.shift();
 				gridCord[currentNodeS].visited = true;
-				// visitedS[currentNodeS] = true;
 				let arrS = Utils.direction8_vector(currentNodeS,gridCord,allowDiag,notCrossCorner);
-			  // console.log(arrS);
 			  for(let u of arrS){
 					if(!(openBy[u]===byStart)){
 
 						if((u == end || openBy[u]===byEnd)){
 							this.time = performance.now()-milli;
-							// console.log(gridCord[u]);
 							let node:number;
 							node = u;
 							while(node!=end){
@@ -59,8 +54,7 @@ export class BiBFS{
 
 							stop= true;
 							this.bidirecNodeE=u;
-						  	this.bidirecNodeS=currentNodeS;
-							// console.log(currentNodeS, gridCord[currentNodeS].parent, quE.shift());
+					  	this.bidirecNodeS=currentNodeS;
 							break;
 						}
 						openBy[u] = byStart;
@@ -74,7 +68,6 @@ export class BiBFS{
 	    if(quE.length!=0  ){
 	    	let currentNodeE  = quE.shift();
 	    	gridCord[currentNodeE].visited = true;
-	    	// visitedE[currentNodeE] = true;
 	    	let arrE = Utils.direction8_vector(currentNodeE,gridCord,allowDiag,notCrossCorner);
 	      for(let u of arrE){
   				if(!(openBy[u] === byEnd)){
@@ -95,7 +88,6 @@ export class BiBFS{
 						  stop= true;
 						  this.bidirecNodeS=u;
 						  this.bidirecNodeE=currentNodeE;
-						  // console.log(currentNodeS,currentNodeE, gridCord[currentNodeE].parent, "loop 2");
   						break;
 
   					}
@@ -107,8 +99,6 @@ export class BiBFS{
     	}
 
     	if(stop){
-			//this.bidirecNodeS=currentNodeS;
-			//this.bidirecNodeE=currentNodeE;
     		break;
     	}
     }

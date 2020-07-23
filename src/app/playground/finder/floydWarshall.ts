@@ -1,6 +1,6 @@
-import { GridCoords } from './GridCoords';
-import { hGrid } from './constants';
-import { lineCord } from './lineCoord';
+import { GridCoords } from '../include/GridCoords';
+import { hGrid } from '../include/constants';
+import { lineCord } from '../include/lineCoord';
 
 export class FloydWarshall {
   steps: number = 0;         // total number of recursive steps

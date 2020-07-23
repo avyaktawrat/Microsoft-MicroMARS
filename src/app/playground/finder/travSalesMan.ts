@@ -1,12 +1,13 @@
 import { Astar } from './Astar';
 import { BFS } from './BFS';
 import { Dijkstra } from './dijkstra';
-import { GridCoords } from './GridCoords';
-import { DPair } from './adj';
+import { GridCoords } from '../include/GridCoords';
+import { DPair } from '../include/adj';
 import { FloydWarshall } from './floydWarshall';
-import {hGrid, totalGrid} from './constants';
-import { lineCord} from './lineCoord'
-export class TravSalesMan {   // class implementing the travelling salesman problem
+import {hGrid, totalGrid} from '../include/constants';
+import { lineCord} from '../include/lineCoord'
+
+export class TravSalesMan {
   start: number;
   destinations: number[];
   newNodes: number[]; // nodes for the new graph made from start and end points only
@@ -86,7 +87,6 @@ export class TravSalesMan {   // class implementing the travelling salesman prob
     for (let i = 0; i < totalGrid; ++i) {
       gridCoords[i].visited = false;
       gridCoords[i].open = false;
-      gridCoords[i].debug = false;
       gridCoords[i].f = null;
       gridCoords[i].g = null;
       gridCoords[i].h = null;

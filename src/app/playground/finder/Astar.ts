@@ -1,7 +1,7 @@
-import {utils } from './utils';
-import { GridCoords } from './GridCoords';
-import {hGrid, totalGrid} from './constants';
-import { DPair } from './adj';
+import {utils } from '../include/utils';
+import { GridCoords } from '../include/GridCoords';
+import {hGrid, totalGrid} from '../include/constants';
+import { DPair } from '../include/adj';
 
 let Utils: utils = new utils();
 
@@ -13,16 +13,22 @@ interface Pair {
 export class Astar{
 
   public steps :number = 0;
-  // public length1 :number= 0;
   public time :number = 0;
 
   public Wsearch(start: number, end: number, gridCoords?: GridCoords[], allowDiag?: boolean,notCrossCorner?:boolean, adj?: Array<Array<DPair>>,heuristic?):void {
 
     let milli = performance.now();
-    var openList = new Array();
-    var closedList = new Array();
+    let openList = new Array();
+    let closedList = new Array();
+    
+    function removeElement(array, elem) {
+        let index = array.indexOf(elem);
+        if (index > -1) {
+            array.splice(index, 1);
+        }
+    }
 
-    if(heuristic == null){
+    if(heuristic == null){  //default heuristic 
       heuristic = Utils.Manhattan;
     }
 
@@ -38,13 +44,12 @@ export class Astar{
       this.steps ++;
 
       //select least f
-      var leastF : number = openList[0];
+      let leastF : number = openList[0];
       for (let node of openList){
         if(gridCoords[node].f < gridCoords[leastF].f ){
           leastF = node;
         }
       }
-      // currentNode = openList[lowInd];
       currentNode = leastF;
       gridCoords[currentNode].visited = true;
 
@@ -53,15 +58,8 @@ export class Astar{
       }
 
       //remove currentNode from openList
-      function removeElement(array, elem) {
-          var index = array.indexOf(elem);
-          if (index > -1) {
-              array.splice(index, 1);
-          }
-      }
       removeElement(openList, currentNode);
 
-      //add currentNode to openList
       closedList.push(currentNode);
 
       if(currentNode == end){   //end found
@@ -81,49 +79,49 @@ export class Astar{
 
       let neighbors = new Array<Pair>() ;
       neighbors = this.direction8_vector(currentNode,gridCoords,allowDiag);
-      // console.log(neighbors);
-      for (var i = 0; i < neighbors.length; ++i) {
+      for (let i = 0; i < neighbors.length; ++i) {
         let Coord  = neighbors[i].coord;
 
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-        // let ng :number= 0;
         if(closedList.includes(Coord) ){//already visited
           continue;
         }
 
-          if(openList.includes(Coord)){
-            if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[Coord].g){
-              gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
-              gridCoords[Coord].h = heuristic(Coord,end);
-              gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
-              gridCoords[Coord].parent = currentNode;
-            }
-          }
-
-          else{ //seeing the node for playground time
+        if(openList.includes(Coord)){
+          if(gridCoords[currentNode].g + ng+neighbors[i].weight  < gridCoords[Coord].g){
             gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
             gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
             gridCoords[Coord].parent = currentNode;
-            gridCoords[Coord].open = true;
-            openList.push(Coord);
           }
         }
-    // if(this.steps == req_step){
-    //   break;
-    // }
 
+        else{ //seeing the node for first time
+          gridCoords[Coord].g = gridCoords[currentNode].g + ng +neighbors[i].weight;
+          gridCoords[Coord].h = heuristic(Coord,end);
+          gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+          gridCoords[Coord].parent = currentNode;
+          gridCoords[Coord].open = true;
+          openList.push(Coord);
+        }
+      }
     }
   }
 
   public search(start:number, end:number,gridCoords: GridCoords[] ,allowDiag:boolean,notCrossCorner:boolean/*,req_step:number*/,heuristic? ):void {
     let milli = performance.now();
-    var openList = new Array();
-    var closedList = new Array();
+    let openList = new Array();
+    let closedList = new Array();
+
+    function removeElement(array, elem) {
+          let index = array.indexOf(elem);
+          if (index > -1) {
+              array.splice(index, 1);
+          }
+    }
     if(heuristic == null){
       heuristic = Utils.Manhattan;
     }
-    // console.log(heuristic(5,10));
     openList.push(start);
 
     gridCoords[start].h = heuristic(start , end);
@@ -136,9 +134,9 @@ export class Astar{
       this.steps ++;
 
       //select least f
-      var leastF : number = openList[0];
+      let leastF : number = openList[0];
       for (let node of openList){
-        if(gridCoords[node].f < gridCoords[leastF].f ){ // "=" for a reason
+        if(gridCoords[node].f < gridCoords[leastF].f ){ // "=" and see magic 
           leastF = node;
         }
       }
@@ -151,12 +149,7 @@ export class Astar{
       }
 
       //remove currentNode from openList
-      function removeElement(array, elem) {
-          var index = array.indexOf(elem);
-          if (index > -1) {
-              array.splice(index, 1);
-          }
-      }
+      
       removeElement(openList, currentNode);
 
       //add currentNode to openList
@@ -176,47 +169,38 @@ export class Astar{
       }
 
       //find neighbors
-
-      // let neighbors = new Array<Pair>() ;
       let neighbors = Utils.direction8_vector(currentNode,gridCoords,allowDiag,notCrossCorner);
-      // console.log(neighbors);
-      for (var Coord of neighbors) {
+      for (let Coord of neighbors) {
 
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
-        // let ng :number= 1;
+
         if(closedList.includes(Coord) ){//already visited
           continue;
         }
 
-          if(openList.includes(Coord)){
-            if(gridCoords[currentNode].g + ng  < gridCoords[Coord].g){
-              gridCoords[Coord].g = gridCoords[currentNode].g + ng;
-              gridCoords[Coord].h = heuristic(Coord,end);
-              gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
-              gridCoords[Coord].parent = currentNode;
-            }
-          }
-
-          else{ //seeing the node for playground time
+        if(openList.includes(Coord)){
+          if(gridCoords[currentNode].g + ng  < gridCoords[Coord].g){
             gridCoords[Coord].g = gridCoords[currentNode].g + ng;
             gridCoords[Coord].h = heuristic(Coord,end);
             gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
             gridCoords[Coord].parent = currentNode;
-            gridCoords[Coord].open = true;
-            openList.push(Coord);
           }
         }
-    // if(this.steps == req_step){
-    //   break;
-    // }
 
+        else{ //seeing the node for first time
+          gridCoords[Coord].g = gridCoords[currentNode].g + ng;
+          gridCoords[Coord].h = heuristic(Coord,end);
+          gridCoords[Coord].f = gridCoords[Coord].h + gridCoords[Coord].g;
+          gridCoords[Coord].parent = currentNode;
+          gridCoords[Coord].open = true;
+          openList.push(Coord);
+        }
+      }
     }
   }
 
-
-
-direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Array<Pair>{
-    var arr = new Array<Pair>();
+  direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Array<Pair>{
+    let arr = new Array<Pair>();
 
     if((a)%hGrid !=0 && a-1>=0){ //up
       let vector = {coord : 0, weight:0};
@@ -277,10 +261,7 @@ direction8_vector(a: number, gridCoords: GridCoords[], allowDiag: boolean): Arra
     return arr;
   }
   calWeight(gridCoords: GridCoords[],a:number , b:number) : number{
-    // console.log(a);
     let weight = 0.05*Math.abs(gridCoords[a].value - gridCoords[b].value*0) ;
     return  weight;
   }
-
-
 }

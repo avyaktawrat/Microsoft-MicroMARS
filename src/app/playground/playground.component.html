@@ -1,14 +1,15 @@
 <div class ="wrapper">
 <div id="main-page">
 	<svg class="svg"  [attr.height]="height_svg" [attr.width]="width">
-        <rect *ngFor="let i of gridCord" [id]="i.value + ',' + i.x + ',' + i.y"  [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.x, i.y,i.isTerrain)" (mouseup)="mouseUp(i.x,i.y)" (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"> </rect>
+        <rect *ngFor="let i of gridCord" [id]="i.value + ',' + i.x + ',' + i.y"  [attr.x]=i.x [attr.y]=i.y [attr.width]="30" [attr.height]="30" rx="0" ry="0" (mousedown)="mouseDownE(i.isTerrain)" (mouseup)="mouseUp()" (mouseleave)="fillGrey(i.x, i.y)"  (click)="fillColor(i.x,i.y)"> </rect>
 		<line *ngFor="let i of pathCord" [attr.x1]="i.x1" [attr.y1]="i.y1"
 		[attr.x2]="i.x2" [attr.y2]="i.y2" style="stroke:rgb(255,0,0);stroke-width:2" />
+   		
    		<ng-container *ngIf = "selectedPS == 'TSP' && isPref  ">
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.isEndPoint}} </text>
    		</ng-container>
 
-			<ng-container *ngIf = "selectedPS == 'TSP' && !isPref  ">
+		<ng-container *ngIf = "selectedPS == 'TSP' && !isPref  ">
    		<text  *ngFor="let i of gridCord" [attr.x]=i.x+8 [attr.y]=i.y+15 font-size= "12"> {{i.destOrder}} </text>
    		</ng-container>
 
@@ -49,7 +50,7 @@
 
     	<mat-form-field appearance="fill" >
         	<mat-label><h4>Algorithms</h4></mat-label>
-        	<mat-select [(ngModel)]="selectedValue" name="SV" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeAlgo()">
+        	<mat-select [(ngModel)]="selectedAlgo" name="SV" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeAlgo()">
 		        <mat-option *ngFor="let algo of Algorithms" [value]="algo.value">
 	        	    {{algo.viewValue}}
 		        </mat-option>
@@ -57,7 +58,7 @@
 		</mat-form-field>
 
 
-			<section id = 'Heuristic' *ngIf = "(selectedValue == 'Astar' || selectedValue == 'BestFirst') && selectedPS == 'PS_1'">
+			<section id = 'Heuristic' *ngIf = "(selectedAlgo == 'Astar' || selectedAlgo == 'BestFirst') && selectedPS == 'PS_1'">
 	    	<mat-form-field appearance="fill">
 	      	<mat-label><h4>Heuristic (For A* and Best-first) </h4></mat-label>
 	      	<mat-select [(ngModel)]="selectedHeuristic" name="Heuristic" value = "selectedHeuristic" [ngModelOptions]="{standalone: true}" >
@@ -97,7 +98,7 @@
 
 
 			<mat-divider></mat-divider>
-			<section id = "Terrain_" *ngIf = "(selectedValue=='Astar' || selectedValue =='Dijkstra' )&& selectedPS=='PS_1'">
+			<section id = "Terrain_" *ngIf = "(selectedAlgo=='Astar' || selectedAlgo =='Dijkstra' )&& selectedPS=='PS_1'">
 				<div class="example-section">
 					<mat-divider></mat-divider>
 					<mat-slide-toggle class="example-margin"
@@ -112,11 +113,11 @@
 				</div>
 			</section>
 			<div class = "example-margin" *ngIf = "selectedPS == 'PS_1' && !isTerrain">
-				<mat-divider *ngIf = "selectedValue!='bfs'"></mat-divider>
+				<mat-divider *ngIf = "selectedAlgo!='bfs'"></mat-divider>
 				<mat-checkbox color = "primary" [(ngModel)]="notCrossCorner" [ngModelOptions]="{standalone: true}">Do not cross corners</mat-checkbox>
 				<mat-checkbox color = "primary" [(ngModel)]="bidirection" [ngModelOptions]="{standalone: true}" >Bi-Directional</mat-checkbox>
 			</div>
-			<section id = "Terrain" *ngIf = "selectedValue!='bfs' && selectedPS=='PS_1' && isTerrain">
+			<section id = "Terrain" *ngIf = "selectedAlgo!='bfs' && selectedPS=='PS_1' && isTerrain">
 			   <!-- Slider Config for terrain (not applicable incase of bfs)-->
 						<div class="example-section" >
 							<mat-slider class="example-margin"
@@ -125,13 +126,13 @@
 								[min]=min
 								[step]="step"
 								[thumbLabel]=true
-								[value]="choose"
-								[(ngModel)]="choose"
+								[value]="terrainValue"
+								[(ngModel)]="terrainValue"
 								(input)="onChange($event)"
 								[ngModelOptions]="{standalone: true}">
 							</mat-slider>
 							<mat-form-field class="example-margin">
-								<input matInput type="number" value="{{choose}}" [(ngModel)]="choose" (input)="onSearchChange($event)" [ngModelOptions]="{standalone: true}" max="100" min="0">
+								<input matInput type="number" value="{{terrainValue}}" [(ngModel)]="terrainValue" (input)="onSearchChange($event)" [ngModelOptions]="{standalone: true}" max="100" min="0">
 							</mat-form-field>
 						</div>
 				<mat-divider></mat-divider>

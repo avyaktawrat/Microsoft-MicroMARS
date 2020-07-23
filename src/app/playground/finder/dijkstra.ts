@@ -1,7 +1,7 @@
-import { DPair } from './adj';
-import {GridCoords} from './GridCoords';
-import {utils } from './utils';
-import {hGrid} from './constants'
+import { DPair } from '../include/adj';
+import {GridCoords} from '../include/GridCoords';
+import {utils } from '../include/utils';
+import {hGrid} from '../include/constants'
 
 let Utils: utils = new utils();
 
@@ -78,9 +78,7 @@ export class Dijkstra {      // dijkstra's algorithm
 
     /*  The Dijkstra's Algorithm in this function is implemented as a special case of the A* Algorithm  */
     openList.push(start);
-
     gridCord[start].g = 0;
-
     let currentNode :number;
 
     while(openList.length != 0) {
@@ -123,7 +121,7 @@ export class Dijkstra {      // dijkstra's algorithm
             this.paths.push(node);
             node = gridCord[node].parent;
 
-           }
+          }
           this.paths.push(start);
           this.paths = this.paths.reverse();
           this.time =  (milli2-milli);
@@ -135,7 +133,6 @@ export class Dijkstra {      // dijkstra's algorithm
 
       let neighbors = Utils.direction8_vector(currentNode,gridCord,allowDiag,notCrossCorner);
       for (let Coord of neighbors) {
-
         let ng = (((Math.round(currentNode/hGrid)-Math.round(Coord/hGrid) === 0 )|| ((currentNode%hGrid)-(Coord%hGrid) )===0 )? 1 : 1.4);
         if(closedList.includes(Coord) ){      //already visited
           continue;
@@ -156,5 +153,4 @@ export class Dijkstra {      // dijkstra's algorithm
         }
     }
   }
-
 }

@@ -22,20 +22,20 @@ export class maze  {   // class implementing different maze-generating algorithm
 
 	stair(gridCoord : GridCoords[]):void{     // maze in the form of stair case
 		let i = 0;
-	  for ( i = 0; i <= 22*(hGrid+1); i=i+hGrid+1) {
+	  for ( i = 0; i <= (hGrid-5)*(hGrid+1); i=i+hGrid+1) {
 	    gridCoord[i].isTerrain = true;
 	    gridCoord[i].value = 100;
 	  }
-	  for ( i = 22*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
+	  for ( i = (hGrid-5)*(hGrid+1); i%hGrid !=0 ; i=i+hGrid-1) {
 	    gridCoord[i].isTerrain = true;
-	    gridCoord[i].value = 100;         // code...
+	    gridCoord[i].value = 100;
 	  }
 	    gridCoord[i].isTerrain = false;
 	    gridCoord[i].value = 0;
 	    i+=2;
 	  for(let j=0; j<5;j++){
 	    gridCoord[i+j*(hGrid+1)].isTerrain = true;
-	    gridCoord[i+j*(hGrid+1)].value = 100;         // code...
+	    gridCoord[i+j*(hGrid+1)].value = 100;
 	  }
 	}
 

@@ -1,4 +1,4 @@
-import { GridCoords } from './GridCoords';
+import { GridCoords } from '../include/GridCoords';
 import { Astar } from './Astar' ;
 import { BiAstar } from './BiAstar' ;
 
@@ -17,9 +17,8 @@ export class BestFirst{
  			return heuristic(a,b)*1000000;
  		}
 
- 		astar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);
+ 		astar.search( start,end,gridCoords,allowDiag,notCrossCorner,HeurBestFirst);
     this.steps = astar.steps;
-    // this.length1 = astar.length1;
     this.time = astar.time;
 
 	}
@@ -29,15 +28,10 @@ export class BestFirst{
  		function HeurBestFirst(a:number, b:number){
  			return heuristic(a,b)*1000000;
  		}
- 		// console.log("bi best");
- 		biastar.search( start,end,gridCoords,allowDiag,notCrossCorner/*,this.req_step*/,HeurBestFirst);
+ 		biastar.search( start,end,gridCoords,allowDiag,notCrossCorner,HeurBestFirst);
     this.steps = biastar.steps;
-    // this.length1 = biastar.length1;
     this.time = biastar.time;
     this.bidirecNodeS = biastar.bidirecNodeS;
     this.bidirecNodeE = biastar.bidirecNodeE;
-
-
 	}
-
 }
