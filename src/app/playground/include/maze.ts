@@ -85,7 +85,7 @@ export class maze  {
 	      gridCoord[i].value = 100;
     	}
       let s = Array();
-      s.push();
+      s.push(0);
       let step = 0;
       while (s.length !== 0) {
       	step++;
