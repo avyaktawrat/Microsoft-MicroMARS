@@ -114,3 +114,11 @@ body {
 .social-media i:hover{
 	color: white;
 }
+ul {
+  list-style-type: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+}
