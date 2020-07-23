@@ -76,8 +76,8 @@ body {
 }
 
 .flip-card:hover .flip-card-inner {
-	/* background-color: rgba(0, 0, 0, 0.6); */
-	/* transform: rotateY(180deg); */
+	background-color: rgba(0, 0, 0, 0.6);
+	transform: rotateY(180deg);
 }
 
 .flip-card-front, .flip-card-back {
@@ -94,7 +94,7 @@ body {
 
 .flip-card-back {
 	background-color: rgba(0, 0, 0, 0.6);
-	/* transform: rotateY(180deg); */
+	transform: rotateY(180deg);
 }
 
 .social-media{
