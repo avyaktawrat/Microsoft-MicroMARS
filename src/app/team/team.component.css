@@ -45,8 +45,12 @@ body {
 	position: relative;
 	margin-top: 12px;
 	margin-bottom: 15px;
-	left: 5px;
 	width: 100%;
+}
+.inside-tile h4{
+	position: absolute;
+	padding-top: 0.5px;
+
 }
 .flip-card {
 	display: inline-block;

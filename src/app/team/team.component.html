@@ -1,5 +1,8 @@
 <div class="wrapper">
-	<mat-grid-list cols="4"  rowHeight="2:0.9" >
+	<h2>Special Vote of Thanks to our Mentor, Mayank Rathore for constantly supporting us and assisting us
+		throughout our journey.
+	</h2>
+	<mat-grid-list cols="4"  rowHeight="2:0.8" >
 		<mat-grid-tile
 		  *ngFor="let tile of tiles"
 		  [colspan]="tile.cols"
@@ -8,7 +11,7 @@
 		  <div class = "inside-tile">
 		    <h4>{{tile.content}}</h4>
 		    <div class="flip-card" >
-		      <div class="flip-card-inner" style="background-image: url({{tile.photoId}}); width:100%;">
+		      <div class="flip-card-inner" [ngStyle]="{'background-image': 'url(' + tile.photoId + ')'}">
 		        <div class="flip-card-front">
 
 		        </div>
