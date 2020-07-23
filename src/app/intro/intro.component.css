@@ -4,7 +4,7 @@
   height: 80%;
 }
 
-.example-small-box, .example-large-box {
+.example-small-box, .example-large-box, .flowchart-box{
   display: block;
   align-items: center;
   /* justify-content: center; */
@@ -22,6 +22,12 @@
   height: 100%;
   width: 100%;
 }
+
+.flowchart-box{
+  height: 500px;
+  width: 100%;
+}
+
 h1{
   text-align: center;
 }
