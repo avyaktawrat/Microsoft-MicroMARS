@@ -1,11 +1,12 @@
 import { Astar } from './Astar';
 import { BFS } from './BFS';
 import { Dijkstra } from './dijkstra';
-import { GridCoords } from './GridCoords';
-import { DPair } from './adj';
+import { GridCoords } from '../include/GridCoords';
+import { DPair } from '../include/adj';
 import { FloydWarshall } from './floydWarshall';
-import {hGrid, totalGrid} from './constants';
-import { lineCord} from './lineCoord'
+import {hGrid, totalGrid} from '../include/constants';
+import { lineCord} from '../include/lineCoord'
+
 export class TravSalesMan {
   start: number;
   destinations: number[];
@@ -40,10 +41,10 @@ export class TravSalesMan {
     }
   }
 
-  search(algo: BFS | Dijkstra | Astar | FloydWarshall, userPref: boolean, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {
-    if (userPref) {
-        if (!(algo instanceof FloydWarshall)) {
-          for (let dest of this.destinations) {
+  search(algo: BFS | Dijkstra | Astar | FloydWarshall, userPref: boolean, gridCoords?: GridCoords[], allowDiag?: boolean, adj?: Array<Array<DPair>>) {   // common search function for all algos
+    if (userPref) {   // if user has a preference of destinations
+        if (!(algo instanceof FloydWarshall)) {   // we only use non-floyd-warshall algorithms
+          for (let dest of this.destinations) {   // find the path iteratively by shifting start and destination points
             this.resetGrid(gridCoords);
             algo.search(this.start, dest, gridCoords, allowDiag, false);
             if(gridCoords[dest].parent!=null){
@@ -72,7 +73,7 @@ export class TravSalesMan {
         algo.getPath(0, Array.from(this.destinations, (_,i)=>i+1), gridCoords, this.path);
         this.pathCord = algo.pathCord;
         let i =1;
-        for(let u of algo.destOrder){
+        for(let u of algo.destOrder){    // label the destinations in the order that they have been covered
           gridCoords[this.destinations[u]].destOrder = i;
           i++;
         }
@@ -82,18 +83,17 @@ export class TravSalesMan {
       }
     }
   }
-  resetGrid(gridCoords:GridCoords[]) {
+  resetGrid(gridCoords:GridCoords[]) {   // reset the entire grid
     for (let i = 0; i < totalGrid; ++i) {
       gridCoords[i].visited = false;
       gridCoords[i].open = false;
-      gridCoords[i].debug = false;
       gridCoords[i].f = null;
       gridCoords[i].g = null;
       gridCoords[i].h = null;
     }
   }
 
-  linePath(start:number,end :number,gridCord:GridCoords[]){
+  linePath(start:number,end :number,gridCord:GridCoords[]){   // function to display line on the grid for the shortest-path found
     let node: number = end;
     let i =0;
 
@@ -111,8 +111,5 @@ export class TravSalesMan {
             break;
           }
         }
-
-
-
   }
 }
