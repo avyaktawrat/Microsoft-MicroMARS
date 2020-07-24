@@ -434,6 +434,7 @@ export class PlaygroundComponent implements OnInit {
 
   changeMaze(){
     this.clearWall();
+    this.clearPath();
     this.isTerrain = false;
     this.isGaussian = false;
     this.bidirection = false;
