@@ -92,6 +92,7 @@ export class PlaygroundComponent implements OnInit {
   maxDest = 5;
   selectedDest: number = 2;
   Dest : number[] = new Array();
+  destMissing : number=0;
 
   selectedAlgo: string = 'bfs';
   selectedPS: string = 'PS_1';
@@ -140,20 +141,30 @@ export class PlaygroundComponent implements OnInit {
     let coord: number = Math.floor(a / 30)* hGrid + Math.floor(b / 30);
     if (coord !== this.start && coord !== this.end && this.mouseDown === true){
       let height = this.terrainValue;
-      if (!this.isGaussian ){
+      if(this.selectedPS == "PS_1"){
+        if (!this.isGaussian ){
+          if(this.color === 1){
+            this.gridCord[coord].isTerrain = true;
+            this.gridCord[coord].value = height;
+          }else{
+            this.gridCord[coord].isTerrain = false;
+            this.gridCord[coord].value = 0;
+          }
+        }else if(this.isGaussian && this.isTerrain){
+          this.gaussianFill(this.cov_x,this.cov_y,coord);
+        }
+      }else{
         if(this.color === 1){
-          this.gridCord[coord].isTerrain = true;
-          this.gridCord[coord].value = height;
+            this.gridCord[coord].isTerrain = true;
+            this.gridCord[coord].value = 100  ;
         }else{
           this.gridCord[coord].isTerrain = false;
           this.gridCord[coord].value = 0;
         }
-        this.updateUI();
-      }else if(this.isGaussian && this.isTerrain){
-        this.gaussianFill(this.cov_x,this.cov_y,coord);
-        this.updateUI();
+
       }
     }
+    this.updateUI();
   }
 
   gaussianFill (cov_x:number,cov_y:number,coord : number):void{
@@ -174,7 +185,8 @@ export class PlaygroundComponent implements OnInit {
   fillColor (a :number , b:number): void{
     let coord :number = Math.floor(a / 30) * hGrid + Math.floor(b / 30);
     let rect :GridCoords = this.gridCord[coord];
-    if(this.selectedPS === "PS_1"){
+    console.log(this.selectedPS);
+    if(this.selectedPS == "PS_1"){
       if (coord === this.start){
         this.start = null;
         rect.isEndPoint = null;
@@ -219,7 +231,7 @@ export class PlaygroundComponent implements OnInit {
 
         }
       }
-    }else if(this.selectedPS === "TSP"){
+    }else if(this.selectedPS == "TSP"){
       if(coord === this.start){
         this.start = null;
         rect.isEndPoint = null;
@@ -227,6 +239,7 @@ export class PlaygroundComponent implements OnInit {
         let a = this.Dest.indexOf(coord);
         this.Dest[a] = null;
         rect.isEndPoint = null;
+        this.destMissing ++;
       }else if(rect.isTerrain){
         rect.isTerrain = false;
       }else{
@@ -240,6 +253,7 @@ export class PlaygroundComponent implements OnInit {
           let a = this.Dest.indexOf(null);
           this.Dest[a] = coord;
           rect.isEndPoint = a+1;
+          this.destMissing --;
         }else if (!rect.isTerrain ){
           rect.isTerrain = true;
           rect.value = 100;
@@ -663,11 +677,12 @@ export class PlaygroundComponent implements OnInit {
     this.resetGridParams();
 
     this.adjList = get_adjacency_list(vGrid, hGrid, this.allowDiag);
-    if ( this.start  ===  null || (this.end  ===  null && this.Dest.length < this.selectedDest) ){
-        alert('Insert start and end');
-        return;
-    }
+    
     if(this.selectedPS === "PS_1"){
+      if(this.start == null || this.end == null){
+        alert('Insert start or end');
+        return;
+      }
       switch (this.selectedAlgo) {
         case 'bfs':
           if(this.bidirection){
@@ -742,6 +757,10 @@ export class PlaygroundComponent implements OnInit {
       }
     this.pathLine(this.start,this.end);
     }else{ //ps == TSP
+      if(this.start == null || this.Dest.length < this.selectedDest || this.destMissing !=0){
+        alert('Insert start or end');
+        return;
+      }
       switch (this.selectedAlgo) {
         case 'bfs':
           if(this.selectedPS  ===  "TSP"){
