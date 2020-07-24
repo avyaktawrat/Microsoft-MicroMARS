@@ -40,7 +40,7 @@ export class TeamComponent {  // contains the team details
         email:'mailto:mmkipsit@gmail.com',git:'https://github.com/Ipsit1234'},
 
      {text: 'Nayan', cols: 2, rows: 2, color: 'linear-gradient( #84c9f1,#52abeb)',
-     content: 'Hey There! I am Nayan from Electrical Engineering Department of IIT-Bombay.',
+     content: 'Hey! I am Nayan from Electrical Engineering Department of IIT-Bombay. I absolutely love the game Dota 2 and I’ve played a bit too much of it but it never gets boring. ',
       photoId:'https://drive.google.com/thumbnail?id=1-D26ZbQlj8eYTEHLCEEU_Ng5dTy4yLeV',
       email:"mailto:nbarhate151@gmail.com",git:"https://www.github.com/nayan0037"},
   ];
