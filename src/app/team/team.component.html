@@ -10,7 +10,18 @@
 		  [rowspan]="tile.rows"
 		  [style.background]="tile.color">
 		  <div class = "inside-tile">
-		    <h4>{{tile.content}}</h4>
+			<h4>{{tile.content}}</h4>
+			<div class = "info">
+				<div class="social-media">
+					<ul>
+				<li><a target="_blank" [href]="tile.email"><i
+					class="fa fa-google fa-2x mb-3"></i></a></li>
+				<li><a [href]="tile.git" target="_blank"><i
+					class="fa fa-github fa-2x mb-3"></i></a></li>
+				<!-- <li>{{tile.text}}</li> -->
+					</ul>
+				</div>
+			</div>
 		    <div class="flip-card">
 		      <div class="flip-card-inner" [ngStyle]="{'background-image': 'url(' + tile.photoId + ')'}">
 		        <div class="flip-card-front">
