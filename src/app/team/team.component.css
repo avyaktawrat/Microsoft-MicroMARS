@@ -108,14 +108,15 @@ body {
 	font-size: 20px;
 	font-family: Arial, Helvetica, sans-serif;
 }
-.social-media li{
+.flip-card-back li{
 	padding-bottom: 10px;
 	padding-right: 25px;
 }
-.social-media i:hover{
+.flip-card-back i:hover{
 	color: black;
 }
 ul {
+  top: 40%;
   list-style-type: none;
   position: relative;
   display: flex;
