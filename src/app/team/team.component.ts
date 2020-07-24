@@ -28,8 +28,8 @@ export class TeamComponent {  // contains the team details
       photoId: 'https://drive.google.com/thumbnail?id=1mcHXapKVgjpvWn_zfq7I6Da-bgATSh5r',
       email:'mailto:anjaliyadavay3008@gmail.com',git:'https://www.github.com/anjaliyadav3008'},
 
-      {text: 'Avy', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)',
-      content: `Hey There! I am Avyakta from Electrical Engineering Department of IIT-Bombay.
+      {text: 'Avyakta', cols: 2, rows: 2, color: 'linear-gradient( #f19f84,#eb7f52)',
+      content: `Hey There! I am Avy from Electrical Engineering Department of IIT-Bombay.
       I love exploring around and finding solutions to challenging problems! I enjoy music and books :)`,
       photoId:'https://drive.google.com/thumbnail?id=1WUdk_GejPk76rPJSU_mEbZp38CDUxYxF',
       email:"mailto:avyaktawrat@gmail.com",git:"https://www.github.com/avyaktawrat"},
