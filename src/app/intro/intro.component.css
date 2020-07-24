@@ -5,12 +5,21 @@
 }
 
 .info{
-  padding-top: 10%;
+  margin: 10%;
+  padding-top: 5%;
   display: inline;
   padding-right: 5%;
+  align-items: center;
 }
-.info a:hover{
-  opacity: 0.7;
+/* .info a{
+  padding-right: 10%;
+} */
+.info i{
+  margin: 1.5%;
+}
+
+a:hover{
+  color: purple;
 }
 
 .example-small-box, .example-large-box, .flowchart-box{
