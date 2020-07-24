@@ -2,8 +2,8 @@
 <div class="navbar-menu">
   <nav mat-tab-nav-bar style="background-color:navy" [backgroundColor]="background" animationDuration="500ms">
     <a mat-tab-link style="color: white;" *ngFor="let link of links"
-       (click)="activeLink == link.router"
-       [active]="activeLink == link.router" [routerLink] = "link.router"> {{link.view}} </a>
+       (click)="link.router"
+       [active]="link.router" [routerLink] = "link.router"> {{link.view}} </a>
     <a mat-tab-link [disabled]="true" style="position: absolute; color:white; opacity: 100%; font-size: large;vertical-align: center;text-align: right; right: 3%; border-style: hidden;">
       Team MicroMARS 42</a>
   </nav>
