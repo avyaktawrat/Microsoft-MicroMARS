@@ -127,6 +127,9 @@ ul {
   align-items: center;
   padding-left: 0;
 }
+ul i{
+	color: rgb(182, 0, 182);
+}
 /* .info{
 	position: relative;
 } */
