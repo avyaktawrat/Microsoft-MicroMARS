@@ -111,12 +111,15 @@ body {
 .flip-card-back li{
 	padding-bottom: 10px;
 	padding-right: 25px;
+	cursor:pointer;
+	color: white;
+	font-size: 20px;
 }
 .flip-card-back i:hover{
-	color: black;
+	color: white;
 }
 ul {
-  top: 40%;
+  top: 30%;
   list-style-type: none;
   position: relative;
   display: flex;
@@ -124,15 +127,15 @@ ul {
   align-items: center;
   padding-left: 0;
 }
-.info{
+/* .info{
 	position: relative;
-}
+} */
 
-.inside-tile .info .social-media{
+/* .inside-tile .info .social-media{
 	position: absolute;
 	width: 100%;
 }
 .inside-tile .info .social-media ul{
 	flex-direction: row;
 	margin-left: 150px;
-}
+} */

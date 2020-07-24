@@ -23,8 +23,8 @@ export class TeamComponent {  // contains the team details
 
       {text: 'Anjali', cols: 2, rows: 2, color: 'linear-gradient( #ffd48f,#fa9600)',
      content: `I'm Anjali Yadav, second-year undergrad, Electrical Engineering, IIT Bombay.
-      I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms.`,
-      // Reading (especially psychological stuff) is something I have started liking recently.
+      I find game theory and related fields really fascinating. I'm into fine-arts and designing and enjoy watching sitcoms.
+      Reading (especially psychological stuff) is something I have started liking recently.`,
       photoId: 'https://drive.google.com/thumbnail?id=1mcHXapKVgjpvWn_zfq7I6Da-bgATSh5r',
       email:'mailto:anjaliyadavay3008@gmail.com',git:'https://www.github.com/anjaliyadav3008'},
 
