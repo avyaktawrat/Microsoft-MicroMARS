@@ -179,7 +179,7 @@ export class maze  {   // class implementing different maze-generating algorithm
         	currPath = [];
         	continue;
       	}
-        if(Math.random()>0.7 || currPath.length === 0){           //path
+        if(Math.random()>0.5 || currPath.length === 0){           //path
           gridCoord[i*hGrid+j].isTerrain = false;
           gridCoord[i*hGrid+j].value = 0;
           gridCoord[(i+1)*hGrid+j].isTerrain = false;
