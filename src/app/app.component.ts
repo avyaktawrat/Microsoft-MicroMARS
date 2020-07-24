@@ -19,7 +19,7 @@ interface links{
 })
 export class AppComponent {
   title = 'MicroMARS';
-  links:links [] = [{view:'Introduction & Tutorial',router:'/'}, 
+  links:links [] = [{view:'Introduction',router:'/'}, 
   {view:'PlayGround',router:'/home'},{view:'Our Team',router:'/my-team'}];
   activeLink = this.links[0];
   background: ThemePalette;
