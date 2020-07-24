@@ -119,7 +119,7 @@ export class maze  {   // class implementing different maze-generating algorithm
       gridCoord[i].value = 100;
     }
 	  let start = Math.floor(Math.random() * totalGrid);  // start with a random number
-    while (start === 0) {
+    if (start === 0) {
       start += Math.floor(Math.random() * totalGrid);   // handling the corner case
     }
 	  let pathSet = [start];   // pathSet contains all the visited nodes of the grid
